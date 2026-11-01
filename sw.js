@@ -1,6 +1,6 @@
 // Service worker: simpan aplikasi agar bisa dibuka tanpa internet.
 // Naikkan nomor VERSI setiap kali index.html diubah supaya pengguna mendapat versi baru.
-const VERSI = 'hargapas-v1.2.0';
+const VERSI = 'hargapas-v1.3.0';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSI).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));

@@ -4,11 +4,37 @@
   const num = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
   const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 
+  // Satuan dan konversinya ke satuan dasar per dimensi.
+  const SATUAN = {
+    g: ['berat', 1], ons: ['berat', 100], kg: ['berat', 1000],
+    ml: ['volume', 1], liter: ['volume', 1000],
+    cm: ['panjang', 1], m: ['panjang', 100],
+    butir: ['hitung', 1], buah: ['hitung', 1], biji: ['hitung', 1], pcs: ['hitung', 1], lembar: ['hitung', 1],
+    bungkus: ['hitung', 1], sachet: ['hitung', 1], ikat: ['hitung', 1], botol: ['hitung', 1], kaleng: ['hitung', 1],
+  };
+  const ALIAS = { gram: 'g', gr: 'g', grm: 'g', kilo: 'kg', kilogram: 'kg', l: 'liter', lt: 'liter', ltr: 'liter', mililiter: 'ml', meter: 'm', centimeter: 'cm', senti: 'cm', pc: 'pcs', potong: 'pcs', bks: 'bungkus', pack: 'bungkus', pak: 'bungkus' };
+  function normSatuan(s) {
+    const k = String(s || '').trim().toLowerCase();
+    return SATUAN[k] ? k : (ALIAS[k] || k);
+  }
+  // Faktor pengali dari satuan "dari" ke satuan "ke"; null jika tidak bisa dikonversi.
+  function faktor(dari, ke) {
+    const a = normSatuan(dari), b = normSatuan(ke || dari);
+    if (a === b) return 1;
+    const sa = SATUAN[a], sb = SATUAN[b];
+    if (!sa || !sb || sa[0] !== sb[0] || sa[0] === 'hitung') return null;
+    return sa[1] / sb[1];
+  }
+  // Biaya satu bahan: harga untuk "isi" (satuanIsi), dipakai "pakai" (satuanPakai, default = satuanIsi).
+  function biayaBahan(b) {
+    const isi = num(b.isi);
+    if (!(isi > 0)) return 0;
+    const f = faktor(b.satuanPakai || b.satuanIsi, b.satuanIsi);
+    if (f === null) return 0;
+    return num(b.harga) / isi * num(b.pakai) * f;
+  }
   function biayaBahanBatch(bahan) {
-    return (bahan || []).reduce((s, b) => {
-      const isi = num(b.isi);
-      return s + (isi > 0 ? num(b.harga) / isi * num(b.pakai) : 0);
-    }, 0);
+    return (bahan || []).reduce((s, b) => s + biayaBahan(b), 0);
   }
 
   // Overhead bulanan dipisah: variabel (ikut naik-turun dengan produksi) dan tetap.
@@ -121,13 +147,15 @@
       const nama = b.nama || `Bahan ${i + 1}`;
       const adaAngka = num(b.harga) > 0 || num(b.pakai) > 0;
       if (adaAngka && !(num(b.isi) > 0)) out.push({ level: 'bad', pesan: `${nama}: "isi kemasan" belum diisi.` });
-      if (num(b.isi) > 0 && num(b.pakai) > num(b.isi) * 20) out.push({ level: 'warn', pesan: `${nama}: jumlah dipakai lebih dari 20× isi kemasan. Periksa satuannya (g atau kg?).` });
+      const f = faktor(b.satuanPakai || b.satuanIsi, b.satuanIsi);
+      if (adaAngka && f === null) out.push({ level: 'bad', pesan: `${nama}: satuan beli (${b.satuanIsi}) dan satuan pakai (${b.satuanPakai}) tidak bisa dikonversi.` });
+      else if (num(b.isi) > 0 && num(b.pakai) * (f || 1) > num(b.isi) * 20) out.push({ level: 'warn', pesan: `${nama}: jumlah dipakai lebih dari 20× jumlah yang dibeli. Periksa satuannya.` });
     });
     if (!(num(p.batchBulan) > 0)) out.push({ level: 'warn', pesan: 'Isi jumlah produksi per bulan agar biaya bulanan ikut terhitung.' });
     if (num(p.susutPct) >= 50) out.push({ level: 'warn', pesan: 'Persentase gagal/susut 50% atau lebih. Pastikan angkanya benar.' });
     return out;
   }
 
-  const api = { biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
+  const api = { SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);

@@ -1,5 +1,19 @@
 # Catatan perubahan HargaPas
 
+## 1.3.0 — 1 November 2026
+
+Fokus: mudah dipakai oleh pelaku UMKM/IKM dengan latar pendidikan, kemampuan teknologi, dan usia yang beragam.
+
+- **Tampilan Sederhana dan Lengkap.** Sederhana (bawaan) memandu langkah demi langkah dan hanya menampilkan modal, harga jual, untung, dan batas balik modal. Lengkap menampilkan semua fitur.
+- **Bahasa sehari-hari** dengan istilah resmi di dalam kurung: "Modal per potong (HPP)", "Batas balik modal (BEP)", "Tempat menjual", "Sekali masak / Satu per satu".
+- **Satuan dipilih dari daftar** (gram, ons, kg, ml, liter, cm, meter, butir, buah, pcs, dll.) dan dikonversi otomatis: "Beli 1 kg Rp14.000, dipakai 500 gram".
+- **Kesimpulan berupa kalimat** dengan warna lampu lalu lintas, dan tombol **Bacakan** (suara bahasa Indonesia bawaan HP).
+- **Ramah lansia:** pilihan ukuran huruf (A / A+ / A++), huruf kecil dinaikkan (teks di bawah 14 px turun dari 58% menjadi 16%), tombol minimal 44 px.
+- **Konfirmasi hapus** yang jelas dan tombol **Batalkan** setelah menghapus.
+- **Isian tambahan boleh dilewati** (barang rusak, sewa, alat, lain-lain) dan bantuan **"Tidak tahu persis?"** untuk memperkirakan gas (tabung × harga) dan listrik (tagihan × bagian usaha).
+- **Untuk pendamping:** lembar isian cetak untuk UKM tanpa HP pintar, dan **kirim produk ke HP lain** lewat tautan WhatsApp.
+- Ikon di setiap langkah, tombol "Lanjut ke langkah berikutnya" dan "Lihat hasilnya".
+
 ## 1.2.0 — 1 November 2026
 
 - Palet warna Universitas Terbuka: biru tua (#1E4094) sebagai warna utama dan kuning (#F9D800) sebagai aksen; diambil dari logo UT.

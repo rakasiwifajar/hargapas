@@ -6,6 +6,9 @@ Buka aplikasinya: **https://rakasiwifajar.github.io/hargapas/**
 
 ## Fitur
 
+- **Tampilan Sederhana** (langkah demi langkah, bahasa sehari-hari, kesimpulan berupa kalimat yang bisa dibacakan) dan **Lengkap** (semua fitur).
+- Satuan beli dan pakai dipilih dari daftar, dikonversi otomatis (kg↔gram, liter↔ml, meter↔cm). Pilihan ukuran huruf untuk pengguna lanjut usia.
+- Untuk pendamping: lembar isian cetak (`#lembar`) dan kirim produk ke HP lain lewat tautan WhatsApp.
 - Dua cara mengisi data: **per batch** (resep, cocok untuk makanan dan minuman) atau **per unit** (kerajinan, konveksi). Saat berpindah, angka dikonversi otomatis sehingga HPP tetap sama.
 - HPP per unit dari bahan baku, tenaga kerja, kemasan, overhead bulanan, dan persentase gagal/susut.
 - Harga jual dengan metode margin atau markup, plus harga per kanal penjualan yang bisa ditambah sendiri.

@@ -83,4 +83,19 @@ eq(cek.some((x) => x.pesan.includes('hasil per batch')), true, 'cek hasil batch'
 eq(cek.some((x) => x.pesan.includes('Terigu') && x.level === 'bad'), true, 'cek isi kemasan');
 eq(cek.some((x) => x.pesan.includes('Gula') && x.level === 'warn'), true, 'cek satuan');
 
+// Konversi satuan
+eq(H.faktor('g', 'kg'), 0.001, 'g ke kg');
+eq(H.faktor('kg', 'g'), 1000, 'kg ke g');
+eq(H.faktor('ons', 'g'), 100, 'ons ke g');
+eq(H.faktor('ml', 'liter'), 0.001, 'ml ke liter');
+eq(H.faktor('cm', 'm'), 0.01, 'cm ke m');
+eq(H.faktor('butir', 'kg'), null, 'butir tidak bisa ke kg');
+eq(H.faktor('Gram', 'KG'), 0.001, 'alias & huruf besar');
+eq(H.faktor('toples', 'toples'), 1, 'satuan bebas yang sama');
+near(H.biayaBahan({ harga: 14000, isi: 1, satuanIsi: 'kg', pakai: 500, satuanPakai: 'g' }), 7000, 1e-9, 'beli 1 kg pakai 500 g');
+near(H.biayaBahan({ harga: 30000, isi: 2, satuanIsi: 'liter', pakai: 250, satuanPakai: 'ml' }), 3750, 1e-9, 'beli 2 liter pakai 250 ml');
+near(H.biayaBahan({ harga: 14000, isi: 1000, satuanIsi: 'g', pakai: 500 }), 7000, 1e-9, 'data lama tanpa satuanPakai');
+eq(H.biayaBahan({ harga: 2000, isi: 1, satuanIsi: 'butir', pakai: 1, satuanPakai: 'kg' }), 0, 'satuan tak cocok = 0');
+eq(H.periksa({ mode: 'unit', batchBulan: 1, bahan: [{ nama: 'Telur', harga: 2000, isi: 1, satuanIsi: 'butir', pakai: 1, satuanPakai: 'kg' }] }).some(x => x.level === 'bad' && x.pesan.includes('tidak bisa dikonversi')), true, 'cek satuan tak cocok');
+
 console.log(`Semua ${lulus} uji lulus.`);
