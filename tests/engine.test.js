@@ -138,4 +138,61 @@ const pk = H.hargaPaket(10000, r.hpp, 3, 10, 0, 0, 500);
 eq(pk.harga, 27000, 'paket isi 3 diskon 10%');
 near(pk.untung, 27000 - r.hpp * 3, 0.01, 'untung paket');
 
+
+// ===== Laporan keuangan =====
+const buku = {
+  awal: { bulan: '2026-09', kas: 2000000, persediaan: 500000, peralatan: [{ nama: 'Oven', nilai: 4800000, umur: 4 }], utang: [{ nama: 'KUR', sisa: 3000000 }] },
+  stok: { '2026-09': 700000 },
+  trx: [
+    { tgl: '2026-09-03', jenis: 'masuk', kat: 'jual', nominal: 6000000 },
+    { tgl: '2026-09-04', jenis: 'keluar', kat: 'bahan', nominal: 2500000 },
+    { tgl: '2026-09-10', jenis: 'keluar', kat: 'upah', nominal: 1000000 },
+    { tgl: '2026-09-11', jenis: 'keluar', kat: 'energi', nominal: 300000 },
+    { tgl: '2026-09-25', jenis: 'keluar', kat: 'cicil', nominal: 500000 },
+    { tgl: '2026-09-25', jenis: 'keluar', kat: 'bunga', nominal: 50000 },
+    { tgl: '2026-09-28', jenis: 'keluar', kat: 'prive', nominal: 400000 },
+    { tgl: '2026-10-05', jenis: 'masuk', kat: 'jual', nominal: 5000000 },
+    { tgl: '2026-10-06', jenis: 'keluar', kat: 'bahan', nominal: 2000000 },
+    { tgl: '2026-10-07', jenis: 'keluar', kat: 'alat', nominal: 1200000, umur: 1, ket: 'Mixer' },
+    { tgl: '2026-10-08', jenis: 'masuk', kat: 'pinjam', nominal: 1000000 },
+    { tgl: '2026-08-30', jenis: 'masuk', kat: 'jual', nominal: 999 },
+  ],
+};
+eq(H.geserBulan('2026-12', 1), '2027-01', 'geser bulan lintas tahun');
+eq(H.daftarBulan('2026-11', '2027-02').length, 4, 'daftar bulan');
+const sep = H.laporanBulan(buku, '2026-09');
+eq(sep.labaRugi.hpp, 2300000, 'HPP = persediaan awal + pembelian - persediaan akhir');
+eq(sep.labaRugi.penyusutan, 100000, 'penyusutan garis lurus');
+eq(sep.labaRugi.labaKotor, 3700000, 'laba kotor');
+eq(sep.labaRugi.laba, 2250000, 'laba bersih September');
+eq(sep.arusKas.operasi, 2150000, 'arus kas operasi');
+eq(sep.arusKas.pendanaan, -900000, 'arus kas pendanaan (cicilan + prive)');
+eq(sep.arusKas.kasAkhir, 3250000, 'kas akhir September');
+eq(sep.neraca.totalAset, 8650000, 'total aset September');
+eq(sep.neraca.utang, 2500000, 'utang berkurang cicilan');
+eq(sep.neraca.ekuitas, 6150000, 'ekuitas');
+eq(sep.neraca.seimbang, true, 'neraca seimbang September');
+eq(sep.k.jual, 6000000, 'transaksi sebelum awal pencatatan diabaikan');
+const okt = H.laporanBulan(buku, '2026-10');
+eq(okt.labaRugi.persAwal, 700000, 'persediaan awal = stok akhir bulan lalu');
+eq(okt.labaRugi.hpp, 2000000, 'tanpa stok akhir: persediaan dianggap tetap');
+eq(okt.labaRugi.penyusutan, 200000, 'penyusutan alat baru ikut');
+eq(okt.labaRugi.laba, 2800000, 'laba Oktober');
+eq(okt.arusKas.investasi, -1200000, 'arus kas investasi');
+eq(okt.arusKas.kasAkhir, 6050000, 'kas akhir Oktober');
+eq(okt.neraca.peralatan, 5700000, 'nilai buku peralatan');
+eq(okt.neraca.utang, 3500000, 'pinjaman baru menambah utang');
+eq(okt.neraca.seimbang, true, 'neraca seimbang Oktober');
+eq(okt.neraca.totalAset, 12450000, 'total aset Oktober');
+const ring = H.ringkasanBulan(buku, '2026-10', 6);
+eq(ring.n, 2, 'ringkasan tidak melewati awal pencatatan');
+eq(ring.pendapatan, 11000000, 'pendapatan 2 bulan');
+eq(ring.laba, 5050000, 'laba 2 bulan');
+near(ring.kemampuanBayar, 5400000 / 550000, 1e-9, 'kemampuan bayar angsuran');
+eq(H.laporanBulan(buku, '2026-08'), null, 'bulan sebelum awal: tidak ada laporan');
+// penyusutan berhenti saat nilai buku habis
+const hab = H.laporanBulan({ awal: { bulan: '2026-01', peralatan: [{ nilai: 1200, umur: 0.25 }] } }, '2026-06');
+eq(hab.neraca.peralatan, 0, 'nilai buku tidak negatif');
+eq(hab.labaRugi.penyusutan, 0, 'tidak ada penyusutan setelah habis');
+
 console.log(`Semua ${lulus} uji lulus.`);

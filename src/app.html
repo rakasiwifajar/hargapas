@@ -15,15 +15,16 @@
 </style>
 </head>
 <body>
-<div class="utbar"><div class="in"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"><span><b>Universitas Terbuka Majene</b></span><span class="r">Layanan gratis untuk UKM</span></div><div class="sure-strip" aria-hidden="true"></div></div>
+<div class="utbar" aria-hidden="true"><div class="sure-strip"></div></div>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#beranda" aria-label="HargaPas, beranda">
       <img src="__ICON__" alt="">
-      <div><b>HargaPas</b><span>by Universitas Terbuka Majene</span></div>
+      <div><b>HargaPas</b><span>Universitas Terbuka Majene</span></div>
     </a>
     <div class="hdr-r">
-      <span class="saved" id="saved" aria-live="polite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Tersimpan</span>
+      <img class="hdr-ut" src="__LOGO_UT__" alt="Logo Universitas Terbuka">
+      <span class="saved" id="saved" aria-live="polite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Tersimpan</span></span>
       <button class="btn icon" type="button" id="btnSettings" aria-label="Pengaturan tampilan dan huruf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button>
     </div>
   </header>
@@ -31,6 +32,7 @@
   <nav class="tabs" aria-label="Menu utama">
     <a href="#beranda" data-view="beranda"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1z"/></svg><span>Beranda</span></a>
     <a href="#hitung" data-view="hitung"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg><span>Hitung</span></a>
+    <a href="#keuangan" data-view="keuangan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7a2 2 0 012-2h11v4"/><path d="M4 7v11a2 2 0 002 2h14V9H6a2 2 0 01-2-2z"/><path d="M16 14.5h.01"/></svg><span>Keuangan</span></a>
     <a href="#bahan" data-view="bahan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 016 0"/></svg><span>Bahan</span></a>
     <a href="#lainnya" data-view="lainnya"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>Lainnya</span></a>
   </nav>
@@ -39,13 +41,13 @@
   <main id="view-beranda" data-page="beranda" hidden>
     <section class="welcome sure">
       <div class="welcome-in">
+        <p class="wdate" id="wDate"></p>
         <p class="wk">Selamat datang di</p>
         <h1>HargaPas</h1>
         <p class="wb">by Universitas Terbuka Majene</p>
-        <p class="wd">Hitung modal dan harga jual produk Anda dengan benar. Gratis, tanpa daftar akun.</p>
+        <p class="wd">Hitung modal, tentukan harga jual, dan catat keuangan usaha Anda. Gratis, tanpa daftar akun, data tetap di HP Anda.</p>
         <button class="btn cta big" type="button" id="btnBerandaBaru"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Hitung produk baru</button>
       </div>
-      <div class="welcome-ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
     </section>
     <div class="note warn" id="noteBackupHome" hidden>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
@@ -56,7 +58,7 @@
       <div class="sec-head" style="margin:0 0 8px"><h2>Bulan ini</h2><span class="hint" id="bulanNama"></span></div>
       <div class="kv" id="outUsaha"></div>
       <p class="hint" id="usahaNote" style="margin:8px 0 0"></p>
-      <div class="actions" style="margin-top:10px"><button class="btn primary" type="button" id="btnCatat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Catat penjualan</button></div>
+      <div class="actions" style="margin-top:10px"><a class="btn" href="#keuangan" id="btnKeHome">Buka Keuangan</a><button class="btn primary" type="button" id="btnCatat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Catat penjualan</button></div>
     </section>
     <div class="sec-head"><h2>Produk saya</h2><span class="hint" id="prodCount"></span></div>
     <div class="pgrid" id="prodGrid"></div>
@@ -76,7 +78,9 @@
     <section class="page menu-page">
       <h1>Lainnya</h1>
       <div class="menu-list">
-        <a class="mrow" href="#laporan"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg></span><span><b>Laporan PDF</b><small>Laporan HPP berkop untuk dicetak</small></span></a>
+        <a class="mrow" href="#laporan"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg></span><span><b>Laporan HPP (PDF)</b><small>Rincian modal dan harga jual produk</small></span></a>
+        <a class="mrow" href="#lapkeu"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 17v-3M13 17v-5M16 17v-2"/></svg></span><span><b>Laporan keuangan (PDF)</b><small>Laba rugi, arus kas, neraca untuk pengajuan pinjaman</small></span></a>
+        <button class="mrow" type="button" data-open-profil><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13M10 21v-6h4v6"/></svg></span><span><b>Data usaha & saldo awal</b><small>Identitas usaha, kas, peralatan, pinjaman</small></span></button>
         <button class="mrow" type="button" data-open-settings><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><span><b>Pengaturan</b><small>Tampilan sederhana/lengkap, ukuran huruf</small></span></button>
         <button class="mrow" type="button" id="btnDataMenu"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span><b>Cadangan & pemulihan data</b><small>Simpan atau pindahkan data ke HP lain</small></span></button>
         <a class="mrow" href="#lembar"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><span><b>Lembar isian cetak</b><small>Untuk pendamping UKM</small></span></a>
@@ -95,7 +99,7 @@
     <div class="note info" id="noteContoh" hidden>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
       <span class="grow">Anda sedang melihat <b>data contoh</b>. Angka-angka ini hanya ilustrasi cara pakai HargaPas.</span>
-      <button class="btn small cta" type="button" id="btnMulaiSaya">Mulai produk saya</button>
+      <button class="btn small primary" type="button" id="btnMulaiSaya">Mulai produk saya</button>
     </div>
 
     <div class="hcols"><div class="col-in">
@@ -370,6 +374,72 @@
     </section>
   </main>
 
+
+  <!-- ================= KEUANGAN ================= -->
+  <main id="view-keuangan" data-page="keuangan" hidden>
+    <div class="kh-head">
+      <div><h1>Keuangan</h1><p class="hint">Catat setiap uang masuk dan keluar. Laporan bulanan tersusun otomatis.</p></div>
+    </div>
+    <section class="ksetup" id="kSetup" hidden>
+      <div class="ks-ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M10 21v-6h4v6"/></svg></div>
+      <div class="grow">
+        <b>Lengkapi data usaha dan saldo awal</b>
+        <p>Nama usaha, pemilik, serta uang kas, peralatan, dan pinjaman yang sudah ada saat mulai mencatat. Dibutuhkan agar neraca dan laporan untuk bank lengkap.</p>
+        <button class="btn primary small" type="button" data-open-profil>Isi sekarang</button>
+      </div>
+    </section>
+    <div class="mbar" role="group" aria-label="Pilih bulan">
+      <button class="btn icon" type="button" id="kPrev" aria-label="Bulan sebelumnya"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="mname"><b id="kBulan"></b><small id="kBulanSub"></small></div>
+      <button class="btn icon" type="button" id="kNext" aria-label="Bulan berikutnya"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <section class="ksum" id="kSum" aria-live="polite"></section>
+    <div class="kbtns">
+      <button class="kbtn in" type="button" data-trx="masuk"><span class="kb-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7 7 7-7"/></svg></span><span><b>Uang masuk</b><small>Penjualan, modal, pinjaman</small></span></button>
+      <button class="kbtn out" type="button" data-trx="keluar"><span class="kb-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7-7 7 7"/></svg></span><span><b>Uang keluar</b><small>Belanja, upah, cicilan</small></span></button>
+    </div>
+    <div class="note info" id="kJualNote" hidden></div>
+    <section class="kstok card-lite">
+      <div class="grow">
+        <b>Sisa bahan & barang di akhir bulan <span class="term">(persediaan akhir)</span></b>
+        <p class="hint">Perkiraan nilai bahan, kemasan, dan produk jadi yang belum terpakai/terjual. Boleh dikosongkan; bila kosong dianggap sama dengan bulan lalu.</p>
+      </div>
+      <div class="field kstok-in"><label class="sr" for="kStok">Nilai sisa stok akhir bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kStok" class="num" type="text" inputmode="decimal" placeholder="boleh kosong"></div></div>
+    </section>
+    <div class="sec-head"><h2>Catatan bulan ini</h2><span class="hint" id="kCount"></span></div>
+    <div class="tlist" id="kList"></div>
+    <div class="empty-home" id="kEmpty" hidden>
+      <div class="empty-ill" aria-hidden="true"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v18l-2-1.5L13 21l-2-1.5L9 21l-2-1.5L5 21V5a2 2 0 012-2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div>
+      <b>Belum ada catatan di bulan ini</b>
+      <p>Tekan <b>Uang masuk</b> atau <b>Uang keluar</b> setiap ada transaksi. Cukup pilih jenisnya dan isi jumlahnya.</p>
+    </div>
+    <div class="actions kfoot">
+      <a class="btn primary" href="#lapkeu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 17v-3M13 17v-5M16 17v-2"/></svg>Laporan keuangan (PDF)</a>
+      <button class="btn" type="button" data-open-profil>Data usaha & saldo awal</button>
+    </div>
+  </main>
+
+  <!-- ================= LAPORAN KEUANGAN ================= -->
+  <main id="view-lapkeu" data-page="lapkeu" hidden>
+    <section class="lk-ctrl">
+      <div class="lk-row">
+        <div class="field"><label for="lkBulan">Bulan laporan</label><select id="lkBulan"></select></div>
+        <div class="field"><label for="lkN">Ringkasan</label><select id="lkN"><option value="3">3 bulan terakhir</option><option value="6">6 bulan terakhir</option><option value="12">12 bulan terakhir</option></select></div>
+      </div>
+      <div class="lk-row">
+        <div class="field"><label for="lkKota">Tempat penandatanganan</label><input id="lkKota" type="text" placeholder="mis. Majene"></div>
+        <label class="chk" style="margin:22px 0 0"><input type="checkbox" id="lkLamp"><span>Lampirkan daftar transaksi</span></label>
+      </div>
+      <div class="field"><label for="lkCatatan">Keterangan tambahan <span class="term">(opsional)</span></label><textarea id="lkCatatan" rows="2" placeholder="mis. Penjualan naik menjelang Lebaran. Pinjaman akan dipakai untuk membeli oven kedua."></textarea></div>
+      <div class="actions">
+        <button class="btn primary" type="button" id="btnPrintKeu" data-standalone>Cetak / simpan PDF</button>
+        <a class="btn" href="#keuangan">Kembali ke Keuangan</a>
+      </div>
+      <p class="hint" data-embedded-only hidden style="margin:8px 0 0">Untuk menyimpan sebagai PDF, buka HargaPas di alamat resminya lalu tekan "Cetak / simpan PDF".</p>
+    </section>
+    <article class="report lk" id="lapKeu"></article>
+  </main>
+
   <!-- ================= LAPORAN ================= -->
   <main id="view-laporan" data-page="laporan" hidden>
     <div class="actions" style="margin-bottom:12px">
@@ -487,21 +557,34 @@
       <p>Titik impas memakai pendekatan biaya variabel: biaya tetap = sewa + penyusutan + lain-lain; biaya variabel per unit = bahan + tenaga kerja + kemasan + (gas + listrik) ÷ produksi bulanan.</p>
       <div class="formula">BEP (unit) = biaya tetap bulanan ÷ (harga − biaya variabel per unit)</div>
 
+      <h2>Laporan keuangan</h2>
+      <p>Laporan bulanan disusun dari catatan uang masuk dan keluar, mengacu pada Standar Akuntansi Keuangan Entitas Mikro, Kecil, dan Menengah (SAK EMKM) yang disederhanakan: laporan laba rugi, laporan posisi keuangan, dan catatan atas laporan, ditambah laporan arus kas.</p>
+      <div class="formula">Harga pokok penjualan = persediaan awal + belanja bahan − persediaan akhir</div>
+      <div class="formula" style="margin-top:8px">Laba bersih = penjualan − harga pokok penjualan + pemasukan lain − beban usaha − penyusutan − bunga − pajak</div>
+      <p>Pembelian peralatan dicatat sebagai aset dan disusutkan garis lurus sesuai umur manfaat. Cicilan pokok pinjaman dan pengambilan pribadi (prive) bukan beban, sehingga tidak mengurangi laba, tetapi mengurangi kas. Neraca diperiksa otomatis: aset = utang + modal.</p>
+
       <h2>Rujukan</h2>
       <ul>
         <li>Mulyadi, <i>Akuntansi Biaya</i>: konsep harga pokok produksi dengan metode full costing dan variable costing.</li>
         <li>Horngren, Datar &amp; Rajan, <i>Cost Accounting: A Managerial Emphasis</i>: analisis biaya-volume-laba dan titik impas.</li>
+        <li>Ikatan Akuntan Indonesia, <i>SAK EMKM</i>: penyajian laporan keuangan entitas mikro, kecil, dan menengah.</li>
       </ul>
 
       <h2>Keterbatasan</h2>
       <ul>
         <li>Hasil perhitungan bergantung pada data yang Anda isi. Periksa kembali satuan dan harga bahan.</li>
-        <li>HargaPas belum menghitung pajak, ongkos kirim, dan biaya pemasaran secara khusus. Masukkan sebagai biaya lain-lain bila perlu.</li>
+        <li>Laporan keuangan disusun dari catatan pemilik dan tidak diaudit. Bank atau lembaga keuangan dapat meminta dokumen pendukung seperti nota dan rekening koran.</li>
         <li>Pembagian biaya tetap dan variabel disederhanakan; untuk usaha yang lebih kompleks, konsultasikan dengan pendamping UKM.</li>
       </ul>
 
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
+      <ul>
+        <li>Menu Keuangan: catat uang masuk dan keluar per jenis, sisa stok akhir bulan, data usaha dan saldo awal.</li>
+        <li>Laporan keuangan bulanan siap cetak/PDF untuk pengajuan pinjaman: laba rugi, arus kas, posisi keuangan (neraca), ringkasan dan grafik 3–12 bulan, catatan atas laporan, kolom tanda tangan. Mengacu SAK EMKM yang disederhanakan.</li>
+        <li>Tampilan diperhalus: kepala aplikasi lebih ringkas, tipografi dan warna lebih konsisten, layar pembuka baru.</li>
+      </ul>
+      <p style="margin-bottom:4px"><b>Versi 1.5.0</b> (1 November 2026)</p>
       <ul>
         <li>Biaya bulanan dipakai bersama, PPh final 0,5%, rencana sebulan, catatan penjualan, atur harga (pesaing, harga enak dibaca, paket).</li>
         <li>Template produk khas Majene, pelajaran singkat, kirim masukan, penafian.</li>
@@ -595,13 +678,18 @@
 </div>
 
 <!-- Layar pembuka -->
-<div class="splash sure" id="splash" aria-hidden="true">
+<div class="splash" id="splash" aria-hidden="true">
   <div class="sp-in">
     <img class="sp-icon" src="__ICON__" alt="">
     <div class="sp-name">HargaPas</div>
-    <div class="sp-tag">Hitung modal & harga jual UKM</div>
+    <div class="sp-tag">Modal, harga jual & catatan keuangan UMKM</div>
+    <div class="sp-load"><i></i></div>
   </div>
-  <div class="sp-foot"><span class="sp-ut"><img src="__LOGO_UT__" alt=""></span><span>Universitas Terbuka Majene</span></div>
+  <div class="sp-foot">
+    <span class="sp-by">Dikembangkan oleh</span>
+    <span class="sp-ut-row"><span class="sp-ut"><img src="__LOGO_UT__" alt=""></span><b>Universitas Terbuka Majene</b></span>
+  </div>
+  <div class="sp-band sure"></div>
 </div>
 
 <!-- Pengaturan -->
@@ -644,6 +732,61 @@
     <p class="hint" style="margin:8px 0 4px">Isi jumlah yang terjual pada tanggal ini. Kosongkan bila tidak ada.</p>
     <div id="jualList" class="jual-list"></div>
     <div class="ob-actions" style="margin-top:12px"><button class="btn" type="button" id="jualBatal">Batal</button><button class="btn primary" type="button" id="jualSimpan">Simpan</button></div>
+  </div>
+</div>
+
+
+<!-- Catat transaksi -->
+<div class="overlay" id="trxDlg" hidden role="dialog" aria-modal="true" aria-labelledby="trxTitle">
+  <div class="sheet">
+    <h2 id="trxTitle">Uang masuk</h2>
+    <div class="seg wide" role="group" aria-label="Jenis transaksi">
+      <button type="button" data-tj="masuk" aria-pressed="true">Uang masuk</button>
+      <button type="button" data-tj="keluar" aria-pressed="false">Uang keluar</button>
+    </div>
+    <div class="field" style="margin-top:14px"><label for="trxNom">Jumlah</label><div class="inp has-pre big-in"><span class="pre">Rp</span><input id="trxNom" class="num" type="text" inputmode="decimal" placeholder="0" autocomplete="off"></div></div>
+    <div class="lbl" style="margin-top:12px">Untuk apa?</div>
+    <div class="katgrid" id="trxKat" role="radiogroup" aria-label="Jenis"></div>
+    <p class="hint" id="trxKatHint" style="margin:6px 0 0"></p>
+    <div class="field only-alat" id="trxUmurF" hidden><label for="trxUmur">Perkiraan bisa dipakai berapa tahun? <span class="term">(umur manfaat)</span></label><input id="trxUmur" class="num" type="text" inputmode="decimal" placeholder="4"></div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="field"><label for="trxTgl">Tanggal</label><input id="trxTgl" type="date"></div>
+      <div class="field"><label for="trxKet">Keterangan <span class="term">(opsional)</span></label><input id="trxKet" type="text" placeholder="mis. tepung 10 kg" maxlength="80"></div>
+    </div>
+    <div class="ob-actions" style="margin-top:14px"><button class="btn danger-ghost" type="button" id="trxDel" hidden>Hapus</button><span class="grow"></span><button class="btn" type="button" id="trxBatal">Batal</button><button class="btn primary" type="button" id="trxSimpan">Simpan</button></div>
+  </div>
+</div>
+
+<!-- Data usaha & saldo awal -->
+<div class="overlay" id="profilDlg" hidden role="dialog" aria-modal="true" aria-labelledby="profilTitle">
+  <div class="sheet tall">
+    <h2 id="profilTitle">Data usaha & saldo awal</h2>
+    <p class="hint" style="margin:-4px 0 10px">Dipakai untuk kop dan isi laporan keuangan. Semua tetap tersimpan di HP ini.</p>
+    <h3 class="dlg-h">Identitas usaha</h3>
+    <div class="grid2">
+      <div class="field"><label for="pfUsaha">Nama usaha</label><input id="pfUsaha" data-pf="namaUsaha" type="text" placeholder="mis. Abon Ikan Mandar Sejahtera"></div>
+      <div class="field"><label for="pfPemilik">Nama pemilik</label><input id="pfPemilik" data-pf="pemilik" type="text"></div>
+      <div class="field"><label for="pfJenis">Jenis usaha</label><input id="pfJenis" data-pf="jenis" type="text" placeholder="mis. Olahan hasil laut"></div>
+      <div class="field"><label for="pfNib">NIB <span class="term">(opsional)</span></label><input id="pfNib" data-pf="nib" type="text" inputmode="numeric"></div>
+      <div class="field"><label for="pfHp">Nomor HP <span class="term">(opsional)</span></label><input id="pfHp" data-pf="hp" type="tel"></div>
+      <div class="field"><label for="pfSejak">Berdiri sejak <span class="term">(tahun)</span></label><input id="pfSejak" data-pf="sejak" type="text" inputmode="numeric" placeholder="mis. 2021"></div>
+    </div>
+    <div class="field"><label for="pfAlamat">Alamat usaha</label><input id="pfAlamat" data-pf="alamat" type="text"></div>
+    <h3 class="dlg-h">Saldo awal <span class="term">(posisi saat mulai mencatat)</span></h3>
+    <div class="grid2">
+      <div class="field"><label for="awBulan">Mulai mencatat bulan</label><input id="awBulan" type="month"></div>
+      <div class="field"><label for="awKas">Uang usaha yang ada <span class="term">(kas)</span></label><div class="inp has-pre"><span class="pre">Rp</span><input id="awKas" class="num" data-aw="kas" type="text" inputmode="decimal" placeholder="0"></div></div>
+      <div class="field"><label for="awStok">Nilai stok bahan & barang <span class="term">(persediaan)</span></label><div class="inp has-pre"><span class="pre">Rp</span><input id="awStok" class="num" data-aw="persediaan" type="text" inputmode="decimal" placeholder="0"></div></div>
+    </div>
+    <div class="lbl" style="margin-top:12px">Peralatan usaha <span class="term">(aset tetap)</span></div>
+    <p class="hint" style="margin:2px 0 6px">Isi perkiraan nilai sekarang dan sisa umur pakai. Contoh: oven, kompor, freezer, mesin jahit, motor usaha.</p>
+    <div class="alist" id="awAlat"></div>
+    <button class="btn small" type="button" id="awAlatAdd">+ Tambah peralatan</button>
+    <div class="lbl" style="margin-top:14px">Pinjaman yang belum lunas <span class="term">(utang)</span></div>
+    <div class="alist" id="awUtang"></div>
+    <button class="btn small" type="button" id="awUtangAdd">+ Tambah pinjaman</button>
+    <p class="hint" id="awModal" style="margin:12px 0 0"></p>
+    <div class="ob-actions" style="margin-top:14px"><button class="btn primary" type="button" id="profilClose">Selesai</button></div>
   </div>
 </div>
 

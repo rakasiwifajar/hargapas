@@ -1,5 +1,20 @@
 # Catatan perubahan HargaPas
 
+## 2.0.0 — 1 November 2026
+### Baru
+- Menu **Keuangan**: catat uang masuk/keluar per jenis (penjualan, modal, pinjaman, belanja bahan, upah, sewa, listrik/gas, ongkir, promosi, bunga, pajak, beli peralatan, cicilan pokok, ambil pribadi), pemilih bulan, sisa stok akhir bulan, rekap catatan penjualan ke Keuangan.
+- **Data usaha & saldo awal**: identitas usaha, kas, persediaan, peralatan (umur pakai), pinjaman.
+- **Laporan keuangan bulanan (PDF)** untuk pengajuan pinjaman: laba rugi, arus kas (metode langsung), posisi keuangan dengan pemeriksaan keseimbangan, ringkasan dan grafik 3/6/12 bulan, rasio kemampuan bayar angsuran, catatan atas laporan, pernyataan dan tanda tangan pemilik, lampiran transaksi. Mengacu SAK EMKM yang disederhanakan.
+- Mesin hitung `hitungBuku`, `laporanBulan`, `ringkasanBulan` dengan 31 uji baru.
+### Tampilan
+- Kepala aplikasi satu baris, identitas UT tidak berulang; tanda "Tersimpan" ringkas di HP.
+- Sapaan dan tanggal di beranda; tipografi angka tabular; bayangan dan warna lebih konsisten; tombol biru untuk aksi sekunder.
+- Layar pembuka baru dengan indikator memuat dan keterangan "Dikembangkan oleh Universitas Terbuka Majene".
+### Perbaikan
+- Pilihan produk kosong saat membuka contoh/kartu produk.
+- Lembar dialog panjang kini bisa digulir.
+- Pemulihan cadangan menerima data yang hanya berisi catatan keuangan.
+
 ## 1.5.0 — 1 November 2026
 
 Fokus: ketepatan ekonomi dan relevansi bagi UMKM Majene.

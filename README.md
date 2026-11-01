@@ -16,6 +16,7 @@ Buka aplikasinya: **https://rakasiwifajar.github.io/hargapas/**
 - Hitung mundur dari harga pasar, titik impas (BEP) dengan pemisahan biaya tetap dan variabel, simulasi kenaikan harga bahan.
 - Harga bahan bersama antarproduk, template usaha, panduan singkat, dan penjelasan istilah.
 - Laporan siap cetak/PDF berkop HargaPas dan Universitas Terbuka, kirim ringkasan ke WhatsApp, cadangan dan pemulihan data.
+- **Keuangan (2.0)**: catat uang masuk/keluar, saldo awal, dan laporan keuangan bulanan siap PDF untuk pengajuan pinjaman (laba rugi, arus kas, neraca, ringkasan & grafik, catatan atas laporan; mengacu SAK EMKM yang disederhanakan).
 
 ## Struktur
 

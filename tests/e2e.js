@@ -92,8 +92,27 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   ok((await page.getAttribute('#kartuImg', 'src')).startsWith('data:image/png'), 'kartu harga dibuat sebagai gambar PNG');
   await page.click('#kartuClose');
 
+  // 9. Keuangan: catat, saldo awal, penjualan, laporan seimbang
+  await page.goto(URL + '#keuangan'); await page.waitForSelector('#view-keuangan:not([hidden])');
+  ok(!(await page.isHidden('#kJualNote')), 'catatan penjualan ditawarkan untuk dimasukkan ke Keuangan');
+  await page.click('#kJualAdd');
+  await page.click('[data-trx="keluar"]'); await page.fill('#trxNom', '400000'); await page.click('#trxSimpan');
+  await page.click('[data-trx="keluar"]'); await page.click('[data-kat="prive"]'); await page.fill('#trxNom', '50000'); await page.click('#trxSimpan');
+  ok((await page.$$('.trow')).length === 3, 'tiga catatan keuangan tampil');
+  await page.click('#kSetup [data-open-profil]');
+  await page.fill('#pfUsaha', 'Abon Uji'); await page.fill('#pfPemilik', 'Penguji'); await page.fill('#awKas', '1.000.000');
+  await page.click('#awUtangAdd'); await page.fill('#ut_n0', 'KUR'); await page.fill('#ut_s0', '2000000');
+  await page.click('#profilClose');
+  ok(await page.isHidden('#kSetup'), 'pengingat data usaha hilang setelah diisi');
+  ok(/Rp/.test(await text('#kSum')), 'ringkasan kas tampil');
+  await page.goto(URL + '#lapkeu'); await page.waitForSelector('#lapKeu .kop');
+  const lk = await text('#lapKeu');
+  ok(lk.includes('Abon Uji') && lk.includes('Laporan Laba Rugi') && lk.includes('Laporan Arus Kas') && lk.includes('Laporan Posisi Keuangan'), 'laporan keuangan memuat tiga laporan utama');
+  ok(lk.includes('Seimbang'), 'neraca seimbang');
+  ok(lk.includes('Catatan atas Laporan Keuangan') && lk.includes('Penguji'), 'catatan dan tanda tangan pemilik');
+
   // 9. Halaman lain terbuka tanpa galat
-  for (const v of ['bahan', 'lainnya', 'laporan', 'belajar', 'tentang', 'privasi', 'lembar']) {
+  for (const v of ['keuangan', 'lapkeu', 'bahan', 'lainnya', 'laporan', 'belajar', 'tentang', 'privasi', 'lembar']) {
     await page.goto(URL + '#' + v); await page.waitForTimeout(100);
     ok(await page.isVisible(`#view-${v}`), `halaman ${v} tampil`);
   }
