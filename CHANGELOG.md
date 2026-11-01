@@ -1,5 +1,8 @@
 # Catatan perubahan HargaPas
 
+## 2.5.2 — 1 November 2026
+- Pita emas dibuat ulang: pita satin ramping yang berpilin satu kali (sisi depan emas terang, sisi belakang emas tua), tepi berkilau tipis, motif sure' sangat samar; lebih elegan dan minimalis.
+
 ## 2.5.1 — 1 November 2026
 - Pita emas di layar pembuka dan kartu sambutan dibuat lebih realistis: bingkai logam berkilau di kedua tepi, ukiran sure' dengan ornamen bunga kecil, bayangan lipatan dan bayangan jatuh, titik cahaya di lekukan; motif lebih besar dan lebih redup agar tetap bersih.
 

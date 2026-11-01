@@ -14,41 +14,39 @@ const logoUT = dataUri('assets/logo-ut.webp', 'image/webp');
 const sure = dataUri('assets/sure.svg', 'image/svg+xml');
 const sureEmas = dataUri('assets/sure-emas.svg', 'image/svg+xml');
 // Pita emas bermotif sure' yang meliuk (dipakai di layar pembuka dan sambutan beranda)
+// Pita emas satin yang berpilin satu kali (dihitung dari garis tengah kurva Bezier)
 const pita = (id) => {
-  const d = 'M310 -40 C 90 160, 360 360, 190 520 S 70 820, 300 960';
+  const P = [[372, -70], [70, 300], [380, 560], [120, 990]], W = 30, N = 90;
+  const bz = (t) => { const u = 1 - t; return [0, 1].map(k => u*u*u*P[0][k] + 3*u*u*t*P[1][k] + 3*u*t*t*P[2][k] + t*t*t*P[3][k]); };
+  const dz = (t) => { const u = 1 - t; return [0, 1].map(k => 3*u*u*(P[1][k]-P[0][k]) + 6*u*t*(P[2][k]-P[1][k]) + 3*t*t*(P[3][k]-P[2][k])); };
+  const T0 = 0.52; // titik pilinan
+  const edge = (a, b, sgn) => { const pts = []; for (let i = 0; i <= N; i++) { const t = a + (b - a) * i / N, c = bz(t), d = dz(t), L = Math.hypot(d[0], d[1]) || 1, n = [-d[1] / L, d[0] / L];
+      const hw = Math.max(0.6, Math.abs(W * Math.sin(Math.PI / 2 * Math.min(1, Math.abs(t - T0) / 0.18))));
+      pts.push([c[0] + sgn * n[0] * hw, c[1] + sgn * n[1] * hw]); } return pts; };
+  const half = (a, b) => { const L = edge(a, b, 1), R = edge(a, b, -1).reverse(); return 'M' + L.concat(R).map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L') + 'Z'; };
+  const line = (a, b, sgn) => 'M' + edge(a, b, sgn).map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L');
+  const front = half(0, T0), back = half(T0, 1);
+  const tw = bz(T0);
   return `<svg class="pita" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
   <defs>
-    <pattern id="${id}P" width="44" height="44" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)"><image href="${sureEmas}" width="44" height="44"/></pattern>
-    <linearGradient id="${id}R" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="360" y2="900">
-      <stop offset="0" stop-color="#7A5313"/><stop offset=".08" stop-color="#F7DE8E"/><stop offset=".16" stop-color="#A8771F"/>
-      <stop offset=".27" stop-color="#FFF2C4"/><stop offset=".38" stop-color="#9C6B1C"/><stop offset=".5" stop-color="#E9C062"/>
-      <stop offset=".6" stop-color="#7E5514"/><stop offset=".72" stop-color="#FBE6A6"/><stop offset=".84" stop-color="#A27420"/><stop offset="1" stop-color="#F0CF7A"/>
+    <linearGradient id="${id}F" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="330" y2="${tw[1].toFixed(0)}">
+      <stop offset="0" stop-color="#B8862C"/><stop offset=".22" stop-color="#F6DC92"/><stop offset=".45" stop-color="#D2A447"/><stop offset=".7" stop-color="#FFF0C4"/><stop offset=".9" stop-color="#C08E33"/><stop offset="1" stop-color="#7C5414"/>
     </linearGradient>
-    <linearGradient id="${id}T" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="900">
-      <stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".14" stop-color="#000" stop-opacity="0"/>
-      <stop offset=".24" stop-color="#fff" stop-opacity=".22"/><stop offset=".36" stop-color="#000" stop-opacity=".35"/>
-      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset=".6" stop-color="#fff" stop-opacity=".18"/>
-      <stop offset=".74" stop-color="#000" stop-opacity=".4"/><stop offset=".88" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".45"/>
+    <linearGradient id="${id}K" gradientUnits="userSpaceOnUse" x1="300" y1="${tw[1].toFixed(0)}" x2="120" y2="900">
+      <stop offset="0" stop-color="#5E3F0D"/><stop offset=".25" stop-color="#A57826"/><stop offset=".55" stop-color="#E4BE69"/><stop offset=".8" stop-color="#9A6E22"/><stop offset="1" stop-color="#6A470F"/>
     </linearGradient>
-    <filter id="${id}S" x="-60%" y="-10%" width="220%" height="120%"><feGaussianBlur stdDeviation="12"/></filter>
-    <filter id="${id}H" x="-60%" y="-10%" width="220%" height="120%"><feGaussianBlur stdDeviation="2.2"/></filter>
-    <radialGradient id="${id}B"><stop offset="0" stop-color="#FFF6D6" stop-opacity=".85"/><stop offset=".35" stop-color="#FFE7A0" stop-opacity=".35"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></radialGradient>
+    <pattern id="${id}P" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)"><image href="${sureEmas}" width="40" height="40"/></pattern>
+    <radialGradient id="${id}G" cx="${tw[0].toFixed(0)}" cy="${tw[1].toFixed(0)}" r="70" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFF8E0" stop-opacity=".9"/><stop offset="1" stop-color="#FFF8E0" stop-opacity="0"/></radialGradient>
+    <filter id="${id}S" x="-50%" y="-10%" width="200%" height="120%"><feGaussianBlur stdDeviation="10"/></filter>
   </defs>
-  <!-- bayangan jatuh -->
-  <path d="${d}" transform="translate(16 22)" fill="none" stroke="#020818" stroke-opacity=".55" stroke-width="74" filter="url(#${id}S)"/>
-  <!-- bingkai logam: tepi gelap, kilau emas, alur dalam -->
-  <path d="${d}" fill="none" stroke="#3A2606" stroke-width="72"/>
-  <path d="${d}" fill="none" stroke="url(#${id}R)" stroke-width="68"/>
-  <path d="${d}" fill="none" stroke="#2A1A04" stroke-width="56"/>
-  <!-- ukiran sure' -->
-  <path d="${d}" fill="none" stroke="url(#${id}P)" stroke-width="53"/>
-  <!-- bayangan lipatan (kesan meliuk 3D) -->
-  <path d="${d}" fill="none" stroke="url(#${id}T)" stroke-width="72"/>
-  <!-- kilau tepi -->
-  <path d="M302 -40 C 82 160, 352 360, 182 520 S 62 820, 292 960" fill="none" stroke="#FFF4CF" stroke-opacity=".7" stroke-width="2.2" filter="url(#${id}H)"/>
-  <!-- titik cahaya di lekukan -->
-  <circle cx="231" cy="255" r="42" fill="url(#${id}B)" opacity=".85"/>
-  <circle cx="95" cy="748" r="34" fill="url(#${id}B)" opacity=".6"/>
+  <g transform="translate(14 20)" opacity=".5" filter="url(#${id}S)"><path d="${front}" fill="#020818"/><path d="${back}" fill="#020818"/></g>
+  <path d="${back}" fill="url(#${id}K)"/>
+  <path d="${front}" fill="url(#${id}F)"/>
+  <path d="${front}" fill="url(#${id}P)" opacity=".16"/>
+  <path d="${line(0, T0, 1)}" fill="none" stroke="#FFF3CF" stroke-width="1.4" stroke-opacity=".9"/>
+  <path d="${line(0, T0, -1)}" fill="none" stroke="#6E4A10" stroke-width="1" stroke-opacity=".6"/>
+  <path d="${line(T0, 1, 1)}" fill="none" stroke="#F3D58A" stroke-width="1" stroke-opacity=".6"/>
+  <path d="${line(T0, 1, -1)}" fill="none" stroke="#FFF3CF" stroke-width="1.2" stroke-opacity=".5"/>
 </svg>`;
 };
 const engine = read('src/engine.js').toString();
