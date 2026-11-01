@@ -107,6 +107,11 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   await page.click('#profilClose');
   ok(await page.isHidden('#kSetup'), 'pengingat data usaha hilang setelah diisi');
   ok(/Rp/.test(await text('#kSum')), 'ringkasan kas tampil');
+  // stok produk jadi
+  ok(!(await page.isHidden('#kProd')), 'kartu stok produk jadi tampil');
+  await page.click('#btnProduksi'); await page.fill('#prQty', '25'); await page.click('#prSimpan');
+  ok((await text('#kProdList')).includes('15'), 'stok = 25 diproduksi − 10 terjual');
+  await page.click('#kStokHitung'); ok(Number((await page.inputValue('#kStok')).replace(/\./g, '')) > 0, 'nilai persediaan dihitung dari stok produk');
   // belanja bahan memperbarui harga bahan di produk
   await page.click('[data-trx="keluar"]'); await page.fill('#trxNom', '50000'); await page.click('#trxBahanUpd summary'); await page.selectOption('#trxBhn', { index: 1 }); await page.fill('#trxBhnIsi', '1'); await page.click('#trxSimpan');
   ok((await text('#toast')).includes('diperbarui'), 'belanja bahan memperbarui harga bahan di produk');
@@ -130,6 +135,12 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   ok(lk.includes('Abon Uji') && lk.includes('Laporan Laba Rugi') && lk.includes('Laporan Arus Kas') && lk.includes('Laporan Posisi Keuangan'), 'laporan keuangan memuat tiga laporan utama');
   ok(lk.includes('Seimbang'), 'neraca seimbang');
   ok(lk.includes('Catatan atas Laporan Keuangan') && lk.includes('Penguji'), 'catatan dan tanda tangan pemilik');
+
+  // mode gelap
+  await page.goto(URL + '#beranda'); await page.click('#btnSettings'); await page.click('[data-theme="dark"]');
+  ok(await page.evaluate(() => document.body.classList.contains('dark')), 'mode gelap aktif dari Pengaturan');
+  await page.click('[data-theme="light"]'); await page.click('#setClose');
+  ok(!(await page.evaluate(() => document.body.classList.contains('dark'))), 'kembali ke mode terang');
 
   // 9. Halaman lain terbuka tanpa galat
   for (const v of ['keuangan', 'lapkeu', 'bahan', 'lainnya', 'laporan', 'belajar', 'tentang', 'privasi', 'lembar']) {

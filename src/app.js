@@ -122,6 +122,7 @@
     const e = emptyKas(), k = state.kas || {};
     state.kas = { ...e, ...k, profil: { ...(k.profil || {}) }, awal: { ...e.awal, ...(k.awal || {}) }, stok: { ...(k.stok || {}) }, lk: { ...e.lk, ...(k.lk || {}) } };
     if (!Array.isArray(state.kas.trx)) state.kas.trx = [];
+    if (!Array.isArray(state.kas.produksi)) state.kas.produksi = [];
     if (!Array.isArray(state.kas.awal.peralatan)) state.kas.awal.peralatan = [];
     if (!Array.isArray(state.kas.awal.utang)) state.kas.awal.utang = [];
     ['piutang', 'utangUsaha'].forEach(f => { if (!Array.isArray(state.kas.awal[f])) state.kas.awal[f] = []; });
@@ -852,6 +853,18 @@
     lsSet('hargapas.ts', z);
   }
   $$('[data-ts]').forEach(b => b.addEventListener('click', () => setTs(b.dataset.ts)));
+  const mqDark = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+  function setTheme(v){
+    const t = ['auto', 'light', 'dark'].includes(v) ? v : 'auto';
+    const dark = t === 'dark' || (t === 'auto' && mqDark && mqDark.matches);
+    document.body.classList.toggle('dark', dark);
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dark ? '#0B1220' : '#1E4094';
+    $$('[data-theme]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.theme === t)));
+    lsSet('hargapas.tema', t);
+  }
+  $$('[data-theme]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
+  if (mqDark && mqDark.addEventListener) mqDark.addEventListener('change', () => setTheme(lsGet('hargapas.tema') || 'auto'));
+  setTheme(lsGet('hargapas.tema') || 'auto');
 
   // ---------- bacakan ----------
   const canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
@@ -1229,7 +1242,7 @@
       ${kas < 0 ? '<p class="ks-warn">Kas tercatat minus. Mungkin ada uang masuk yang belum dicatat, atau uang kas awal belum diisi di Data usaha & saldo awal.</p>' : ''}
       ${lap && lap.jumlahTrx && (lap.k.modal || lap.k.pinjam || lap.k.cicil || lap.k.prive || lap.k.alat || lap.labaRugi.penyusutan) ? '<p class="ks-note">Untung bersih tidak sama dengan masuk − keluar karena modal, pinjaman, cicilan pokok, pengambilan pribadi, dan beli peralatan bukan pendapatan atau biaya.</p>' : ''}`;
     const sp = $('#kSpeak'); if (sp) sp.onclick = () => speak(`${namaBulan(kMonth)}. Uang masuk ${fmtRp(masuk)}. Uang keluar ${fmtRp(keluar)}. ${laba < 0 ? 'Rugi' : 'Untung'} bersih ${fmtRp(Math.abs(laba))}. Sisa uang usaha ${fmtRp(kas)}.`);
-    renderOpen(); renderKInfo(lap); checkBackup();
+    renderOpen(); renderKInfo(lap); checkBackup(); renderProd();
     // rekap penjualan
     const pj = penjualanBulan(kMonth), src = 'pj:' + kMonth, ex = k.trx.find(t => t.src === src);
     const jn = $('#kJualNote');
@@ -1282,6 +1295,56 @@
     box.hidden = !parts.length; box.innerHTML = parts.join('');
     const bp = $('#kPajak'); if (bp) bp.onclick = () => { openTrx('keluar'); trx.kat = 'pajak'; renderTrxKat(); $('#trxNom').value = fmtInput(Math.round(lap.k.jual * 0.005)); $('#trxKet').value = 'PPh final 0,5% ' + namaBulan(kMonth); };
   }
+  function jualList(){
+    const out = state.penjualan.map(x => ({ pid: x.pid, qty: Number(x.qty) || 0, tgl: x.tgl }));
+    state.kas.trx.forEach(t => (t.items || []).forEach(i => out.push({ pid: i.pid, qty: Number(i.qty) || 0, tgl: t.tgl })));
+    return out;
+  }
+  const stokSampai = (tgl) => H.stokProduk(state.kas.produksi, jualList(), tgl);
+  const adaProduksi = (pid) => state.kas.produksi.some(x => x.pid === pid);
+  function renderProd(){
+    const list = state.products.filter(p => !p.isContoh), box = $('#kProd');
+    box.hidden = !list.length; if (!list.length) return;
+    const st = stokSampai(today());
+    const rows = list.map(p => { const sat = esc((p.satuan || 'unit').toLowerCase());
+      if (!adaProduksi(p.id)) return `<button type="button" class="prow" data-prod="${p.id}"><span class="grow"><b>${esc(p.nama || 'Produk tanpa nama')}</b><small>Belum ada catatan produksi</small></span><span class="pchip none">Catat</span></button>`;
+      const q = st[p.id] || 0, cls = q <= 0 ? 'out' : q <= 5 ? 'low' : 'ok';
+      return `<button type="button" class="prow" data-prod="${p.id}"><span class="grow"><b>${esc(p.nama || 'Produk tanpa nama')}</b><small>${q <= 0 ? 'Stok habis, saatnya produksi' : q <= 5 ? 'Stok menipis' : 'Siap dijual'}</small></span><span class="pchip ${cls}">${fmtInput(Math.max(0, q))} ${sat}</span></button>`; });
+    $('#kProdList').innerHTML = rows.join('');
+    // tombol hitung persediaan dari stok produk
+    const any = state.kas.produksi.length > 0; $('#kStokHitung').hidden = !any;
+  }
+  function openProd(pid){
+    const list = state.products.filter(p => !p.isContoh); if (!list.length) return toast('Buat produk dulu di menu Hitung');
+    $('#prPid').innerHTML = list.map(p => `<option value="${p.id}">${esc(p.nama || 'Produk tanpa nama')}</option>`).join('');
+    if (pid) $('#prPid').value = pid;
+    $('#prQty').value = ''; $('#prTgl').value = today(); $('#prTgl').max = today(); $('#prAwal').checked = false;
+    updProdDlg(); openOverlay('prodDlg'); setTimeout(() => $('#prQty').focus(), 30);
+  }
+  function updProdDlg(){
+    const pid = $('#prPid').value, p = state.products.find(x => x.id === pid); $('#prSat').textContent = p ? (p.satuan || 'unit').toLowerCase() : '';
+    const r = state.kas.produksi.filter(x => x.pid === pid).sort((a, b) => b.tgl.localeCompare(a.tgl)).slice(0, 5);
+    $('#prRiwayat').innerHTML = r.length ? `<div class="lbl" style="margin-top:14px">Catatan produksi terakhir</div>${r.map(x => `<div class="prh"><span class="grow">${tglPanjang(x.tgl)}${x.awal ? ' · stok awal' : ''}</span><b>${fmtInput(x.qty)}</b><button class="btn icon" type="button" data-prdel="${x.id}" aria-label="Hapus catatan produksi">${DEL_IC}</button></div>`).join('')}` : '';
+  }
+  $('#btnProduksi').addEventListener('click', () => openProd());
+  $('#kProdList').addEventListener('click', (e) => { const r = e.target.closest('[data-prod]'); if (r) openProd(r.dataset.prod); });
+  $('#prPid').addEventListener('change', updProdDlg);
+  $('#prBatal').addEventListener('click', closeOverlays);
+  $('#prRiwayat').addEventListener('click', (e) => { const d = e.target.closest('[data-prdel]'); if (!d) return; state.kas.produksi = state.kas.produksi.filter(x => x.id !== d.dataset.prdel); saveNow(); updProdDlg(); renderProd(); toast('Catatan produksi dihapus'); });
+  $('#prSimpan').addEventListener('click', () => {
+    const qty = Number(parseInput($('#prQty').value)) || 0; if (!(qty > 0)) { toast('Isi jumlah barang yang jadi'); return; }
+    const pid = $('#prPid').value, p = state.products.find(x => x.id === pid);
+    state.kas.produksi.push({ id: uid(), pid, qty, tgl: $('#prTgl').value || today(), ...($('#prAwal').checked ? { awal: true } : {}) });
+    saveNow(); closeOverlays(); renderKeuangan();
+    toast(`Produksi ${p ? p.nama : ''} ${fmtInput(qty)} ${(p && p.satuan || 'unit').toLowerCase()} dicatat. Stok sekarang ${fmtInput(Math.max(0, stokSampai(today())[pid] || 0))}.`);
+  });
+  $('#kStokHitung').addEventListener('click', () => {
+    const end = `${kMonth}-${String(akhirBulan(kMonth)).padStart(2, '0')}`, st = stokSampai(end), hpp = {};
+    state.products.forEach(p => { hpp[p.id] = summaryOf(p).r.hpp || 0; });
+    const v = Math.round(H.nilaiStok(st, hpp));
+    pastikanMulai(kMonth); state.kas.stok[kMonth] = v; $('#kStok').value = fmtInput(v); saveNow(); renderKeuangan();
+    toast(`Nilai stok produk jadi ${fmtRp(v)} (jumlah × modal). Tambahkan nilai bahan yang tersisa bila ada.`);
+  });
   function renderOpen(){
     const aw = state.kas.awal, tglAwal = (aw.bulan || bulanIni()) + '-01';
     const fromAwal = (arr, jenis, key) => arr.map((x, i) => ({ awalKey: key, idx: i, jenis, kat: jenis === 'masuk' ? 'jual' : 'bahan', nominal: Number(x.nilai) || 0, ket: (x.nama || 'Tanpa nama') + ' (saldo awal)', tgl: tglAwal, lunasTgl: x.lunasTgl })).filter(x => x.nominal > 0 && !x.lunasTgl);
@@ -1425,8 +1488,10 @@
     const saved = trx.id ? state.kas.trx.find(x => x.id === trx.id) : state.kas.trx[state.kas.trx.length - 1];
     kMonth = tgl.slice(0, 7);
     saveNow(); closeOverlays(); renderKeuangan(); if (location.hash === '#beranda' || !location.hash) renderBeranda();
+    let stokMsg = '';
+    if (items) { const st = stokSampai(today()); items.forEach(it => { if (adaProduksi(it.pid) && (st[it.pid] || 0) < 0) stokMsg += ` Stok ${it.nama} tercatat minus; catat produksinya.`; }); }
     const msg = okMulai ? (trx.id ? 'Catatan diperbarui.' : `${trx.jenis === 'masuk' ? 'Uang masuk' : 'Uang keluar'} ${fmtRp(nominal)} dicatat.`) + bhnMsg : 'Tersimpan, tetapi tanggalnya sebelum awal pencatatan sehingga belum dihitung';
-    if (saved && saved.kat === 'jual' && saved.jenis === 'masuk' && !trx.id) toast(msg, 'Kirim nota', () => kirimWA(notaText(saved))); else toast(msg);
+    if (saved && saved.kat === 'jual' && saved.jenis === 'masuk' && !trx.id) toast(msg + stokMsg, 'Kirim nota', () => kirimWA(notaText(saved))); else toast(msg);
   });
   $('#trxDel').addEventListener('click', () => {
     const id = trx.id; const t = state.kas.trx.find(x => x.id === id); if (!t) return;

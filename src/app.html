@@ -413,6 +413,10 @@
     <div class="note info" id="kJualNote" hidden></div>
     <section class="kopen" id="kOpen" hidden></section>
     <section class="kinfo" id="kInfo" hidden></section>
+    <section class="kprod" id="kProd" hidden>
+      <div class="sec-head" style="margin:0 0 6px"><h2>Stok produk jadi</h2><button class="btn small" type="button" id="btnProduksi">+ Catat produksi</button></div>
+      <div id="kProdList"></div>
+    </section>
     <div class="sec-head"><h2>Catatan bulan ini</h2><span class="hint" id="kCount"></span></div>
     <div class="tlist" id="kList"></div>
     <div class="empty-home" id="kEmpty" hidden>
@@ -425,6 +429,7 @@
         <b>Sisa bahan & barang di akhir bulan <span class="term">(persediaan akhir)</span></b>
         <p class="hint">Perkiraan nilai bahan, kemasan, dan produk jadi yang belum terpakai/terjual. Boleh dikosongkan; bila kosong dianggap sama dengan bulan lalu.</p>
       </div>
+      <button class="btn small" type="button" id="kStokHitung" hidden>Hitung dari stok produk</button>
       <div class="field kstok-in"><label class="sr" for="kStok">Nilai sisa stok akhir bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kStok" class="num" type="text" inputmode="decimal" placeholder="boleh kosong"></div></div>
     </section>
     <div class="actions kfoot">
@@ -620,6 +625,7 @@
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
       <ul>
+        <li>Stok produk jadi (catat produksi, sisa stok otomatis, nilai persediaan) dan mode gelap.</li>
         <li>Penjualan per produk langsung di Keuangan, nota dan pengingat tagihan lewat WhatsApp, belanja bahan memperbarui harga bahan, produk terlaris, ringkasan 7 hari, daftar istilah.</li>
         <li>Tampilan baru: biru malam dengan pita emas bermotif sure' Mandar, menu cepat bundar, pita tips harian, kartu saldo di Keuangan.</li>
         <li>Piutang dan bon saat mulai mencatat, konfirmasi jumlah sangat besar, contoh laporan keuangan, pengingat data usaha.</li>
@@ -754,6 +760,15 @@
       <span class="hint">Sederhana: langkah demi langkah. Lengkap: semua fitur.</span>
     </div>
     <div class="setrow">
+      <span class="lbl">Tema warna</span>
+      <div class="seg wide" role="group" aria-label="Tema warna">
+        <button type="button" data-theme="auto" aria-pressed="true">Ikuti HP</button>
+        <button type="button" data-theme="light" aria-pressed="false">Terang</button>
+        <button type="button" data-theme="dark" aria-pressed="false">Gelap</button>
+      </div>
+      <span class="hint">Mode gelap lebih nyaman di malam hari dan menghemat baterai.</span>
+    </div>
+    <div class="setrow">
       <span class="lbl">Ukuran huruf</span>
       <div class="tsz wide" role="group" aria-label="Ukuran huruf">
         <button type="button" data-ts="1" aria-label="Huruf normal">A</button><button type="button" data-ts="1.12" aria-label="Huruf besar">A+</button><button type="button" data-ts="1.25" aria-label="Huruf sangat besar">A++</button>
@@ -857,6 +872,22 @@
     <button class="btn small" type="button" id="awBonAdd">+ Tambah bon</button>
     <p class="hint" id="awModal" style="margin:12px 0 0"></p>
     <div class="ob-actions" style="margin-top:14px"><button class="btn primary" type="button" id="profilClose">Selesai</button></div>
+  </div>
+</div>
+
+<!-- Catat produksi -->
+<div class="overlay" id="prodDlg" hidden role="dialog" aria-modal="true" aria-labelledby="prodTitle">
+  <div class="sheet">
+    <h2 id="prodTitle">Catat produksi</h2>
+    <p class="hint" style="margin:-4px 0 10px">Isi berapa barang jadi yang selesai dibuat. Sisa stok = jumlah dibuat − jumlah terjual.</p>
+    <div class="field"><label for="prPid">Produk</label><select id="prPid"></select></div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="field"><label for="prQty">Jumlah jadi</label><div class="inp has-suf"><input id="prQty" class="num" type="text" inputmode="decimal" placeholder="0"><span class="suf" id="prSat"></span></div></div>
+      <div class="field"><label for="prTgl">Tanggal</label><input id="prTgl" type="date"></div>
+    </div>
+    <label class="chk" style="margin:10px 0 0"><input type="checkbox" id="prAwal"><span>Ini stok yang sudah ada sebelumnya <span class="term">(stok awal)</span></span></label>
+    <div id="prRiwayat"></div>
+    <div class="ob-actions" style="margin-top:14px"><button class="btn" type="button" id="prBatal">Batal</button><button class="btn primary" type="button" id="prSimpan">Simpan</button></div>
   </div>
 </div>
 

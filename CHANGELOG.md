@@ -1,5 +1,11 @@
 # Catatan perubahan HargaPas
 
+## 2.5.0 — 1 November 2026
+### Baru
+- Stok produk jadi: catat produksi (termasuk stok awal), sisa stok = dibuat − terjual otomatis dari catatan penjualan, penanda Siap dijual / Menipis / Habis, peringatan bila stok tercatat minus saat menjual.
+- Tombol "Hitung dari stok produk" mengisi persediaan akhir bulan = stok × modal per barang.
+- Mode gelap: Pengaturan → Tema warna (Ikuti HP / Terang / Gelap). Laporan cetak tetap berlatar putih.
+
 ## 2.4.0 — 1 November 2026
 ### Baru
 - Penjualan per produk menyatu dengan Keuangan: di Uang masuk → Penjualan pilih produk dan jumlahnya (tombol − / +), jumlah uang terisi otomatis dari harga jual; masih bisa diubah manual untuk diskon.

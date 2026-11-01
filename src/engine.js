@@ -349,6 +349,19 @@
     };
   }
 
-  const api = { KATEGORI, BOLEH_TEMPO, geserBulan, daftarBulan, bulanMulai, hitungBuku, laporanBulan, ringkasanBulan, bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
+
+  // Stok produk jadi per produk sampai tanggal tertentu (inklusif): produksi − terjual
+  function stokProduk(produksi, terjual, sampai) {
+    const out = {};
+    const ok = (x) => !sampai || String(x.tgl) <= sampai;
+    (produksi || []).filter(ok).forEach(x => { out[x.pid] = (out[x.pid] || 0) + num(x.qty); });
+    (terjual || []).filter(ok).forEach(x => { out[x.pid] = (out[x.pid] || 0) - num(x.qty); });
+    Object.keys(out).forEach(k => { out[k] = Math.round(out[k] * 1000) / 1000; });
+    return out;
+  }
+  // Nilai stok produk jadi = jumlah stok (yang positif) × modal per unit
+  function nilaiStok(stok, hpp) { return Object.keys(stok).reduce((s, k) => s + Math.max(0, stok[k]) * num(hpp[k]), 0); }
+
+  const api = { stokProduk, nilaiStok, KATEGORI, BOLEH_TEMPO, geserBulan, daftarBulan, bulanMulai, hitungBuku, laporanBulan, ringkasanBulan, bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);

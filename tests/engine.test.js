@@ -227,4 +227,11 @@ eq(aw2.arusKas.kasAkhir, 500000, 'pelunasan piutang awal menambah kas');
 eq(aw2.labaRugi.laba, 0, 'pelunasan piutang awal bukan laba');
 eq(aw2.neraca.seimbang, true, 'seimbang setelah pelunasan');
 
+// stok produk jadi
+const st = H.stokProduk([{ pid: 'a', qty: 50, tgl: '2026-11-01' }, { pid: 'a', qty: 20, tgl: '2026-11-10' }, { pid: 'b', qty: 10, tgl: '2026-11-02' }],
+  [{ pid: 'a', qty: 30, tgl: '2026-11-05' }, { pid: 'b', qty: 12, tgl: '2026-11-06' }, { pid: 'a', qty: 5, tgl: '2026-12-01' }], '2026-11-30');
+eq(st.a, 40, 'stok = produksi - terjual sampai tanggal');
+eq(st.b, -2, 'stok bisa minus bila terjual melebihi produksi tercatat');
+eq(H.nilaiStok(st, { a: 6000, b: 5000 }), 240000, 'nilai stok hanya dari stok positif × modal');
+
 console.log(`Semua ${lulus} uji lulus.`);
