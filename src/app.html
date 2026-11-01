@@ -47,6 +47,7 @@
         <p class="wb">by Universitas Terbuka Majene</p>
         <p class="wd">Hitung modal, tentukan harga jual, dan catat keuangan usaha Anda. Gratis, tanpa daftar akun, data tetap di HP Anda.</p>
         <button class="btn cta big" type="button" id="btnBerandaBaru"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Hitung produk baru</button>
+        <a class="wlink" href="#keuangan">atau catat uang masuk & keluar →</a>
       </div>
     </section>
     <div class="note warn" id="noteBackupHome" hidden>
@@ -429,6 +430,7 @@
   <!-- ================= LAPORAN KEUANGAN ================= -->
   <main id="view-lapkeu" data-page="lapkeu" hidden>
     <section class="lk-ctrl">
+      <div class="note warn" id="lkWarn" hidden><span class="grow">Nama usaha, pemilik, atau alamat belum diisi. Lengkapi agar laporan bisa diterima bank.</span><button class="btn small" type="button" data-open-profil>Lengkapi</button></div>
       <div class="lk-row">
         <div class="field"><label for="lkBulan">Bulan laporan</label><select id="lkBulan"></select></div>
         <div class="field"><label for="lkN">Ringkasan</label><select id="lkN"><option value="3">3 bulan terakhir</option><option value="6">6 bulan terakhir</option><option value="12">12 bulan terakhir</option></select></div>
@@ -596,6 +598,7 @@
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
       <ul>
+        <li>Piutang dan bon saat mulai mencatat, konfirmasi jumlah sangat besar, contoh laporan keuangan, pengingat data usaha.</li>
         <li>Pembeli belum bayar dan bon ke pemasok (piutang & utang usaha), daftar Belum dibayar dengan tombol pelunasan.</li>
         <li>Cadangan bisa dibagikan langsung ke WhatsApp/Drive, pengingat cadangan mingguan, panduan simpan PDF, unduh transaksi ke Excel.</li>
         <li>Perkiraan pajak bulanan, perbandingan untung nyata dan rencana, peringatan penjualan tercatat dua kali, kolom bulan lalu di laporan laba rugi, tombol Bacakan di Keuangan, 4 pelajaran baru.</li>
@@ -809,6 +812,12 @@
     <div class="lbl" style="margin-top:14px">Pinjaman yang belum lunas <span class="term">(utang)</span></div>
     <div class="alist" id="awUtang"></div>
     <button class="btn small" type="button" id="awUtangAdd">+ Tambah pinjaman</button>
+    <div class="lbl" style="margin-top:14px">Pembeli yang masih berutang <span class="term">(piutang awal)</span></div>
+    <div class="alist" id="awPiutang"></div>
+    <button class="btn small" type="button" id="awPiutangAdd">+ Tambah piutang</button>
+    <div class="lbl" style="margin-top:14px">Bon yang belum dibayar ke pemasok <span class="term">(utang usaha awal)</span></div>
+    <div class="alist" id="awBon"></div>
+    <button class="btn small" type="button" id="awBonAdd">+ Tambah bon</button>
     <p class="hint" id="awModal" style="margin:12px 0 0"></p>
     <div class="ob-actions" style="margin-top:14px"><button class="btn primary" type="button" id="profilClose">Selesai</button></div>
   </div>

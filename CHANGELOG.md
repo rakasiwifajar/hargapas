@@ -1,5 +1,12 @@
 # Catatan perubahan HargaPas
 
+## 2.2.0 — 1 November 2026
+- Saldo awal kini bisa memuat pembeli yang masih berutang (piutang awal) dan bon ke pemasok (utang usaha awal); ikut daftar Belum dibayar dan bisa dilunasi.
+- Konfirmasi untuk jumlah ≥ Rp50 juta agar salah ketik nol tidak lolos.
+- "Lihat contoh laporan" untuk pengguna baru dan pendamping UMKM.
+- Peringatan bila nama usaha, pemilik, atau alamat belum diisi sebelum mencetak laporan.
+- Tautan "catat uang masuk & keluar" di kartu sambutan beranda.
+
 ## 2.1.0 — 1 November 2026
 ### Baru
 - Pembeli belum bayar (piutang usaha) dan bon ke pemasok (utang usaha): diakui saat terjadi, kas bergerak saat dilunasi; daftar "Belum dibayar" dengan tombol pelunasan dan penanda umur tagihan > 30 hari.

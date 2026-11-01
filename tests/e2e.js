@@ -113,6 +113,10 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   await page.goto(URL + '#keuangan'); await page.click('[data-lunas]');
   ok(await page.isHidden('#kOpen'), 'piutang hilang setelah ditandai sudah dibayar');
   ok(!(await page.isHidden('#kInfo')), 'perkiraan pajak / untung nyata tampil');
+  // penjaga salah ketik angka besar
+  await page.click('[data-trx="keluar"]'); await page.fill('#trxNom', '90000000'); await page.click('#trxSimpan');
+  ok(await page.isVisible('#confirmDlg'), 'jumlah sangat besar dikonfirmasi dulu'); await page.click('#cfNo');
+  ok(await page.isVisible('#trxDlg'), 'kembali ke isian setelah batal'); await page.click('#trxBatal');
   // panduan PDF muncul sebelum cetak
   await page.goto(URL + '#lapkeu'); await page.waitForSelector('#lapKeu .kop');
   await page.click('#btnPrintKeu'); ok(!(await page.isHidden('#pdfDlg')), 'panduan simpan PDF muncul'); await page.click('#pdfCancel');

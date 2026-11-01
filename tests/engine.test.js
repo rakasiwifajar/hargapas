@@ -216,4 +216,15 @@ eq(des.labaRugi.penjualan, 0, 'pelunasan bukan penjualan baru');
 eq(des.neraca.utangUsaha, 200000, 'utang usaha belum lunas tetap tercatat');
 eq(des.neraca.seimbang, true, 'neraca seimbang Desember');
 
+// piutang & bon saat mulai mencatat
+const aw = { awal: { bulan: '2026-11', kas: 100000, piutang: [{ nama: 'Pak Rudi', nilai: 400000, lunasTgl: '2026-12-02' }], utangUsaha: [{ nama: 'Pemasok ikan', nilai: 150000 }] }, trx: [] };
+const aw1 = H.laporanBulan(aw, '2026-11');
+eq(aw1.neraca.modalAwal, 350000, 'modal awal termasuk piutang dan bon awal');
+eq(aw1.neraca.piutang, 400000, 'piutang awal tercatat');
+eq(aw1.neraca.seimbang, true, 'seimbang dengan saldo awal piutang/bon');
+const aw2 = H.laporanBulan(aw, '2026-12');
+eq(aw2.arusKas.kasAkhir, 500000, 'pelunasan piutang awal menambah kas');
+eq(aw2.labaRugi.laba, 0, 'pelunasan piutang awal bukan laba');
+eq(aw2.neraca.seimbang, true, 'seimbang setelah pelunasan');
+
 console.log(`Semua ${lulus} uji lulus.`);

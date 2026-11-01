@@ -124,6 +124,7 @@
     if (!Array.isArray(state.kas.trx)) state.kas.trx = [];
     if (!Array.isArray(state.kas.awal.peralatan)) state.kas.awal.peralatan = [];
     if (!Array.isArray(state.kas.awal.utang)) state.kas.awal.utang = [];
+    ['piutang', 'utangUsaha'].forEach(f => { if (!Array.isArray(state.kas.awal[f])) state.kas.awal[f] = []; });
   }
   function load(){
     try { state = JSON.parse(lsGet(KEY) || lsGet(OLDKEY)); } catch(e) { state = null; }
@@ -1164,12 +1165,14 @@
     return {
       awal: { bulan: a.bulan || '', kas: n(a.kas), persediaan: n(a.persediaan),
         peralatan: a.peralatan.map(x => ({ nama: x.nama, nilai: n(x.nilai), umur: n(x.umur) || 4 })),
-        utang: a.utang.map(x => ({ nama: x.nama, sisa: n(x.sisa) })) },
+        utang: a.utang.map(x => ({ nama: x.nama, sisa: n(x.sisa) })),
+        piutang: a.piutang.map(x => ({ nama: x.nama, nilai: n(x.nilai), lunasTgl: x.lunasTgl })),
+        utangUsaha: a.utangUsaha.map(x => ({ nama: x.nama, nilai: n(x.nilai), lunasTgl: x.lunasTgl })) },
       trx: k.trx, stok: k.stok,
     };
   }
   const kasMulai = () => H.bulanMulai(bukuEngine()) || bulanIni();
-  const adaSaldoAwal = () => { const a = state.kas.awal; return Number(a.kas) > 0 || Number(a.persediaan) > 0 || a.peralatan.some(x => Number(x.nilai) > 0) || a.utang.some(x => Number(x.sisa) > 0); };
+  const adaSaldoAwal = () => { const a = state.kas.awal; return Number(a.kas) > 0 || Number(a.persediaan) > 0 || a.peralatan.some(x => Number(x.nilai) > 0) || a.utang.some(x => Number(x.sisa) > 0) || a.piutang.some(x => Number(x.nilai) > 0) || a.utangUsaha.some(x => Number(x.nilai) > 0); };
   function pastikanMulai(bln){
     const a = state.kas.awal;
     if (!a.bulan) { a.bulan = bln; return true; }
@@ -1253,17 +1256,21 @@
     const bp = $('#kPajak'); if (bp) bp.onclick = () => { openTrx('keluar'); trx.kat = 'pajak'; renderTrxKat(); $('#trxNom').value = fmtInput(Math.round(lap.k.jual * 0.005)); $('#trxKet').value = 'PPh final 0,5% ' + namaBulan(kMonth); };
   }
   function renderOpen(){
-    const open = state.kas.trx.filter(t => t.tempo && !t.lunasTgl && H.BOLEH_TEMPO.includes(t.kat)).sort((a, b) => a.tgl.localeCompare(b.tgl));
+    const aw = state.kas.awal, tglAwal = (aw.bulan || bulanIni()) + '-01';
+    const fromAwal = (arr, jenis, key) => arr.map((x, i) => ({ awalKey: key, idx: i, jenis, kat: jenis === 'masuk' ? 'jual' : 'bahan', nominal: Number(x.nilai) || 0, ket: (x.nama || 'Tanpa nama') + ' (saldo awal)', tgl: tglAwal, lunasTgl: x.lunasTgl })).filter(x => x.nominal > 0 && !x.lunasTgl);
+    const open = [...fromAwal(aw.piutang, 'masuk', 'piutang'), ...fromAwal(aw.utangUsaha, 'keluar', 'utangUsaha'), ...state.kas.trx.filter(t => t.tempo && !t.lunasTgl && H.BOLEH_TEMPO.includes(t.kat))].sort((a, b) => a.tgl.localeCompare(b.tgl));
     const box = $('#kOpen'); box.hidden = !open.length; if (!open.length) { box.innerHTML = ''; return; }
     const sum = (j) => open.filter(t => t.jenis === j).reduce((s, t) => s + Number(t.nominal), 0);
     const row = (t) => { const c = KAT_ALL[t.jenis + ':' + t.kat] || {}; const hari = Math.round((new Date(today()) - new Date(t.tgl)) / 864e5);
-      return `<div class="orow"><div class="grow"><b>${esc(t.ket || c.nama)}</b><small>${esc(c.nama)} · ${tglPanjang(t.tgl)}${hari > 30 ? ` · <span class="neg">${hari} hari</span>` : ''}</small></div><span class="tn ${t.jenis === 'masuk' ? 'pos' : ''}">${fmtRp(Number(t.nominal))}</span><button class="btn small" type="button" data-lunas="${t.id}">${t.jenis === 'masuk' ? 'Sudah dibayar' : 'Sudah lunas'}</button></div>`; };
+      return `<div class="orow"><div class="grow"><b>${esc(t.ket || c.nama)}</b><small>${esc(c.nama)} · ${tglPanjang(t.tgl)}${hari > 30 ? ` · <span class="neg">${hari} hari</span>` : ''}</small></div><span class="tn ${t.jenis === 'masuk' ? 'pos' : ''}">${fmtRp(Number(t.nominal))}</span><button class="btn small" type="button" ${t.awalKey ? `data-lunas-awal="${t.awalKey}" data-si="${t.idx}"` : `data-lunas="${t.id}"`}>${t.jenis === 'masuk' ? 'Sudah dibayar' : 'Sudah lunas'}</button></div>`; };
     const pi = open.filter(t => t.jenis === 'masuk'), ut = open.filter(t => t.jenis === 'keluar');
     box.innerHTML = `<div class="sec-head" style="margin:0 0 8px"><h2>Belum dibayar</h2><span class="hint">semua bulan</span></div>
       ${pi.length ? `<div class="ohead"><span>Pembeli yang belum bayar <span class="term">(piutang)</span></span><b class="pos">${fmtRp(sum('masuk'))}</b></div>${pi.map(row).join('')}` : ''}
       ${ut.length ? `<div class="ohead"><span>Bon yang belum kita bayar <span class="term">(utang usaha)</span></span><b>${fmtRp(sum('keluar'))}</b></div>${ut.map(row).join('')}` : ''}`;
   }
   $('#kOpen').addEventListener('click', (e) => {
+    const ba = e.target.closest('[data-lunas-awal]');
+    if (ba) { const x = state.kas.awal[ba.dataset.lunasAwal][Number(ba.dataset.si)]; x.lunasTgl = today(); saveNow(); renderKeuangan(); toast(`Ditandai lunas hari ini (${fmtRp(Number(x.nilai))})`, 'Urungkan', () => { delete x.lunasTgl; saveNow(); renderKeuangan(); }); return; }
     const b = e.target.closest('[data-lunas]'); if (!b) return;
     const t = state.kas.trx.find(x => x.id === b.dataset.lunas); if (!t) return;
     t.lunasTgl = today() < t.tgl ? t.tgl : today(); saveNow(); renderKeuangan();
@@ -1291,6 +1298,7 @@
     $('#trxTempoL').innerHTML = trx.jenis === 'masuk' ? 'Pembeli belum bayar <span class="term">(piutang)</span>' : 'Belum dibayar / masih bon <span class="term">(utang usaha)</span>';
     $('#trxLunasF').hidden = !(bt && $('#trxTempo').checked && trx.id);
   }
+  function terbilangSingkat(n){ return n >= 1e9 ? (n / 1e9).toLocaleString('id-ID', { maximumFractionDigits: 2 }) + ' miliar' : n >= 1e6 ? (n / 1e6).toLocaleString('id-ID', { maximumFractionDigits: 2 }) + ' juta' : n.toLocaleString('id-ID'); }
   function openTrx(jenis, id){
     const t = id ? state.kas.trx.find(x => x.id === id) : null;
     trx = t ? { id: t.id, jenis: t.jenis, kat: t.kat } : { id: null, jenis, kat: jenis === 'masuk' ? 'jual' : 'bahan' };
@@ -1312,6 +1320,13 @@
   $('#trxSimpan').addEventListener('click', () => {
     const nominal = Number(parseInput($('#trxNom').value)) || 0;
     if (!(nominal > 0)) { toast('Isi jumlah uangnya dulu'); $('#trxNom').focus(); return; }
+    if (nominal >= 50000000 && !trx.yakin) {
+      const d = $('#trxDlg'); d.hidden = true;
+      confirmBox('Jumlahnya sudah benar?', `${fmtRp(nominal)} (${terbilangSingkat(nominal)}). Pastikan tidak ada angka nol yang berlebih.`, 'Ya, benar', () => { $('#cfNo').onclick = null; d.hidden = false; trx.yakin = true; $('#trxSimpan').click(); });
+      $('#cfNo').onclick = () => { $('#cfNo').onclick = null; closeOverlays(); d.hidden = false; $('#trxNom').focus(); };
+      return;
+    }
+    trx.yakin = false;
     const tgl = $('#trxTgl').value || today();
     const okMulai = pastikanMulai(tgl.slice(0, 7));
     const data = { tgl, jenis: trx.jenis, kat: trx.kat, nominal, ket: $('#trxKet').value.trim() };
@@ -1339,12 +1354,15 @@
     const a = state.kas.awal;
     $('#awAlat').innerHTML = a.peralatan.map((x, i) => `<div class="arow"><div class="field"><label for="al_n${i}">Nama</label><input id="al_n${i}" data-al="${i}" data-af="nama" type="text" value="${esc(x.nama || '')}" placeholder="mis. Oven"></div><div class="field"><label for="al_v${i}">Nilai sekarang</label><div class="inp has-pre"><span class="pre">Rp</span><input id="al_v${i}" class="num" data-al="${i}" data-af="nilai" type="text" inputmode="decimal" value="${esc(fmtInput(x.nilai))}"></div></div><div class="field sm"><label for="al_u${i}">Sisa umur (thn)</label><input id="al_u${i}" class="num" data-al="${i}" data-af="umur" type="text" inputmode="decimal" value="${esc(fmtInput(x.umur))}" placeholder="4"></div><button class="btn icon" type="button" data-al-del="${i}" aria-label="Hapus peralatan">${DEL_IC}</button></div>`).join('');
     $('#awUtang').innerHTML = a.utang.map((x, i) => `<div class="arow u"><div class="field"><label for="ut_n${i}">Dari siapa</label><input id="ut_n${i}" data-ut="${i}" data-uf="nama" type="text" value="${esc(x.nama || '')}" placeholder="mis. KUR Bank, koperasi"></div><div class="field"><label for="ut_s${i}">Sisa pokok</label><div class="inp has-pre"><span class="pre">Rp</span><input id="ut_s${i}" class="num" data-ut="${i}" data-uf="sisa" type="text" inputmode="decimal" value="${esc(fmtInput(x.sisa))}"></div></div><button class="btn icon" type="button" data-ut-del="${i}" aria-label="Hapus pinjaman">${DEL_IC}</button></div>`).join('');
+    const simple = (arr, key, ph) => arr.map((x, i) => `<div class="arow u"><div class="field"><label for="${key}_n${i}">Nama</label><input id="${key}_n${i}" data-sl="${key}" data-si="${i}" data-sf="nama" type="text" value="${esc(x.nama || '')}" placeholder="${ph}"></div><div class="field"><label for="${key}_v${i}">Jumlah</label><div class="inp has-pre"><span class="pre">Rp</span><input id="${key}_v${i}" class="num" data-sl="${key}" data-si="${i}" data-sf="nilai" type="text" inputmode="decimal" value="${esc(fmtInput(x.nilai))}"></div></div><button class="btn icon" type="button" data-sl-del="${key}" data-si="${i}" aria-label="Hapus">${DEL_IC}</button></div>`).join('');
+    $('#awPiutang').innerHTML = simple(a.piutang, 'piutang', 'mis. Warung Pak Rudi');
+    $('#awBon').innerHTML = simple(a.utangUsaha, 'utangUsaha', 'mis. Pemasok ikan');
     updAwalModal();
   }
   const DEL_IC = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
   function updAwalModal(){
     const a = state.kas.awal, n = (v) => Number(v) || 0;
-    const aset = n(a.kas) + n(a.persediaan) + a.peralatan.reduce((s, x) => s + n(x.nilai), 0), ut = a.utang.reduce((s, x) => s + n(x.sisa), 0);
+    const aset = n(a.kas) + n(a.persediaan) + a.peralatan.reduce((s, x) => s + n(x.nilai), 0) + a.piutang.reduce((s, x) => s + n(x.nilai), 0), ut = a.utang.reduce((s, x) => s + n(x.sisa), 0) + a.utangUsaha.reduce((s, x) => s + n(x.nilai), 0);
     $('#awModal').innerHTML = `Modal awal pemilik <span class="term">(aset − utang)</span>: <b>${fmtRp(aset - ut)}</b>`;
   }
   function openProfil(){
@@ -1362,6 +1380,7 @@
     else if (el.dataset.aw) { k.awal[el.dataset.aw] = val; updAwalModal(); }
     else if (el.dataset.al !== undefined) { k.awal.peralatan[Number(el.dataset.al)][el.dataset.af] = val; updAwalModal(); }
     else if (el.dataset.ut !== undefined) { k.awal.utang[Number(el.dataset.ut)][el.dataset.uf] = val; updAwalModal(); }
+    else if (el.dataset.sl) { k.awal[el.dataset.sl][Number(el.dataset.si)][el.dataset.sf] = val; updAwalModal(); }
     else if (el.id === 'awBulan' && el.value) k.awal.bulan = el.value;
     save();
   });
@@ -1369,8 +1388,11 @@
     const a = state.kas.awal, d1 = e.target.closest('[data-al-del]'), d2 = e.target.closest('[data-ut-del]');
     if (d1) { a.peralatan.splice(Number(d1.dataset.alDel), 1); renderAwalLists(); save(); }
     if (d2) { a.utang.splice(Number(d2.dataset.utDel), 1); renderAwalLists(); save(); }
+    const d3 = e.target.closest('[data-sl-del]'); if (d3) { a[d3.dataset.slDel].splice(Number(d3.dataset.si), 1); renderAwalLists(); save(); }
   });
   $('#awAlatAdd').addEventListener('click', () => { state.kas.awal.peralatan.push({ nama: '', nilai: '', umur: '' }); renderAwalLists(); $('#al_n' + (state.kas.awal.peralatan.length - 1)).focus(); });
+  $('#awPiutangAdd').addEventListener('click', () => { state.kas.awal.piutang.push({ nama: '', nilai: '' }); renderAwalLists(); $('#piutang_n' + (state.kas.awal.piutang.length - 1)).focus(); });
+  $('#awBonAdd').addEventListener('click', () => { state.kas.awal.utangUsaha.push({ nama: '', nilai: '' }); renderAwalLists(); $('#utangUsaha_n' + (state.kas.awal.utangUsaha.length - 1)).focus(); });
   $('#awUtangAdd').addEventListener('click', () => { state.kas.awal.utang.push({ nama: '', sisa: '' }); renderAwalLists(); $('#ut_n' + (state.kas.awal.utang.length - 1)).focus(); });
   $('#profilClose').addEventListener('click', () => { saveNow(); closeOverlays(); route(); toast('Data usaha disimpan'); });
 
@@ -1402,8 +1424,11 @@
     sel.innerHTML = months.map(b => `<option value="${b}"${b === want ? ' selected' : ''}>${namaBulan(b)}${b === now ? ' (berjalan)' : ''}</option>`).join('');
     $('#lkN').value = String(k.lk.n || 3); $('#lkKota').value = k.lk.kota || ''; $('#lkCatatan').value = k.lk.catatan || ''; $('#lkLamp').checked = !!k.lk.lamp;
     const out = $('#lapKeu');
+    const kurang = ['namaUsaha', 'pemilik', 'alamat'].filter(f => !(k.profil[f] || '').trim());
+    $('#lkWarn').hidden = !kurang.length || (!k.trx.length && !adaSaldoAwal());
     if (!k.trx.length && !adaSaldoAwal()) {
-      out.innerHTML = `<div class="empty-home"><b>Belum ada catatan keuangan</b><p>Catat uang masuk dan keluar di menu <a href="#keuangan">Keuangan</a>. Laporan akan tersusun otomatis di sini.</p></div>`;
+      out.innerHTML = `<div class="empty-home"><b>Belum ada catatan keuangan</b><p>Catat uang masuk dan keluar di menu <a href="#keuangan">Keuangan</a>. Laporan akan tersusun otomatis di sini.</p><button class="btn" type="button" id="lkContoh">Lihat contoh laporan</button></div>`;
+      $('#lkContoh').onclick = showContohLap;
       return;
     }
     const bln = want, L = H.laporanBulan(buku, bln), R = H.ringkasanBulan(buku, bln, Number(k.lk.n) || 3), lr = L.labaRugi, ak = L.arusKas, nr = L.neraca;
@@ -1537,6 +1562,16 @@
         ${trxBulan.map(t => `<tr><td>${++no}</td><td>${new Date(t.tgl + 'T00:00:00').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit' })}</td><td>${esc((KAT_ALL[t.jenis + ':' + t.kat] || {}).nama || '')}</td><td>${esc(t.ket || '')}</td><td class="n">${t.jenis === 'masuk' ? fmtRp(Number(t.nominal)) : ''}</td><td class="n">${t.jenis === 'keluar' ? fmtRp(Number(t.nominal)) : ''}</td></tr>`).join('') || '<tr><td colspan="6">Tidak ada transaksi</td></tr>'}
         </tbody></table></div></section>` : ''}
       <div class="foot">Disusun oleh pemilik usaha berdasarkan catatan pribadi menggunakan HargaPas versi ${VERSION}, aplikasi gratis yang dikembangkan oleh Universitas Terbuka Majene. Laporan ini belum diaudit. Angka dalam kurung menunjukkan pengurang atau nilai negatif.</div>`);
+  }
+  function showContohLap(){
+    const asli = state.kas, m = bulanIni(), ms = [-3, -2, -1].map(n => H.geserBulan(m, n));
+    const tr = []; let id = 0; const t = (tgl, jenis, kat, nominal, ket) => tr.push({ id: 'c' + (++id), tgl, jenis, kat, nominal, ket });
+    ms.forEach((b, i) => { const f = 1 + i * 0.07; t(b + '-05', 'masuk', 'jual', Math.round(8500000 * f), 'Penjualan abon'); t(b + '-03', 'keluar', 'bahan', Math.round(4800000 * f), 'Ikan, minyak, bumbu, kemasan'); t(b + '-10', 'keluar', 'upah', 1500000, '1 pekerja'); t(b + '-12', 'keluar', 'energi', 350000, ''); t(b + '-25', 'keluar', 'cicil', 500000, 'KUR'); t(b + '-25', 'keluar', 'bunga', 80000, 'KUR'); t(b + '-28', 'keluar', 'prive', 1200000, ''); });
+    state.kas = { profil: { namaUsaha: 'Usaha Contoh Abon Ikan', pemilik: 'Nama Pemilik', jenis: 'Olahan hasil laut', alamat: 'Majene, Sulawesi Barat' }, awal: { bulan: ms[0], kas: 2000000, persediaan: 800000, peralatan: [{ nama: 'Kompor & wajan', nilai: 1800000, umur: 3 }], utang: [{ nama: 'KUR', sisa: 6000000 }], piutang: [], utangUsaha: [] }, trx: tr, stok: {}, lk: { n: 3, kota: 'Majene', catatan: '', lamp: false } };
+    kMonth = ms[2];
+    try { renderLapKeu(); } finally { state.kas = asli; kMonth = null; }
+    $('#lapKeu').insertAdjacentHTML('afterbegin', '<div class="contoh-mark">CONTOH — data rekaan, bukan data Anda</div>');
+    $('#lkWarn').hidden = true;
   }
   const lkSave = () => { const l = state.kas.lk; l.n = Number($('#lkN').value) || 3; l.kota = $('#lkKota').value; l.catatan = $('#lkCatatan').value; l.lamp = $('#lkLamp').checked; save(); renderLapKeu(); };
   ['#lkBulan', '#lkN', '#lkLamp'].forEach(s => $(s).addEventListener('change', lkSave));
