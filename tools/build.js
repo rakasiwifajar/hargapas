@@ -11,6 +11,7 @@ const VERSION = pkg.version;
 const dataUri = (p, type) => `data:${type};base64,${read(p).toString('base64')}`;
 const icon = dataUri('assets/icon.svg', 'image/svg+xml');
 const logoUT = dataUri('assets/logo-ut.webp', 'image/webp');
+const sure = dataUri('assets/sure.svg', 'image/svg+xml');
 const engine = read('src/engine.js').toString();
 
 function build(pwa) {
@@ -18,6 +19,7 @@ function build(pwa) {
   html = html.replace('/*__ENGINE__*/', () => engine)
     .replace(/__ICON__/g, icon)
     .replace(/__LOGO_UT__/g, logoUT)
+    .replace(/__SURE__/g, sure)
     .replace(/__VERSION__/g, VERSION);
   if (pwa) {
     html = html.replace('<!--__HEAD_EXTRA__-->',

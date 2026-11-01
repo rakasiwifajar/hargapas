@@ -1,5 +1,13 @@
 # Catatan perubahan HargaPas
 
+## 1.2.0 — 1 November 2026
+
+- Palet warna Universitas Terbuka: biru tua (#1E4094) sebagai warna utama dan kuning (#F9D800) sebagai aksen; diambil dari logo UT.
+- Pola terinspirasi sure' lipaq saqbe Mandar (silangan garis vertikal dan horizontal) pada strip identitas, panduan awal, kartu HPP, bilah bawah, halaman Tentang, footer, dan kop laporan.
+- Ikon aplikasi berwarna UT (biru tua dengan centang kuning).
+- Tombol ajakan utama berwarna kuning UT, tab aktif bergaris kuning.
+- Penjelasan warna dan motif di halaman Tentang.
+
 ## 1.1.0 — 1 November 2026
 
 - Tampilan dua kolom di layar lebar (laptop/PC): isian di kiri, hasil selalu terlihat di kanan.

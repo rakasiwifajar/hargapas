@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0F5E4E">
+<meta name="theme-color" content="#1E4094">
 <meta name="description" content="HargaPas: kalkulator HPP dan harga jual gratis untuk UKM. Dikembangkan oleh Universitas Terbuka Majene.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,10 +12,13 @@
 <title>HargaPas — Kalkulator HPP & Harga Jual UKM by Universitas Terbuka Majene</title>
 <style>
 :root{
-  --bg:#F5F4EF; --card:#FFFFFF; --ink:#1B1A17; --muted:#5E5B53; --line:#E3E0D7; --field:#FCFBF8;
-  --accent:#0F5E4E; --accent-ink:#0B4A3E; --accent-soft:#E3EFEA; --gold:#E0A030;
-  --warn:#7A5000; --warn-soft:#FBF0D9; --bad:#A3271F; --bad-soft:#FBE4E1; --good:#1F6B3A; --good-soft:#E2F1E6;
-  --c1:#0F5E4E; --c2:#D9822B; --c3:#6C8EBF; --c4:#B9A98A; --r:14px;
+  /* Warna Universitas Terbuka: biru tua (integritas) dan kuning (kreativitas, optimisme) */
+  --ut-blue:#1E4094; --ut-blue-dark:#152E6B; --ut-blue-soft:#E7EDF9; --ut-yellow:#F9D800; --ut-yellow-soft:#FFF5C4; --ut-gold-ink:#7A5F00;
+  --bg:#F3F5F9; --card:#FFFFFF; --ink:#141B2D; --muted:#545D70; --line:#DCE2EC; --field:#FAFBFD;
+  --accent:var(--ut-blue); --accent-ink:var(--ut-blue-dark); --accent-soft:var(--ut-blue-soft); --gold:var(--ut-yellow);
+  --warn:#7A5000; --warn-soft:#FDF2D2; --bad:#A3271F; --bad-soft:#FBE4E1; --good:#1D6B3E; --good-soft:#E2F2E8;
+  --c1:#1E4094; --c2:#E5A100; --c3:#5BA4D6; --c4:#B3BBCB; --r:14px;
+  --sure:url("__SURE__");
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -27,8 +30,11 @@ a{color:var(--accent)}
 .wrap{max-width:760px;margin:0 auto;padding:12px 16px 120px}
 body.view-other .wrap{padding-bottom:40px}
 
+/* motif sure' Mandar */
+.sure{background-color:var(--ut-blue);background-image:var(--sure);background-size:48px 48px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sure-strip{height:8px;background-image:var(--sure);background-size:32px 32px;background-color:var(--ut-blue);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 /* identity strip */
-.utbar{background:#fff;border-bottom:1px solid var(--line)}
+.utbar{background:#fff}
 .utbar .in{max-width:760px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;font-size:13px}
 .utbar img{height:30px;width:auto;display:block}
 .utbar b{font-weight:700;color:var(--ink)}
@@ -37,22 +43,25 @@ body.view-other .wrap{padding-bottom:40px}
 header.top{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:6px 0 10px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
 .brand img{width:40px;height:40px;border-radius:11px;display:block}
-.brand b{display:block;font-size:19px;letter-spacing:-.3px;line-height:1.1}
+.brand b{display:block;font-size:19px;letter-spacing:-.3px;line-height:1.1;color:var(--ut-blue-dark)}
 .brand span{display:block;font-size:12.5px;color:var(--muted)}
 .ut-chip{height:40px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px 6px;display:flex;align-items:center}
 .ut-chip img{height:32px;width:auto;display:block}
-nav.tabs{display:flex;gap:4px;background:#ECEAE3;border-radius:12px;padding:4px;margin-bottom:14px;overflow-x:auto}
+nav.tabs{display:flex;gap:4px;background:#E6EAF2;border-radius:12px;padding:4px;margin-bottom:14px;overflow-x:auto}
 nav.tabs a{flex:1 0 auto;text-align:center;text-decoration:none;color:var(--muted);font-weight:650;font-size:14px;padding:9px 12px;border-radius:9px;min-height:40px;white-space:nowrap}
-nav.tabs a[aria-current="page"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+nav.tabs a[aria-current="page"]{background:#fff;color:var(--ut-blue-dark);box-shadow:0 1px 2px rgba(20,27,45,.08),inset 0 -3px 0 var(--ut-yellow)}
 
 /* generic */
 .btn{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-weight:600;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;justify-content:center;white-space:nowrap;text-decoration:none;color:var(--ink)}
-.btn:hover{border-color:#C9C5B8}
+.btn:hover{border-color:#C3CBDA}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--ut-blue-dark);border-color:var(--ut-blue-dark)}
+.btn.cta{background:var(--ut-yellow);border-color:#E6C700;color:var(--ut-blue-dark);font-weight:700}
+.btn.cta:hover{background:#FFE12E}
 .btn.ghost{background:transparent}
 .btn.small{min-height:36px;padding:0 10px;font-size:13.5px}
 .btn.icon{width:44px;padding:0}
-.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible,.tip:focus-visible{outline:3px solid #7FB8A8;outline-offset:2px}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible,.tip:focus-visible{outline:3px solid #8FA8E3;outline-offset:2px}
 .prodbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;margin-bottom:12px}
 .prodbar select{min-width:0;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 12px}
 .note{margin:0 0 12px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
@@ -69,7 +78,7 @@ nav.tabs a[aria-current="page"]{background:#fff;color:var(--ink);box-shadow:0 1p
 details.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
 details.card>summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;gap:12px}
 details.card>summary::-webkit-details-marker{display:none}
-.step{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
+.step{width:28px;height:28px;border-radius:50%;background:var(--ut-blue);color:var(--ut-yellow);font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
 .sumtxt{flex:1;min-width:0}
 .sumtxt b{display:block;font-size:16px}
 .sumtxt span{font-size:13px;color:var(--muted)}
@@ -88,7 +97,7 @@ details[open]>summary .chev{transform:rotate(180deg)}
 .inp .suf{position:absolute;right:12px;color:var(--muted);font-size:14px;pointer-events:none}
 .inp.has-pre input{padding-left:38px}
 .inp.has-suf input{padding-right:56px}
-input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
+input.invalid{border-color:var(--bad)!important;background:#FFF7F6!important}
 .full{grid-column:1/-1}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:var(--field);gap:3px}
 .seg button{min-height:38px;border:0;background:transparent;border-radius:8px;padding:0 14px;font-weight:600;font-size:14px;cursor:pointer;color:var(--muted)}
@@ -98,7 +107,7 @@ input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
 .modebox .seg button{flex:1}
 
 /* tooltip */
-.tip{width:22px;height:22px;border-radius:50%;border:1px solid #C9C5B8;background:#fff;color:var(--muted);font-size:12px;font-weight:700;line-height:1;display:inline-grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.tip{width:22px;height:22px;border-radius:50%;border:1px solid #C3CBDA;background:#fff;color:var(--muted);font-size:12px;font-weight:700;line-height:1;display:inline-grid;place-items:center;cursor:pointer;padding:0;flex:none}
 .pop{position:fixed;z-index:30;max-width:300px;background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.18)}
 .pop b{display:block;margin-bottom:2px}
 
@@ -126,9 +135,11 @@ input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
 
 /* results */
 .result{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.result.hero-card{position:relative;overflow:hidden;padding-top:24px}
+.result.hero-card::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background-color:var(--ut-blue);background-image:var(--sure);background-size:32px 32px}
 .result h2{font-size:17px;margin:0 0 2px;display:flex;align-items:center;gap:6px}
 .result .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
-.big{font-size:34px;font-weight:750;letter-spacing:-.8px;font-variant-numeric:tabular-nums;line-height:1.1}
+.big{color:var(--ut-blue-dark);font-size:34px;font-weight:750;letter-spacing:-.8px;font-variant-numeric:tabular-nums;line-height:1.1}
 .big small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
 .stack{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:14px 0 10px;background:var(--line)}
 .stack i{display:block;height:100%}
@@ -141,7 +152,7 @@ input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
 .ctrl .field{flex:1 1 130px}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .compare .box,.kv .box{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--field)}
-.compare .box.on{border-color:var(--accent);background:var(--accent-soft)}
+.compare .box.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--ut-yellow)}
 .compare .lbl2,.kv .lbl2{font-size:12.5px;color:var(--muted);font-weight:600}
 .compare .val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
 .compare .eq{font-size:12.5px;color:var(--muted)}
@@ -195,10 +206,11 @@ details.datasec .actions{margin-top:8px}
 }
 
 /* sticky */
-.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:5}
+.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:0;box-shadow:0 -4px 16px rgba(20,27,45,.06);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:5}
+.sticky::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background-color:var(--ut-blue);background-image:var(--sure);background-size:24px 24px}
 .sticky .in{max-width:728px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
 .sticky .l{font-size:12px;color:var(--muted);font-weight:600}
-.sticky .v{font-size:20px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.sticky .v{color:var(--ut-blue-dark);font-size:20px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
 .sticky .grp{display:flex;gap:20px}
 body.view-other .sticky{display:none}
 
@@ -208,7 +220,11 @@ body.view-other .sticky{display:none}
 .page h2{font-size:17px;margin:22px 0 6px}
 .page p,.page li{font-size:15px}
 .page .formula{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;line-height:1.6}
+.page-hero{padding-top:0;overflow:hidden}
+.hero-band{height:72px;margin:0 -20px 18px}
 .hero{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.motif-demo{display:flex;gap:14px;align-items:center;margin:8px 0}
+.motif-demo .sw{width:84px;height:84px;border-radius:12px;flex:none}
 .hero .ut{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px}
 .hero .ut img{height:72px;display:block}
 .libtable{width:100%;border-collapse:collapse;font-size:14px}
@@ -220,7 +236,8 @@ body.view-other .sticky{display:none}
 
 /* report */
 .report{background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px;color:#111;font-size:13.5px}
-.report .kop{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:2px solid var(--accent);padding-bottom:12px;margin-bottom:16px}
+.report .kop{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:12px}
+.report .kop-strip{margin-bottom:16px}
 .report .kop .l{display:flex;align-items:center;gap:10px}
 .report .kop .l img{width:44px;height:44px;border-radius:10px}
 .report .kop b{font-size:18px;display:block}
@@ -228,27 +245,32 @@ body.view-other .sticky{display:none}
 .report .kop .ut img{height:56px}
 .report h1{font-size:20px;margin:0 0 2px}
 .report .meta{color:#444;font-size:12.5px;margin-bottom:14px}
-.report h2{font-size:14px;margin:16px 0 6px;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.04em}
+.report h2{font-size:14px;margin:16px 0 6px;color:var(--ut-blue-dark);text-transform:uppercase;letter-spacing:.04em}
 .report table{width:100%;border-collapse:collapse;font-size:13px}
-.report th,.report td{border:1px solid #D8D5CC;padding:6px 8px;text-align:left;font-variant-numeric:tabular-nums}
-.report th{background:#F3F1EB;font-weight:600}
+.report th,.report td{border:1px solid #D3D9E4;padding:6px 8px;text-align:left;font-variant-numeric:tabular-nums}
+.report th{background:#EEF2F9;font-weight:600}
 .report td.n,.report th.n{text-align:right}
-.report .tot td{font-weight:700;background:#F7F6F1}
+.report .tot td{font-weight:700;background:#F4F6FA}
 .report .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.report .foot{margin-top:18px;font-size:11.5px;color:#555;border-top:1px solid #D8D5CC;padding-top:8px}
+.report .foot{margin-top:18px;font-size:11.5px;color:#555;border-top:1px solid #D3D9E4;padding-top:8px}
 
 /* overlay: onboarding & dialogs */
 .overlay{position:fixed;inset:0;background:rgba(20,20,18,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:16px}
 @media (min-width:600px){.overlay{align-items:center}}
 .sheet{background:#fff;border-radius:20px;max-width:440px;width:100%;padding:22px;max-height:92vh;overflow:auto}
 .sheet h2{margin:0 0 8px;font-size:22px;letter-spacing:-.3px;line-height:1.25}
-.sheet p{margin:0 0 10px;color:#3d3b36;line-height:1.55;font-size:15px}
+.sheet p{margin:0 0 10px;color:#333B4D;line-height:1.55;font-size:15px}
+.sheet{overflow:hidden}
+.ob-banner{margin:-22px -22px 16px;height:96px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 14px}
+.ob-banner img.app{width:52px;height:52px;border-radius:13px;box-shadow:0 0 0 3px #fff}
+.ob-banner .ut{background:#fff;border-radius:10px;padding:4px 6px}
+.ob-banner .ut img{height:40px;display:block}
 .ob-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .ob-top img.app{width:48px;height:48px;border-radius:12px}
 .ob-top .ut img{height:44px}
 .dots{display:flex;gap:6px;margin:14px 0}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
-.dots i.on{background:var(--accent);width:22px;border-radius:4px}
+.dots i.on{background:var(--ut-blue);width:22px;border-radius:4px}
 .ob-actions{display:flex;justify-content:space-between;gap:8px}
 .comp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 10px}
 .comp div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px}
@@ -262,7 +284,8 @@ body.view-other .sticky{display:none}
 footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:6px}
 footer .ut-chip{height:46px}
 footer .ut-chip img{height:38px}
-footer b{color:var(--ink)}
+footer b{color:var(--ut-blue-dark)}
+footer .sure-strip{width:96px;height:6px;border-radius:3px}
 .toast{width:max-content;max-width:calc(100% - 32px);text-align:center;position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -294,7 +317,7 @@ footer b{color:var(--ink)}
 </style>
 </head>
 <body>
-<div class="utbar"><div class="in"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"><span><b>Universitas Terbuka Majene</b></span><span class="r">Layanan gratis untuk UKM</span></div></div>
+<div class="utbar"><div class="in"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"><span><b>Universitas Terbuka Majene</b></span><span class="r">Layanan gratis untuk UKM</span></div><div class="sure-strip" aria-hidden="true"></div></div>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#hitung" aria-label="HargaPas, beranda">
@@ -321,7 +344,7 @@ footer b{color:var(--ink)}
     <div class="note info" id="noteContoh" hidden>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
       <span class="grow">Anda sedang melihat <b>data contoh</b>. Angka-angka ini hanya ilustrasi cara pakai HargaPas.</span>
-      <button class="btn small primary" type="button" id="btnMulaiSaya">Mulai produk saya</button>
+      <button class="btn small cta" type="button" id="btnMulaiSaya">Mulai produk saya</button>
     </div>
 
     <div class="hcols"><div class="col-in">
@@ -412,7 +435,7 @@ footer b{color:var(--ink)}
 
     </div><aside class="col-out" aria-label="Hasil perhitungan">
     <!-- HASIL -->
-    <section class="result" aria-labelledby="hHPP">
+    <section class="result hero-card" aria-labelledby="hHPP">
       <h2 id="hHPP">HPP per unit <button type="button" class="tip" data-tip="hpp" aria-label="Apa itu HPP?">?</button></h2>
       <p class="sub">Biaya pokok untuk membuat satu <span class="satuanTxt">unit</span> yang layak jual</p>
       <div class="big" id="outHPP">Rp0</div>
@@ -521,7 +544,8 @@ footer b{color:var(--ink)}
 
   <!-- ================= TENTANG ================= -->
   <main id="view-tentang" data-page="tentang" hidden>
-    <section class="page">
+    <section class="page page-hero">
+      <div class="hero-band sure" aria-hidden="true"></div>
       <div class="hero">
         <div class="ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
         <div>
@@ -531,6 +555,10 @@ footer b{color:var(--ink)}
       </div>
       <p>HargaPas adalah kalkulator harga pokok produksi (HPP) dan harga jual yang bisa dipakai gratis oleh usaha mikro, kecil, dan menengah. Aplikasi ini dikembangkan oleh Universitas Terbuka Majene sebagai bagian dari upaya mendampingi UKM menetapkan harga yang menutup seluruh biaya dan menghasilkan laba.</p>
       <div class="actions"><button class="btn" type="button" id="btnTour">Lihat panduan singkat</button><a class="btn" href="#privasi">Kebijakan privasi</a></div>
+
+      <h2>Warna dan motif</h2>
+      <div class="motif-demo"><div class="sw sure" aria-hidden="true"></div>
+        <p style="margin:0">Warna HargaPas mengikuti warna Universitas Terbuka: <b>biru tua</b> dan <b>kuning</b>. Polanya terinspirasi <b>sure'</b>, motif kotak-kotak lipaq saqbe (sarung sutra) Mandar, yang terbentuk dari silangan garis vertikal dan horizontal, melambangkan hubungan pemimpin dengan rakyat dan hubungan antarsesama. Pola ini adalah gubahan bebas, bukan salinan salah satu sure' tertentu.</p></div>
 
       <h2>Metode perhitungan</h2>
       <p>HargaPas memakai metode <i>full costing</i> sederhana. Semua biaya dibagi ke unit yang layak jual.</p>
@@ -550,6 +578,10 @@ footer b{color:var(--ink)}
 
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
+      <ul>
+        <li>Warna Universitas Terbuka (biru tua dan kuning) dan pola terinspirasi sure' lipaq saqbe Mandar.</li>
+      </ul>
+      <p style="margin-bottom:4px"><b>Versi 1.1.0</b> (1 November 2026)</p>
       <ul>
         <li>Tampilan dua kolom di laptop: isian di kiri, hasil selalu terlihat di kanan.</li>
         <li>Daftar bahan lebih ringkas: satu baris per bahan, ketuk untuk mengubah.</li>
@@ -594,6 +626,7 @@ footer b{color:var(--ink)}
 
   <footer>
     <div class="ut-chip"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
+    <div class="sure-strip" aria-hidden="true"></div>
     <b>HargaPas dikembangkan oleh Universitas Terbuka Majene</b>
     <span>Versi __VERSION__ · Gratis untuk UKM · <a href="#privasi">Privasi</a> · <a href="#tentang">Tentang & metode</a></span>
   </footer>
@@ -612,7 +645,7 @@ footer b{color:var(--ink)}
 <!-- Onboarding -->
 <div class="overlay" id="onboard" hidden role="dialog" aria-modal="true" aria-labelledby="obTitle">
   <div class="sheet">
-    <div class="ob-top"><img class="app" src="__ICON__" alt=""><div class="ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div></div>
+    <div class="ob-banner sure"><img class="app" src="__ICON__" alt=""><div class="ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div></div>
     <div data-slide="0">
       <p style="margin:0;color:var(--muted);font-weight:600">Selamat datang di</p>
       <h2 id="obTitle">HargaPas <span style="display:block;font-size:16px;color:var(--accent-ink)">by Universitas Terbuka Majene</span></h2>
@@ -632,7 +665,7 @@ footer b{color:var(--ink)}
     <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
     <div class="ob-actions">
       <button class="btn ghost" type="button" id="obSkip">Lewati</button>
-      <button class="btn primary" type="button" id="obNext">Lanjut</button>
+      <button class="btn cta" type="button" id="obNext">Lanjut</button>
     </div>
   </div>
 </div>
@@ -1030,6 +1063,7 @@ footer b{color:var(--ink)}
     const per = p.mode === 'unit' ? 'per unit' : 'per batch';
     $('#report').innerHTML = (`
       <div class="kop"><div class="l"><img src="__ICON__" alt=""><div><b>HargaPas</b><span>by Universitas Terbuka Majene</span></div></div><div class="ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div></div>
+      <div class="sure-strip kop-strip" aria-hidden="true"></div>
       <h1>Laporan HPP & Harga Jual</h1>
       <div class="meta">Produk: <b>${esc(p.nama || 'Tanpa nama')}</b> · Satuan: ${esc(sat)} · Cara isi: ${per}${p.mode === 'batch' ? ` (hasil ${fmtInput(p.hasilBatch)} ${esc(sat)}, gagal/susut ${fmtInput(p.susutPct) || 0}%)` : ''} · Tanggal: ${tgl}</div>
       <h2>Bahan baku (${per})</h2>

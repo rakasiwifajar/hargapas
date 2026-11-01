@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Pola terinspirasi sure' lipaq saqbe Mandar: silangan garis vertikal dan horizontal, dalam warna Universitas Terbuka -->
+  <rect width="48" height="48" fill="#1E4094"/>
+  <g fill-opacity="0.55">
+    <rect x="4" y="0" width="12" height="48" fill="#3E66C4"/>
+    <rect x="20" y="0" width="3" height="48" fill="#F9D800"/>
+    <rect x="26" y="0" width="1.5" height="48" fill="#FFFFFF"/>
+    <rect x="29.5" y="0" width="1.5" height="48" fill="#F9D800"/>
+    <rect x="35" y="0" width="8" height="48" fill="#11295F"/>
+    <rect x="0" y="4" width="48" height="12" fill="#3E66C4"/>
+    <rect x="0" y="20" width="48" height="3" fill="#F9D800"/>
+    <rect x="0" y="26" width="48" height="1.5" fill="#FFFFFF"/>
+    <rect x="0" y="29.5" width="48" height="1.5" fill="#F9D800"/>
+    <rect x="0" y="35" width="48" height="8" fill="#11295F"/>
+  </g>
+</svg>
