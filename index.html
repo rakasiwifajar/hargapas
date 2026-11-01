@@ -902,6 +902,12 @@ footer.ft{margin-top:28px;padding:16px 4px 0;border-top:1px solid var(--line);te
 .ft-links a+a{border-left:1px solid var(--line)}
 .ft-links a:hover{color:var(--ut-blue);background:none}
 .ft-note{font-size:11.5px;margin:6px 0 0;line-height:1.5}
+/* 2.3.3: perbaikan audit */
+.kbtns>*{min-width:0}
+.kbtn span:last-child{min-width:0}
+@media (max-width:380px){ .kbtn b{font-size:14.5px} .kbtn{padding:10px;gap:8px} .kb-ic{width:34px;height:34px} }
+.tip{position:relative}
+.tip::after{content:"";position:absolute;inset:-8px}
 
 </style>
 </head>
@@ -1505,7 +1511,7 @@ footer.ft{margin-top:28px;padding:16px 4px 0;border-top:1px solid var(--line);te
       </ul>
 
       <h2>Versi & catatan perubahan</h2>
-      <p style="margin-bottom:4px"><b>Versi 2.3.2</b> (1 November 2026)</p>
+      <p style="margin-bottom:4px"><b>Versi 2.3.3</b> (1 November 2026)</p>
       <ul>
         <li>Tampilan baru: biru malam dengan pita emas bermotif sure' Mandar, menu cepat bundar, pita tips harian, kartu saldo di Keuangan.</li>
         <li>Piutang dan bon saat mulai mencatat, konfirmasi jumlah sangat besar, contoh laporan keuangan, pengingat data usaha.</li>
@@ -1598,7 +1604,7 @@ footer.ft{margin-top:28px;padding:16px 4px 0;border-top:1px solid var(--line);te
       <div class="ft-id"><b>Universitas Terbuka Majene</b><span>Dikembangkan oleh Fajar Rakasiwi · <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">Kontak</a></span></div>
     </div>
     <nav class="ft-links" aria-label="Tautan informasi"><a href="#tentang">Tentang</a><a href="#privasi">Privasi</a><a href="#belajar">Pelajaran</a></nav>
-    <p class="ft-note">HargaPas 2.3.2 · Gratis untuk UMKM · Alat bantu, bukan nasihat keuangan atau pajak.</p>
+    <p class="ft-note">HargaPas 2.3.3 · Gratis untuk UMKM · Alat bantu, bukan nasihat keuangan atau pajak.</p>
   </footer>
 </div>
 
@@ -2177,7 +2183,7 @@ footer.ft{margin-top:28px;padding:16px 4px 0;border-top:1px solid var(--line);te
 <script>
 (function(){
   'use strict';
-  const VERSION = '2.3.2';
+  const VERSION = '2.3.3';
   const H = window.HPP;
   const $ = (s, el=document) => el.querySelector(s);
   const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));

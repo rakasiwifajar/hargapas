@@ -1,5 +1,8 @@
 # Catatan perubahan HargaPas
 
+## 2.3.3 — 1 November 2026
+- Perbaikan: tombol Uang masuk/keluar meluap 2 px di layar 360 px; area sentuh tombol bantuan "?" diperbesar menjadi ±46 px.
+
 ## 2.3.2 — 1 November 2026
 - Bagian bawah Beranda dibuat lebih ringkas dan bersih: kartu produk lebih kecil, pintasan berupa tombol kapsul kecil, kaki halaman satu baris dengan logo UT dan tautan teks.
 

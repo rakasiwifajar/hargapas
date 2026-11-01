@@ -1,6 +1,6 @@
 {
   "name": "hargapas",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "HargaPas by Universitas Terbuka Majene — kalkulator HPP dan harga jual gratis untuk UKM",
   "private": true,
   "scripts": {
