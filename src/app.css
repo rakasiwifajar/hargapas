@@ -983,3 +983,6 @@ body.dark [data-jenis="masuk"] [data-tj="masuk"][aria-pressed="true"]{background
 body.dark [data-jenis="keluar"] [data-tj="keluar"][aria-pressed="true"]{background:#B2402F}
 body.dark .tip{background:var(--field);color:#AFC4FF;border-color:var(--line)}
 body.dark .ft-links a{color:var(--muted)}
+/* 2.5.1: pita emas realistis, tetap bersih */
+.welcome .pita{opacity:1;top:-28%;right:-14%;width:58%;height:156%}
+.splash .pita{opacity:.9}

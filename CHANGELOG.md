@@ -1,5 +1,8 @@
 # Catatan perubahan HargaPas
 
+## 2.5.1 — 1 November 2026
+- Pita emas di layar pembuka dan kartu sambutan dibuat lebih realistis: bingkai logam berkilau di kedua tepi, ukiran sure' dengan ornamen bunga kecil, bayangan lipatan dan bayangan jatuh, titik cahaya di lekukan; motif lebih besar dan lebih redup agar tetap bersih.
+
 ## 2.5.0 — 1 November 2026
 ### Baru
 - Stok produk jadi: catat produksi (termasuk stok awal), sisa stok = dibuat − terjual otomatis dari catatan penjualan, penanda Siap dijual / Menipis / Habis, peringatan bila stok tercatat minus saat menjual.

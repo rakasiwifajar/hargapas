@@ -14,18 +14,43 @@ const logoUT = dataUri('assets/logo-ut.webp', 'image/webp');
 const sure = dataUri('assets/sure.svg', 'image/svg+xml');
 const sureEmas = dataUri('assets/sure-emas.svg', 'image/svg+xml');
 // Pita emas bermotif sure' yang meliuk (dipakai di layar pembuka dan sambutan beranda)
-const pita = (id) => `<svg class="pita" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+const pita = (id) => {
+  const d = 'M310 -40 C 90 160, 360 360, 190 520 S 70 820, 300 960';
+  return `<svg class="pita" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
   <defs>
-    <pattern id="${id}P" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)"><image href="${sureEmas}" width="38" height="38"/></pattern>
-    <linearGradient id="${id}E" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".45" stop-color="#C8922B"/><stop offset=".7" stop-color="#F7D77C"/><stop offset="1" stop-color="#8A5D14"/></linearGradient>
-    <linearGradient id="${id}S" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <filter id="${id}G" x="-60%" y="-10%" width="220%" height="120%"><feGaussianBlur stdDeviation="14"/></filter>
+    <pattern id="${id}P" width="44" height="44" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)"><image href="${sureEmas}" width="44" height="44"/></pattern>
+    <linearGradient id="${id}R" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="360" y2="900">
+      <stop offset="0" stop-color="#7A5313"/><stop offset=".08" stop-color="#F7DE8E"/><stop offset=".16" stop-color="#A8771F"/>
+      <stop offset=".27" stop-color="#FFF2C4"/><stop offset=".38" stop-color="#9C6B1C"/><stop offset=".5" stop-color="#E9C062"/>
+      <stop offset=".6" stop-color="#7E5514"/><stop offset=".72" stop-color="#FBE6A6"/><stop offset=".84" stop-color="#A27420"/><stop offset="1" stop-color="#F0CF7A"/>
+    </linearGradient>
+    <linearGradient id="${id}T" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="900">
+      <stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset=".14" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".24" stop-color="#fff" stop-opacity=".22"/><stop offset=".36" stop-color="#000" stop-opacity=".35"/>
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset=".6" stop-color="#fff" stop-opacity=".18"/>
+      <stop offset=".74" stop-color="#000" stop-opacity=".4"/><stop offset=".88" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".45"/>
+    </linearGradient>
+    <filter id="${id}S" x="-60%" y="-10%" width="220%" height="120%"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="${id}H" x="-60%" y="-10%" width="220%" height="120%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <radialGradient id="${id}B"><stop offset="0" stop-color="#FFF6D6" stop-opacity=".85"/><stop offset=".35" stop-color="#FFE7A0" stop-opacity=".35"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></radialGradient>
   </defs>
-  <path d="M310 -40 C 90 160, 360 360, 190 520 S 70 820, 300 960" fill="none" stroke="#F2C55C" stroke-opacity=".35" stroke-width="90" filter="url(#${id}G)"/>
-  <path d="M310 -40 C 90 160, 360 360, 190 520 S 70 820, 300 960" fill="none" stroke="url(#${id}E)" stroke-width="70" stroke-linecap="round"/>
-  <path d="M310 -40 C 90 160, 360 360, 190 520 S 70 820, 300 960" fill="none" stroke="url(#${id}P)" stroke-width="56"/>
-  <path d="M296 -40 C 76 160, 346 360, 176 520 S 56 820, 286 960" fill="none" stroke="url(#${id}S)" stroke-width="10" stroke-opacity=".9"/>
+  <!-- bayangan jatuh -->
+  <path d="${d}" transform="translate(16 22)" fill="none" stroke="#020818" stroke-opacity=".55" stroke-width="74" filter="url(#${id}S)"/>
+  <!-- bingkai logam: tepi gelap, kilau emas, alur dalam -->
+  <path d="${d}" fill="none" stroke="#3A2606" stroke-width="72"/>
+  <path d="${d}" fill="none" stroke="url(#${id}R)" stroke-width="68"/>
+  <path d="${d}" fill="none" stroke="#2A1A04" stroke-width="56"/>
+  <!-- ukiran sure' -->
+  <path d="${d}" fill="none" stroke="url(#${id}P)" stroke-width="53"/>
+  <!-- bayangan lipatan (kesan meliuk 3D) -->
+  <path d="${d}" fill="none" stroke="url(#${id}T)" stroke-width="72"/>
+  <!-- kilau tepi -->
+  <path d="M302 -40 C 82 160, 352 360, 182 520 S 62 820, 292 960" fill="none" stroke="#FFF4CF" stroke-opacity=".7" stroke-width="2.2" filter="url(#${id}H)"/>
+  <!-- titik cahaya di lekukan -->
+  <circle cx="231" cy="255" r="42" fill="url(#${id}B)" opacity=".85"/>
+  <circle cx="95" cy="748" r="34" fill="url(#${id}B)" opacity=".6"/>
 </svg>`;
+};
 const engine = read('src/engine.js').toString();
 const css = read('src/app.css').toString();
 const appJs = read('src/app.js').toString();
