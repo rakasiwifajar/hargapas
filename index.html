@@ -488,6 +488,37 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   .toast{bottom:150px}
 }
 @media (min-width:768px){ nav.tabs{max-width:560px} }
+/* 1.5: fitur ekonomi & UMKM */
+.ohmode{display:flex;flex-direction:column;gap:6px;margin-top:14px;padding-bottom:4px}
+body:not(.oh-bersama) .only-ohb{display:none!important}
+.chk{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--field);cursor:pointer;font-size:15px;min-height:48px}
+.chk input{width:22px;height:22px;accent-color:var(--ut-blue);flex:none}
+.chk span{flex:1}
+.pbar{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,#DCEFE3,#E7EDF9 50%,#FBE4E1);margin:22px 4px 8px}
+.pbar .mk{position:absolute;top:-8px;width:4px;height:30px;border-radius:2px;background:var(--ut-blue-dark);transform:translateX(-2px)}
+.pbar .mk span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:12.5px;font-weight:700;white-space:nowrap;color:var(--ut-blue-dark)}
+.pbar-l{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.psiko{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.psiko .pc{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--field);min-width:96px}
+.psiko .pc b{display:block;font-size:17px;color:var(--ut-blue-dark)}
+.psiko .pc span{font-size:13px;color:var(--muted)}
+.usaha{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.lessons{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+details.lesson{border:1px solid var(--line);border-radius:14px;background:var(--field);padding:0 14px}
+details.lesson>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;min-height:56px;font-weight:700;font-size:16px}
+details.lesson>summary::-webkit-details-marker{display:none}
+details.lesson .ln{width:30px;height:30px;border-radius:50%;background:var(--ut-blue);color:var(--ut-yellow);display:grid;place-items:center;font-size:14px;flex:none}
+details.lesson p{margin:0 0 14px;font-size:15.5px;line-height:1.6}
+.jual-list{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding:2px}
+.jrow{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--field)}
+.jrow b{display:block;font-size:15px}
+.jrow small{display:block;color:var(--muted);font-size:13px}
+.jrow input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 10px;font-size:16px;background:#fff;text-align:right}
+.tpl-h{grid-column:1/-1;font-size:14px;font-weight:700;color:var(--ut-blue-dark);margin:6px 0 -2px;display:flex;align-items:center;gap:8px}
+.tpl-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.tpl .lokal{border-color:#E6C700;background:#FFFCEB}
+@media (max-width:560px){ .tpl{grid-template-columns:1fr} .tpl button{min-height:60px} }
+
 </style>
 </head>
 <body>
@@ -528,6 +559,12 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <span class="grow">Data hanya tersimpan di HP ini. Sudah lebih dari sebulan sejak cadangan terakhir.</span>
       <button class="btn small" type="button" data-backup>Cadangkan</button>
     </div>
+    <section class="usaha" id="usahaCard" hidden>
+      <div class="sec-head" style="margin:0 0 8px"><h2>Bulan ini</h2><span class="hint" id="bulanNama"></span></div>
+      <div class="kv" id="outUsaha"></div>
+      <p class="hint" id="usahaNote" style="margin:8px 0 0"></p>
+      <div class="actions" style="margin-top:10px"><button class="btn primary" type="button" id="btnCatat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Catat penjualan</button></div>
+    </section>
     <div class="sec-head"><h2>Produk saya</h2><span class="hint" id="prodCount"></span></div>
     <div class="pgrid" id="prodGrid"></div>
     <div class="empty-home" id="emptyHome" hidden>
@@ -551,6 +588,8 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
         <button class="mrow" type="button" id="btnDataMenu"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span><b>Cadangan & pemulihan data</b><small>Simpan atau pindahkan data ke HP lain</small></span></button>
         <a class="mrow" href="#lembar"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><span><b>Lembar isian cetak</b><small>Untuk pendamping UKM</small></span></a>
         <button class="mrow" type="button" data-tour><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.5M12 17h.01"/></svg></span><span><b>Panduan singkat</b><small>Cara memakai HargaPas</small></span></button>
+        <a class="mrow" href="#belajar"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M9 7h6"/></svg></span><span><b>Pelajaran singkat</b><small>Tips menentukan harga dan menghitung modal</small></span></a>
+        <a class="mrow" id="lnkMasukan" href="mailto:rakasiwifajar@ecampus.ut.ac.id"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H7l-3 3z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Kirim masukan</b><small>Saran atau laporan kesalahan ke pengembang</small></span></a>
         <a class="mrow" href="#tentang"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg></span><span><b>Tentang & metode</b><small>Pengembang, kontak, cara hitung</small></span></a>
         <a class="mrow" href="#privasi"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></span><span><b>Kebijakan privasi</b><small>Data hanya di HP Anda</small></span></a>
       </div>
@@ -645,6 +684,19 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <summary><span class="step">3</span><span class="sico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span><span class="sumtxt"><b>3. Biaya bulanan</b><span>Gas, listrik, sewa</span></span><span class="sumval" id="sumOH">Rp0/bln</span>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="body">
+        <div class="ohmode">
+          <span class="lbl">Biaya bulanan ini untuk siapa? <button type="button" class="tip" data-tip="bersama" aria-label="Apa itu biaya bersama?">?</button></span>
+          <div class="seg wide" role="group" aria-label="Biaya bulanan untuk">
+            <button type="button" data-oh="sendiri" aria-pressed="true">Produk ini saja</button>
+            <button type="button" data-oh="bersama" aria-pressed="false">Dipakai bersama</button>
+          </div>
+          <div class="note info only-ohb" id="ohInfo" style="margin:4px 0 0"></div>
+          <div class="grid only-ohb" style="margin-top:4px">
+            <div class="field"><label for="f_bagi">Cara membagi</label>
+              <select id="f_bagi"><option value="rata">Dibagi rata</option><option value="waktu">Sesuai lama produksi</option><option value="manual">Atur sendiri (%)</option></select></div>
+            <div class="field" id="fieldPorsi"><label for="f_porsi">Bagian produk ini</label><div class="inp has-suf"><input id="f_porsi" class="num" data-k="porsi" type="text" inputmode="decimal" placeholder="50"><span class="suf">%</span></div></div>
+          </div>
+        </div>
         <div class="grid">
           <div class="field full"><label for="f_batch"><span class="only-batch">Berapa kali produksi dalam sebulan?</span><span class="only-unit">Berapa barang dibuat dalam sebulan?</span></label><div class="inp has-suf"><input id="f_batch" class="num" data-k="batchBulan" type="text" inputmode="decimal" placeholder="20"><span class="suf" id="sufProd">kali</span></div>
             <span class="hint" id="hintProd">= 0 potong layak jual per bulan</span></div>
@@ -719,6 +771,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
         <div class="field"><label for="f_bulat">Bulatkan ke atas</label>
           <select id="f_bulat" data-k="harga.bulat"><option value="0">Tidak</option><option value="100">Rp100</option><option value="500">Rp500</option><option value="1000">Rp1.000</option></select></div>
       </div>
+      <label class="chk"><input type="checkbox" id="f_pph"><span>Saya membayar <b>PPh final 0,5%</b> dari omzet</span> <button type="button" class="tip" data-tip="pph" aria-label="Apa itu PPh final UMKM?">?</button></label>
       <div class="compare only-full" id="outCompare"></div>
       <div class="pricebig only-simple" id="outPriceSimple"></div>
       <div class="note bad" id="noteHarga" hidden></div>
@@ -730,7 +783,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
         <h3>Atur tempat menjual</h3>
         <div id="kanalList"></div>
         <button class="btn small" type="button" id="btnAddKanal">+ Tambah tempat menjual</button>
-        <p class="hint" style="margin:8px 0 0">Komisi marketplace dan ojek online berbeda per kategori dan sering berubah. Isi sesuai tarif di aplikasi penjual Anda.</p>
+        <p class="hint" style="margin:8px 0 0">Komisi marketplace, ojek online, dan potongan QRIS berbeda-beda dan sering berubah. Isi sesuai tarif di aplikasi penjual atau bank Anda.</p>
       </div>
     </section>
 
@@ -744,11 +797,41 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <div class="kv" style="margin-top:12px" id="outMundur"></div>
     </section>
 
+    <section class="result only-full res" aria-labelledby="hAtur">
+      <h2 id="hAtur">Atur harga</h2>
+      <p class="sub">Bandingkan dengan pesaing, pilih harga yang enak dibaca, dan buat harga paket.</p>
+      <h3 class="subhead" style="margin-top:4px">Harga pesaing</h3>
+      <div class="grid" style="margin-top:6px">
+        <div class="field"><label for="f_pmin">Termurah</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_pmin" class="num" data-k="pesaing.min" type="text" inputmode="decimal" placeholder="8.000"></div></div>
+        <div class="field"><label for="f_pmax">Termahal</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_pmax" class="num" data-k="pesaing.max" type="text" inputmode="decimal" placeholder="12.000"></div></div>
+      </div>
+      <div id="outPesaing"></div>
+      <h3 class="subhead">Pilihan harga yang enak dibaca</h3>
+      <div class="psiko" id="outPsiko"></div>
+      <h3 class="subhead">Harga paket</h3>
+      <div class="grid" style="margin-top:6px">
+        <div class="field"><label for="f_pisi">Isi per paket</label><div class="inp has-suf"><input id="f_pisi" class="num" data-k="paket.isi" type="text" inputmode="decimal" placeholder="3"><span class="suf satuanTxt">potong</span></div></div>
+        <div class="field"><label for="f_pdisk">Potongan paket</label><div class="inp has-suf"><input id="f_pdisk" class="num" data-k="paket.diskon" type="text" inputmode="decimal" placeholder="10"><span class="suf">%</span></div></div>
+      </div>
+      <div class="kv" style="margin-top:10px" id="outPaket"></div>
+    </section>
+
     <section class="result res" aria-labelledby="hBEP">
       <h2 id="hBEP">Batas balik modal per bulan <span class="term">(BEP)</span> <button type="button" class="tip" data-tip="bep" aria-label="Apa itu batas balik modal?">?</button></h2>
       <p class="sub">Paling sedikit harus terjual sebanyak ini agar biaya tetap bulanan tertutup, pada harga <b id="bepHargaTxt">Rp0</b></p>
       <div class="kv" id="outBEP"></div>
       <div class="note" id="noteBEP" hidden style="margin:12px 0 0"></div>
+    </section>
+
+    <section class="result res" aria-labelledby="hRencana">
+      <h2 id="hRencana">Rencana sebulan <button type="button" class="tip" data-tip="rencana" aria-label="Apa itu rencana sebulan?">?</button></h2>
+      <p class="sub">Perkirakan untung bersih sebulan, atau hitung berapa yang harus terjual untuk mencapai target.</p>
+      <div class="grid" style="margin-top:0">
+        <div class="field"><label for="f_ru">Rencana terjual sebulan</label><div class="inp has-suf"><input id="f_ru" class="num" data-k="rencana.unit" type="text" inputmode="decimal" placeholder="400"><span class="suf satuanTxt">potong</span></div></div>
+        <div class="field"><label for="f_rt">Untung yang diinginkan sebulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_rt" class="num" data-k="rencana.target" type="text" inputmode="decimal" placeholder="2.000.000"></div></div>
+      </div>
+      <div class="kv" style="margin-top:12px" id="outRencana"></div>
+      <div class="note" id="noteRencana" hidden style="margin:12px 0 0"></div>
     </section>
 
     <section class="result only-full res" aria-labelledby="hSim">
@@ -802,6 +885,28 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     </div>
     <p class="hint" data-embedded-only hidden style="margin:0 0 12px">Untuk menyimpan sebagai PDF, buka HargaPas di alamat resminya lalu tekan "Cetak / simpan PDF".</p>
     <article class="report" id="report"></article>
+  </main>
+
+  <!-- ================= BELAJAR ================= -->
+  <main id="view-belajar" data-page="belajar" hidden>
+    <section class="page">
+      <h1>Pelajaran singkat</h1>
+      <p>Lima menit untuk memahami cara menentukan harga yang menguntungkan.</p>
+      <div class="lessons">
+        <details class="lesson"><summary><span class="ln">1</span>Kenapa upah sendiri harus dihitung?</summary>
+          <p>Kalau Anda membuat sendiri tanpa menghitung upah, "untung" yang terlihat sebenarnya sebagian adalah gaji Anda. Begitu usaha membesar dan Anda perlu membayar pekerja, harga yang lama tidak lagi cukup. Hitung upah wajar: upah sehari dibagi jam kerja sehari.</p></details>
+        <details class="lesson"><summary><span class="ln">2</span>Untung dari harga jual atau dari modal?</summary>
+          <p>Modal Rp10.000 ditambah 30% menjadi Rp13.000. Untungnya Rp3.000, tetapi itu hanya 23% dari harga jual. Kalau ingin untung 30% dari harga jual, harganya Rp14.286. HargaPas memakai "untung dari harga jual" pada tampilan sederhana agar tidak keliru.</p></details>
+        <details class="lesson"><summary><span class="ln">3</span>Biaya bulanan dipakai banyak produk</summary>
+          <p>Gas, listrik, dan sewa biasanya dipakai untuk semua produk. Jangan dibebankan penuh ke setiap produk, karena modal jadi terlihat terlalu tinggi. Di langkah 3 pilih "Dipakai bersama", lalu HargaPas membaginya ke setiap produk.</p></details>
+        <details class="lesson"><summary><span class="ln">4</span>Kapan harga perlu dinaikkan?</summary>
+          <p>Saat harga bahan naik, untung per barang langsung turun. Perbarui harga di menu Bahan, lalu lihat kesimpulan. Bila untung turun di bawah 15%, pertimbangkan menaikkan harga sedikit demi sedikit, membuat ukuran baru, atau menawarkan paket.</p></details>
+        <details class="lesson"><summary><span class="ln">5</span>Melihat harga pesaing</summary>
+          <p>Harga dari modal adalah batas bawah agar tidak rugi. Bandingkan dengan harga pesaing: kalau jauh lebih murah, cari cara menekan biaya; kalau lebih mahal, tonjolkan keunggulan produk (rasa, kemasan, khas daerah) atau jual di tempat yang menghargai kualitas.</p></details>
+        <details class="lesson"><summary><span class="ln">6</span>Catat penjualan, lihat untung sebenarnya</summary>
+          <p>Perhitungan adalah rencana. Dengan mencatat jumlah terjual setiap hari di Beranda, Anda bisa melihat apakah untung bulan ini sesuai rencana dan produk mana yang paling menguntungkan.</p></details>
+      </div>
+    </section>
   </main>
 
   <!-- ================= LEMBAR ISIAN ================= -->
@@ -903,6 +1008,11 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       </ul>
 
       <h2>Versi & catatan perubahan</h2>
+      <p style="margin-bottom:4px"><b>Versi 1.5.0</b> (1 November 2026)</p>
+      <ul>
+        <li>Biaya bulanan dipakai bersama, PPh final 0,5%, rencana sebulan, catatan penjualan, atur harga (pesaing, harga enak dibaca, paket).</li>
+        <li>Template produk khas Majene, pelajaran singkat, kirim masukan, penafian.</li>
+      </ul>
       <p style="margin-bottom:4px"><b>Versi 1.4.0</b> (1 November 2026)</p>
       <ul>
         <li>Beranda berisi kartu produk, navigasi bawah berikon, menu Lainnya, dan Pengaturan.</li>
@@ -942,6 +1052,9 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       </ul>
       <p class="hint">Versi 0.2: mode per batch/per unit, nama HargaPas. Versi 0.1: prototipe pertama.</p>
 
+      <h2>Penafian</h2>
+      <p>HargaPas adalah alat bantu perhitungan. Hasilnya bergantung pada data yang Anda isi dan bukan nasihat keuangan, pajak, atau hukum. Untuk keputusan penting, konsultasikan dengan pendamping UKM, konsultan pajak, atau lembaga terkait.</p>
+
       <h2>Kode sumber</h2>
       <p>Kode HargaPas terbuka di <a href="https://github.com/rakasiwifajar/hargapas" target="_blank" rel="noopener">github.com/rakasiwifajar/hargapas</a>.</p>
     </section>
@@ -973,7 +1086,8 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     <div class="sure-strip" aria-hidden="true"></div>
     <b>HargaPas dikembangkan oleh Universitas Terbuka Majene</b>
     <span>Dikembangkan oleh Fajar Rakasiwi · <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@ecampus.ut.ac.id</a></span>
-    <span>Versi 1.4.0 · Gratis untuk UKM · <a href="#privasi">Privasi</a> · <a href="#tentang">Tentang & metode</a></span>
+    <span>Hasil hitungan adalah alat bantu, bukan nasihat keuangan atau pajak.</span>
+    <span>Versi 1.5.0 · Gratis untuk UKM · <a href="#privasi">Privasi</a> · <a href="#tentang">Tentang & metode</a></span>
   </footer>
 </div>
 
@@ -1026,6 +1140,17 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     <img id="kartuImg" alt="Kartu harga produk" style="width:100%;border-radius:12px;border:1px solid var(--line);display:block">
     <p class="hint" id="kartuHint" style="margin:8px 0 0">Tekan lama gambar untuk menyimpan atau membagikan.</p>
     <div class="ob-actions" style="margin-top:12px"><button class="btn" type="button" id="kartuClose">Tutup</button><button class="btn cta" type="button" id="kartuShare">Bagikan</button></div>
+  </div>
+</div>
+
+<!-- Catat penjualan -->
+<div class="overlay" id="jualDlg" hidden role="dialog" aria-modal="true" aria-labelledby="jualTitle">
+  <div class="sheet">
+    <h2 id="jualTitle">Catat penjualan</h2>
+    <div class="field"><label for="jualTgl">Tanggal</label><input id="jualTgl" type="date"></div>
+    <p class="hint" style="margin:8px 0 4px">Isi jumlah yang terjual pada tanggal ini. Kosongkan bila tidak ada.</p>
+    <div id="jualList" class="jual-list"></div>
+    <div class="ob-actions" style="margin-top:12px"><button class="btn" type="button" id="jualBatal">Batal</button><button class="btn primary" type="button" id="jualSimpan">Simpan</button></div>
   </div>
 </div>
 
@@ -1199,24 +1324,90 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   const marginDariMarkup = (m) => m / (1 + m);
 
   // Harga per kanal. kanal: [{ nama, tipe: 'langsung'|'diskon'|'komisi', persen, biaya }]
-  // 'langsung' = harga toko; 'diskon' = harga toko dikurangi persen; 'komisi' = harga tayang menutup komisi.
+  // 'langsung' = harga toko (boleh punya potongan persen, mis. QRIS, dan biaya per unit, mis. ongkir);
+  // 'diskon' = harga toko dikurangi persen; 'komisi' = harga tayang menutup komisi.
+  // opsi.pajak = persen dari omzet (mis. PPh final 0,5%) yang dipotong di semua kanal.
   function hargaSemuaKanal(hpp, opsi, kanal) {
-    const metode = opsi.metode, persen = num(opsi.persen), step = num(opsi.bulat);
+    const metode = opsi.metode, persen = num(opsi.persen), step = num(opsi.bulat), pajak = num(opsi.pajak);
     const gTarget = metode === 'margin' ? persen : marginDariMarkup(persen / 100) * 100;
-    const toko = bulatkan(hargaDasar(hpp, metode, persen), step);
+    const tokoK = (kanal || []).find((c) => c.tipe === 'langsung');
+    const kToko = pajak + (tokoK ? num(tokoK.persen) : 0), fToko = tokoK ? num(tokoK.biaya) : 0;
+    const toko = bulatkan(hargaKanal(hpp, kToko, fToko, gTarget), step);
     return (kanal || []).map((c) => {
-      let harga, k = 0, f = num(c.biaya);
+      let harga, k = pajak, f = 0;
       if (c.tipe === 'diskon') harga = toko * (1 - num(c.persen) / 100);
-      else if (c.tipe === 'komisi') { k = num(c.persen); harga = bulatkan(hargaKanal(hpp, k, f, gTarget), step); }
-      else { harga = toko; f = 0; }
+      else if (c.tipe === 'komisi') { k = pajak + num(c.persen); f = num(c.biaya); harga = bulatkan(hargaKanal(hpp, k, f, gTarget), step); }
+      else { harga = toko; k = kToko; f = fToko; }
       const ok = Number.isFinite(harga) && harga > 0;
       const diterima = ok ? harga * (1 - k / 100) - f : null;
-      return { ...c, harga: ok ? harga : null, diterima, laba: ok ? diterima - hpp : null, margin: ok ? marginAktual(harga, hpp, k, f) : null };
+      return { ...c, harga: ok ? harga : null, diterima, laba: ok ? diterima - hpp : null, margin: ok ? marginAktual(harga, hpp, k, f) : null, potongan: k, biayaUnit: f };
     });
   }
 
-  function bep(fc, harga, vc) {
-    const kontribusi = num(harga) - num(vc);
+  // Bagian biaya bulanan bersama untuk satu produk.
+  // produk: [{ id, bersama: bool, jamBulan, porsi }], cara: 'rata' | 'waktu' | 'manual'
+  function bagianBersama(produk, id, cara) {
+    const ikut = (produk || []).filter((p) => p.bersama);
+    const p = ikut.find((x) => x.id === id);
+    if (!p || !ikut.length) return 0;
+    if (cara === 'manual') return clamp(num(p.porsi) / 100, 0, 1);
+    if (cara === 'waktu') {
+      const tot = ikut.reduce((s, x) => s + num(x.jamBulan), 0);
+      if (tot > 0) return num(p.jamBulan) / tot;
+    }
+    return 1 / ikut.length;
+  }
+  function skalaOverhead(oh, f) {
+    oh = oh || {};
+    const out = {};
+    ['gas', 'listrik', 'sewa', 'hargaAlat'].forEach((k) => { out[k] = num(oh[k]) * f; });
+    out.umurAlat = oh.umurAlat;
+    out.lain = (oh.lain || []).map((x) => ({ nilai: num(x.nilai) * f }));
+    return out;
+  }
+
+  // Kontribusi per unit setelah potongan (pajak, komisi) dan biaya per unit.
+  const kontribusiUnit = (harga, vc, potonganPct, biayaUnit) => num(harga) * (1 - num(potonganPct) / 100) - num(biayaUnit) - num(vc);
+
+  // Jumlah unit per bulan agar untung bersih = target.
+  function unitUntukTarget(fc, vc, harga, target, potonganPct, biayaUnit) {
+    const k = kontribusiUnit(harga, vc, potonganPct, biayaUnit);
+    if (!(k > 0)) return null;
+    return Math.max(0, Math.ceil((num(fc) + num(target)) / k - 1e-9));
+  }
+
+  // Proyeksi sebulan dari rencana jumlah terjual.
+  function proyeksi(fc, vc, harga, unit, potonganPct, biayaUnit) {
+    const u = num(unit), P = num(harga);
+    const omzet = u * P;
+    const potongan = omzet * num(potonganPct) / 100 + u * num(biayaUnit);
+    const biayaVariabel = u * num(vc);
+    const untung = omzet - potongan - biayaVariabel - num(fc);
+    return { omzet, potongan, biayaVariabel, biayaTetap: num(fc), untung };
+  }
+
+  // Pilihan harga "enak dibaca" di sekitar harga dasar, tidak di bawah batas margin minimum.
+  function hargaPsikologis(hargaMin, hpp, potonganPct, biayaUnit) {
+    const P = num(hargaMin);
+    if (!(P > 0)) return [];
+    const step = P >= 50000 ? 5000 : P >= 10000 ? 1000 : P >= 2000 ? 500 : 100;
+    const naik = Math.ceil(P / step - 1e-9) * step;
+    const cand = new Set([naik - (step >= 1000 ? 100 : step >= 500 ? 50 : 10), naik, naik + step, naik + step - (step >= 1000 ? 100 : 50)]);
+    return [...cand].filter((x) => x > hpp && x >= P * 0.97).sort((a, b) => a - b).slice(0, 3)
+      .map((x) => ({ harga: x, margin: marginAktual(x, hpp, potonganPct, biayaUnit) }));
+  }
+
+  // Harga paket isi n dengan diskon persen dari total harga satuan.
+  function hargaPaket(hargaSatuan, hpp, n, diskonPct, potonganPct, biayaUnit, step) {
+    const isi = Math.max(1, Math.round(num(n)));
+    const harga = bulatkan(num(hargaSatuan) * isi * (1 - num(diskonPct) / 100), num(step));
+    const modal = num(hpp) * isi;
+    const diterima = harga * (1 - num(potonganPct) / 100) - num(biayaUnit);
+    return { isi, harga, untung: diterima - modal, margin: harga > 0 ? (diterima - modal) / harga : null, hematPerUnit: num(hargaSatuan) - harga / isi };
+  }
+
+  function bep(fc, harga, vc, potonganPct, biayaUnit) {
+    const kontribusi = kontribusiUnit(harga, vc, potonganPct, biayaUnit);
     if (!(kontribusi > 0)) return null;
     const unit = num(fc) / kontribusi;
     const unitBulat = Math.max(0, Math.ceil(unit - 1e-9));
@@ -1251,7 +1442,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     return out;
   }
 
-  const api = { SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
+  const api = { bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);
 
@@ -1259,7 +1450,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 <script>
 (function(){
   'use strict';
-  const VERSION = '1.4.0';
+  const VERSION = '1.5.0';
   const H = window.HPP;
   const $ = (s, el=document) => el.querySelector(s);
   const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
@@ -1308,8 +1499,10 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     bahan: [emptyBahan()],
     overhead: { gas:'', listrik:'', sewa:'', hargaAlat:'', umurAlat:'', lain0:'' },
     harga: { metode:'margin', persen:30, bulat:500, kanal: defaultKanal() },
-    mundur: { harga:'', komisi:'' }
+    mundur: { harga:'', komisi:'' },
+    ohMode: 'sendiri', porsi: '', pesaing: { min:'', max:'' }, paket: { isi:'', diskon:'' }, rencana: { unit:'', target:'' }
   });
+  const emptyOH = () => ({ gas:'', listrik:'', sewa:'', hargaAlat:'', umurAlat:'', lain0:'' });
   const contoh = () => ({
     ...blank(), isContoh: true, nama:'Bolu pisang (contoh)', satuan:'potong', hasilBatch:24, upahJam:15000, jamBatch:3, kemasan:1000, batchBulan:20,
     bahan: [
@@ -1328,7 +1521,12 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     { id:'minuman', judul:'Minuman', ket:'Sekali buat · cup', mode:'batch', satuan:'cup', bahan:[['Bubuk kopi / teh','g','g'],['Gula','kg','g'],['Susu','liter','ml'],['Es batu','kg','kg']] },
     { id:'camilan', judul:'Keripik & camilan', ket:'Sekali goreng · bungkus', mode:'batch', satuan:'bungkus', bahan:[['Bahan utama (singkong, pisang)','kg','kg'],['Minyak goreng','liter','ml'],['Bumbu','g','g'],['Garam','g','g']] },
     { id:'konveksi', judul:'Jahitan & konveksi', ket:'Satu per satu · pcs', mode:'unit', satuan:'pcs', bahan:[['Kain','m','cm'],['Benang','pcs','pcs'],['Kancing / resleting','pcs','pcs'],['Label','pcs','pcs']] },
-    { id:'kerajinan', judul:'Kerajinan', ket:'Satu per satu · pcs', mode:'unit', satuan:'pcs', bahan:[['Bahan utama','pcs','pcs'],['Lem / bahan finishing','ml','ml'],['Aksesori','pcs','pcs']] }
+    { id:'kerajinan', judul:'Kerajinan', ket:'Satu per satu · pcs', mode:'unit', satuan:'pcs', bahan:[['Bahan utama','pcs','pcs'],['Lem / bahan finishing','ml','ml'],['Aksesori','pcs','pcs']] },
+    { id:'abonayam', lokal:true, judul:'Abon ayam', ket:'Sekali masak · bungkus', mode:'batch', satuan:'bungkus', bahan:[['Daging ayam','kg','kg'],['Bawang merah','kg','g'],['Bawang putih','kg','g'],['Gula merah','kg','g'],['Ketumbar','g','g'],['Lengkuas','g','g'],['Serai','ikat','ikat'],['Santan / kelapa','buah','buah'],['Minyak goreng','liter','ml'],['Garam','g','g']] },
+    { id:'abonikan', lokal:true, judul:'Abon ikan', ket:'Sekali masak · bungkus', mode:'batch', satuan:'bungkus', bahan:[['Ikan (tuna / cakalang)','kg','kg'],['Bawang merah','kg','g'],['Bawang putih','kg','g'],['Cabai','kg','g'],['Gula merah','kg','g'],['Ketumbar','g','g'],['Lengkuas','g','g'],['Serai','ikat','ikat'],['Santan / kelapa','buah','buah'],['Minyak goreng','liter','ml'],['Garam','g','g']] },
+    { id:'tuing', lokal:true, judul:'Sambal ikan tuing-tuing', ket:'Sekali masak · botol', mode:'batch', satuan:'botol', bahan:[['Ikan tuing-tuing (ikan terbang)','kg','g'],['Cabai rawit','kg','g'],['Cabai merah','kg','g'],['Bawang merah','kg','g'],['Bawang putih','kg','g'],['Tomat','kg','g'],['Minyak goreng','liter','ml'],['Gula','kg','g'],['Garam','g','g']] },
+    { id:'bawanggoreng', lokal:true, judul:'Bawang goreng', ket:'Sekali goreng · bungkus', mode:'batch', satuan:'bungkus', bahan:[['Bawang merah','kg','kg'],['Minyak goreng','liter','ml'],['Tepung (bila dipakai)','kg','g'],['Garam','g','g']] },
+    { id:'boncabe', lokal:true, judul:'Bon cabe (cabai bubuk)', ket:'Sekali buat · botol', mode:'batch', satuan:'botol', bahan:[['Cabai rawit','kg','kg'],['Bawang putih','kg','g'],['Daun jeruk','lembar','lembar'],['Garam','g','g'],['Botol / wadah','pcs','pcs']] }
   ];
   const UNIT_GROUPS = [['Berat', ['g','ons','kg']], ['Cairan', ['ml','liter']], ['Panjang', ['cm','m']], ['Hitungan', ['butir','buah','biji','pcs','lembar','bungkus','sachet','ikat','botol','kaleng']]];
   const UNIT_LABEL = { g:'gram', ons:'ons', kg:'kg', ml:'ml', liter:'liter', cm:'cm', m:'meter', butir:'butir', buah:'buah', biji:'biji', pcs:'pcs', lembar:'lembar', bungkus:'bungkus', sachet:'sachet', ikat:'ikat', botol:'botol', kaleng:'kaleng' };
@@ -1364,12 +1562,16 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       delete h.diskonReseller; delete h.komisi; delete h.biayaMP;
     }
     if (!Array.isArray(p.bahan) || !p.bahan.length) p.bahan = [emptyBahan()];
+    p.ohMode = p.ohMode || 'sendiri'; if (p.porsi === undefined) p.porsi = '';
+    p.pesaing = { min:'', max:'', ...(p.pesaing || {}) }; p.paket = { isi:'', diskon:'', ...(p.paket || {}) }; p.rencana = { unit:'', target:'', ...(p.rencana || {}) };
     p.bahan.forEach(b => { if (b.satuanIsi) b.satuanIsi = H.normSatuan(b.satuanIsi); if (!b.satuanPakai) b.satuanPakai = b.satuanIsi || ''; else b.satuanPakai = H.normSatuan(b.satuanPakai); });
     return p;
   }
   function load(){
     try { state = JSON.parse(lsGet(KEY) || lsGet(OLDKEY)); } catch(e) { state = null; }
     if (!state || !Array.isArray(state.products)) state = { products: [], activeId: null };
+    state.usaha = { bagi: 'rata', pph: false, ...(state.usaha || {}) }; state.usaha.overhead = { ...emptyOH(), ...(state.usaha.overhead || {}) };
+    if (!Array.isArray(state.penjualan)) state.penjualan = [];
     state.products.forEach(migrate);
     if (!state.firstUse) state.firstUse = new Date().toISOString();
     if (!state.products.find(p => p.id === state.activeId)) state.activeId = state.products[0] ? state.products[0].id : null;
@@ -1387,8 +1589,14 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   const cur = () => state.products.find(p => p.id === state.activeId) || state.products[0];
   const getPath = (o, path) => path.split('.').reduce((x, k) => (x ? x[k] : undefined), o);
   function setPath(o, path, val){ const ks = path.split('.'); const last = ks.pop(); const t = ks.reduce((x, k) => (x[k] ??= {}), o); t[last] = val; }
+  const jamBulan = (p) => (p.mode === 'unit' ? (Number(p.menitUnit) || 0) / 60 : (Number(p.jamBatch) || 0)) * (Number(p.batchBulan) || 0);
+  function shareOf(p){
+    return H.bagianBersama(state.products.map(x => ({ id: x.id, bersama: x.ohMode === 'bersama', jamBulan: jamBulan(x), porsi: x.porsi })), p.id, state.usaha.bagi);
+  }
+  const ohTarget = (p, key) => (key.startsWith('overhead.') && p.ohMode === 'bersama') ? state.usaha : p;
   function toEngine(p){
     const e = { ...p, overhead: { ...p.overhead, lain: [{ nilai: p.overhead.lain0 }] } };
+    if (p.ohMode === 'bersama') { const u = state.usaha.overhead; e.overhead = H.skalaOverhead({ ...u, lain: [{ nilai: u.lain0 }] }, shareOf(p)); }
     if (p.mode === 'unit') { e.hasilBatch = 1; e.jamBatch = (Number(p.menitUnit) || 0) / 60; }
     return e;
   }
@@ -1432,10 +1640,11 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   function fillInputs(){
     const p = cur(); if (!p) return;
     $$('#view-hitung [data-k]').forEach(el => {
-      const v = getPath(p, el.dataset.k);
+      const v = getPath(ohTarget(p, el.dataset.k), el.dataset.k);
       el.value = el.classList.contains('num') ? fmtInput(v) : (v ?? '');
     });
     $$('[data-metode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.metode === p.harga.metode)));
+    applyOh(); $('#f_pph').checked = !!state.usaha.pph;
     applyMode(); renderBahan(); renderKanalEditor(); renderDatalist();
   }
   function renderDatalist(){
@@ -1504,7 +1713,12 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       const d = document.createElement('div'); d.className = 'kcard';
       if (k.tipe === 'langsung') {
         d.innerHTML = `<div class="khead"><label class="sr" for="kn${i}">Nama kanal</label><input id="kn${i}" data-kn="${i}" data-kf="nama" type="text"></div>
-          <div class="knote">Harga dasar, tanpa potongan. Kanal lain dihitung dari sini.</div>`;
+          <div class="kf">
+            <div class="field"><label for="kp${i}">Potongan (mis. QRIS)</label><div class="inp has-suf"><input id="kp${i}" class="num" data-kn="${i}" data-kf="persen" type="text" inputmode="decimal" placeholder="0"><span class="suf">%</span></div></div>
+            <div class="field"><label for="kb${i}">Biaya/unit (mis. ongkir)</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kb${i}" class="num" data-kn="${i}" data-kf="biaya" type="text" inputmode="decimal" placeholder="0"></div></div>
+            <div></div>
+          </div>
+          <div class="knote">Harga dasar. Potongan dan biaya di sini ikut diperhitungkan agar untung tetap.</div>`;
       } else {
         const komisi = k.tipe === 'komisi';
         d.innerHTML = `
@@ -1554,7 +1768,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     $('#outLegend').innerHTML = comps.map(c => `<div><span class="k"><i style="background:${c[2]}"></i>${c[0]}</span><b>${fmtRp(c[1])} <span style="color:var(--muted);font-weight:500">${r.hpp>0?fmtPct(c[1]/r.hpp):''}</span></b></div>`).join('');
 
     // harga
-    const h = { ...p.harga, metode: state.ui === 'sederhana' ? 'margin' : p.harga.metode }, step = Number(h.bulat) || 0, persen = Number(h.persen) || 0;
+    const h = { ...p.harga, metode: state.ui === 'sederhana' ? 'margin' : p.harga.metode, pajak: state.usaha.pph ? 0.5 : 0 }, step = Number(h.bulat) || 0, persen = Number(h.persen) || 0;
     const pMarkup = H.hargaDasar(r.hpp, 'markup', persen), pMargin = H.hargaDasar(r.hpp, 'margin', persen);
     $('#outCompare').innerHTML = `
       <div class="box ${h.metode==='margin'?'on':''}"><div class="lbl2">Untung ${fmtNum(persen)}% dari harga jual <span class="term">(margin)</span></div><div class="val">${fmtRp(pMargin)}</div><div class="eq">sama dengan tambah ${fmtPct(H.markupDariMargin(persen/100))} dari modal</div></div>
@@ -1565,12 +1779,14 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     const kanal = H.hargaSemuaKanal(r.hpp, h, h.kanal);
     $('#outKanal').innerHTML = kanal.map(c => {
       const cls = c.margin === null || c.margin < 0 ? 'bad' : c.margin < 0.15 ? 'warn' : 'good';
-      const sub = c.tipe === 'langsung' ? 'harga dasar' : c.tipe === 'diskon' ? `diskon ${fmtNum(Number(c.persen)||0)}% dari harga toko` : `komisi ${fmtNum(Number(c.persen)||0)}%` + (Number(c.biaya) ? ` + ${fmtRp(Number(c.biaya))}` : '');
+      const pot = (c.potongan ? ` · potongan ${fmtNum(c.potongan)}%` : '') + (c.biayaUnit ? ` + ${fmtRp(c.biayaUnit)}` : '');
+      const sub = (c.tipe === 'langsung' ? 'harga dasar' : c.tipe === 'diskon' ? `diskon ${fmtNum(Number(c.persen)||0)}% dari harga toko` : 'harga tayang') + pot;
       return `<tr><td class="chname">${esc(c.nama || 'Kanal')}<small>${sub}</small></td><td class="n"><b>${c.harga === null ? 'Tidak mungkin' : fmtRp(c.harga)}</b></td><td class="n hide-s">${fmtRp(c.diterima)}</td><td class="n">${fmtRp(c.laba)}</td><td class="n"><span class="pill ${cls}">${fmtPct(c.margin)}</span></td></tr>`;
     }).join('');
     const toko = kanal.find(c => c.tipe === 'langsung');
     const hargaToko = toko && toko.harga !== null ? toko.harga : null;
-    $('#outPriceSimple').innerHTML = hargaToko ? `<div class="l">Harga jual yang disarankan</div><div class="v">${fmtRp(hargaToko)} <span style="font-size:16px;font-weight:600;color:var(--muted)">/ ${esc(sat)}</span></div><div class="s">Untung ${fmtRp(hargaToko - r.hpp)} setiap ${esc(sat)}</div>` : '';
+    const kT = toko ? toko.potongan : 0, fT = toko ? toko.biayaUnit : 0;
+    $('#outPriceSimple').innerHTML = hargaToko ? `<div class="l">Harga jual yang disarankan</div><div class="v">${fmtRp(hargaToko)} <span style="font-size:16px;font-weight:600;color:var(--muted)">/ ${esc(sat)}</span></div><div class="s">Untung ${fmtRp(toko.laba)} setiap ${esc(sat)}${kT ? ' (setelah potongan ' + fmtNum(kT) + '%)' : ''}</div>` : '';
 
     // hitung mundur
     const mh = Number(p.mundur.harga) || 0, mk = Number(p.mundur.komisi) || 0;
@@ -1584,7 +1800,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
     // BEP
     $('#bepHargaTxt').textContent = fmtRp(hargaToko);
-    const b = hargaToko ? H.bep(r.fc, hargaToko, r.vc) : null;
+    const b = hargaToko ? H.bep(r.fc, hargaToko, r.vc, kT, fT) : null;
     const nb = $('#noteBEP');
     if (b) {
       $('#outBEP').innerHTML = `
@@ -1602,15 +1818,57 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       nb.hidden = true;
     }
 
+    // biaya bersama
+    if (p.ohMode === 'bersama') {
+      const n = state.products.filter(x => x.ohMode === 'bersama').length, sh = shareOf(p);
+      const cara = { rata: 'dibagi rata', waktu: 'sesuai lama produksi', manual: 'sesuai porsi yang Anda atur' }[state.usaha.bagi];
+      $('#ohInfo').innerHTML = `<span class="grow">Biaya bulanan usaha dipakai <b>${n} produk</b>, ${cara}. Bagian produk ini <b>${fmtPct(sh)}</b> = ${fmtRp(r.overheadBulan)} per bulan.</span>`;
+      $('#fieldPorsi').hidden = state.usaha.bagi !== 'manual';
+    }
+
+    // atur harga: pesaing, harga psikologis, paket
+    const pmin = Number(p.pesaing.min) || 0, pmax = Number(p.pesaing.max) || 0;
+    if (hargaToko && pmin > 0 && pmax > pmin) {
+      const lo = Math.min(pmin, hargaToko) * 0.95, hi = Math.max(pmax, hargaToko) * 1.05, pos = (v) => ((v - lo) / (hi - lo) * 100).toFixed(1);
+      const posisi = hargaToko < pmin ? 'lebih murah dari semua pesaing' : hargaToko > pmax ? 'lebih mahal dari semua pesaing' : 'berada di rentang harga pesaing';
+      $('#outPesaing').innerHTML = `<div class="pbar" role="img" aria-label="Harga Anda ${posisi}"><div class="mk" style="left:${pos(hargaToko)}%"><span>Anda ${fmtRp(hargaToko)}</span></div></div>
+        <div class="pbar-l"><span>${fmtRp(pmin)}</span><span>${fmtRp(pmax)}</span></div>
+        <p class="hint" style="margin:6px 0 0">Harga Anda ${posisi}. ${hargaToko > pmax ? 'Tonjolkan keunggulan produk, atau periksa biaya yang bisa ditekan.' : hargaToko < pmin ? 'Ada ruang menaikkan harga tanpa kalah bersaing.' : ''}</p>`;
+    } else $('#outPesaing').innerHTML = '<p class="hint" style="margin:6px 0 0">Isi harga termurah dan termahal pesaing untuk melihat posisi harga Anda.</p>';
+    const ps = hargaToko ? H.hargaPsikologis(hargaToko, r.hpp, kT, fT) : [];
+    $('#outPsiko').innerHTML = ps.length ? ps.map(x => `<div class="pc"><b>${fmtRp(x.harga)}</b><span>untung ${fmtPct(x.margin)}</span></div>`).join('') : '<p class="hint">—</p>';
+    const pIsi = Number(p.paket.isi) || 0;
+    if (hargaToko && pIsi > 1) {
+      const pk = H.hargaPaket(hargaToko, r.hpp, pIsi, p.paket.diskon, kT, fT, step);
+      $('#outPaket').innerHTML = `<div class="box"><div class="lbl2">Harga paket isi ${pk.isi}</div><div class="val">${fmtRp(pk.harga)}</div></div>
+        <div class="box"><div class="lbl2">Untung per paket</div><div class="val" style="color:${pk.untung < 0 ? 'var(--bad)' : 'inherit'}">${fmtRp(pk.untung)}</div></div>
+        <div class="box"><div class="lbl2">Pembeli hemat per ${esc(sat)}</div><div class="val">${fmtRp(pk.hematPerUnit)}</div></div>`;
+    } else $('#outPaket').innerHTML = '<div class="box wide"><div class="lbl2">Isi jumlah per paket (2 atau lebih) untuk melihat harga paket</div></div>';
+
+    // rencana sebulan
+    const ru = Number(p.rencana.unit) || 0, rt = Number(p.rencana.target) || 0;
+    const nr = $('#noteRencana');
+    if (hargaToko) {
+      const pr = H.proyeksi(r.fc, r.vc, hargaToko, ru, kT, fT);
+      const perlu = rt > 0 ? H.unitUntukTarget(r.fc, r.vc, hargaToko, rt, kT, fT) : null;
+      $('#outRencana').innerHTML = `<div class="box"><div class="lbl2">Omzet sebulan</div><div class="val">${ru ? fmtRp(pr.omzet) : '—'}</div></div>
+        <div class="box"><div class="lbl2">Untung bersih sebulan</div><div class="val" style="color:${ru && pr.untung < 0 ? 'var(--bad)' : ru ? 'var(--good)' : 'inherit'}">${ru ? fmtRp(pr.untung) : '—'}</div></div>
+        <div class="box"><div class="lbl2">Perlu terjual untuk target</div><div class="val">${rt ? (perlu === null ? 'Tidak mungkin' : fmtNum(perlu) + ' ' + esc(sat)) : '—'}</div></div>`;
+      const msg = [];
+      if (ru) msg.push(`Dari ${fmtNum(ru)} ${sat}: omzet ${fmtRp(pr.omzet)}, dikurangi biaya bahan, tenaga & kemasan ${fmtRp(pr.biayaVariabel)}${pr.potongan ? ', potongan ' + fmtRp(pr.potongan) : ''}, dan biaya tetap ${fmtRp(pr.biayaTetap)}.`);
+      if (rt && perlu !== null && r.produksiBulan > 0 && perlu > r.produksiBulan) msg.push(`Target ini butuh ${fmtNum(perlu)} ${sat}, lebih dari produksi Anda sekarang (${fmtNum(r.produksiBulan)} ${sat}). Naikkan harga, tambah produksi, atau turunkan target.`);
+      nr.hidden = !msg.length; nr.className = 'note ' + (rt && perlu !== null && r.produksiBulan > 0 && perlu > r.produksiBulan ? 'warn' : 'info'); nr.textContent = msg.join(' ');
+    } else { $('#outRencana').innerHTML = ''; nr.hidden = true; }
+
     // kesimpulan (bahasa sehari-hari)
     const kes = $('#kesimpulan'), mtk = hargaToko ? H.marginAktual(hargaToko, r.hpp, 0, 0) : null;
     let level = '', main = '', sub = '';
     if (!(r.hpp > 0)) { main = 'Isi bahan dan biaya untuk melihat hasilnya.'; sub = 'Mulai dari langkah 1: bahan yang dibeli.'; }
     else if (!hargaToko) { level = 'bad'; main = 'Harga jual belum bisa dihitung.'; sub = 'Periksa persentase untung yang diinginkan.'; }
     else {
-      level = mtk < 0 ? 'bad' : mtk < 0.15 ? 'warn' : 'good';
+      const mtk2 = toko.margin; level = mtk2 < 0 ? 'bad' : mtk2 < 0.15 ? 'warn' : 'good';
       main = `Jual ${fmtRp(hargaToko)} per ${sat}.`;
-      const parts = [`Modal Anda ${fmtRp(r.hpp)} per ${sat}, jadi untungnya ${fmtRp(hargaToko - r.hpp)} setiap ${sat}.`];
+      const parts = [`Modal Anda ${fmtRp(r.hpp)} per ${sat}, jadi untungnya ${fmtRp(toko.laba)} setiap ${sat}${kT ? ' setelah potongan' : ''}.`];
       if (level === 'warn') parts.push('Untungnya tipis; pertimbangkan menaikkan harga atau menekan biaya.');
       if (level === 'bad') parts.push('Harga ini masih rugi.');
       if (b && b.unitBulat > 0) parts.push(`Supaya balik modal, jual paling sedikit ${fmtNum(b.unitBulat)} ${sat} sebulan.`);
@@ -1698,10 +1956,10 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <table><tbody>
         <tr><td>Biaya tetap per bulan (sewa, penyusutan, lain-lain)</td><td class="n">${fmtRp(r.fc)}</td></tr>
         <tr><td>Biaya variabel per ${esc(sat)}</td><td class="n">${fmtRp(r.vc)}</td></tr>
-        <tr><td>Harga toko</td><td class="n">${fmtRp(hargaToko)}</td></tr>
+        <tr><td>Harga toko${state.usaha.pph ? ' (sudah memperhitungkan PPh final 0,5%)' : ''}</td><td class="n">${fmtRp(hargaToko)}</td></tr>
         <tr class="tot"><td>Titik impas</td><td class="n">${b ? fmtNum(b.unitBulat) + ' ' + esc(sat) + ' (' + fmtRp(b.rupiah) + ')' : 'Harga belum menutup biaya variabel'}</td></tr>
       </tbody></table>
-      <div class="foot">Dihitung dengan HargaPas versi ${VERSION} (metode full costing; titik impas dengan pemisahan biaya tetap dan variabel). Hasil bergantung pada data yang diisi pengguna. HargaPas dikembangkan oleh Universitas Terbuka Majene.</div>`).replace(/<table>/g, '<div class="tw"><table>').replace(/<\/table>/g, '</table></div>');
+      <div class="foot">Dihitung dengan HargaPas versi ${VERSION} (metode full costing; titik impas dengan pemisahan biaya tetap dan variabel). Hasil bergantung pada data yang diisi pengguna. HargaPas dikembangkan oleh Universitas Terbuka Majene (Fajar Rakasiwi). Alat bantu perhitungan, bukan nasihat keuangan atau pajak.</div>`).replace(/<table>/g, '<div class="tw"><table>').replace(/<\/table>/g, '</table></div>');
   }
 
   // ---------- harga bahan (library) ----------
@@ -1767,6 +2025,9 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     margin: ['Untung dari harga jual atau dari modal', 'Untung dari harga jual (margin): untung dibagi harga jual. Tambah dari modal (markup): untung dibagi modal. Modal Rp10.000 ditambah 30% jadi Rp13.000, tetapi untungnya hanya 23% dari harga jual.'],
     kanal: ['Tempat menjual', 'Tempat Anda menjual barang. Reseller biasanya dapat potongan harga. Marketplace dan ojek online memotong komisi, jadi harganya perlu lebih tinggi supaya untung tetap. Istilahnya kanal penjualan.'],
     bep: ['Batas balik modal (BEP)', 'Jumlah barang yang harus terjual sebulan supaya biaya tetap tertutup: tidak untung, tidak rugi. Penjualan di atas jumlah ini menjadi untung. Istilahnya titik impas atau BEP.'],
+    bersama: ['Biaya bulanan dipakai bersama', 'Kalau gas, listrik, sewa, dan alat dipakai untuk beberapa produk, pilih "Dipakai bersama". Biaya diisi sekali untuk seluruh usaha, lalu dibagi ke setiap produk: rata, sesuai lama produksi, atau sesuai persen yang Anda atur. Dengan begitu modal tiap produk tidak terhitung terlalu tinggi.'],
+    pph: ['PPh final UMKM 0,5%', 'Pajak penghasilan bagi UMKM orang pribadi dengan omzet sampai Rp4,8 miliar setahun: 0,5% dari omzet. Karena dihitung dari setiap penjualan, HargaPas menaikkan harga sedikit agar untung Anda tetap. Ketentuan pajak bisa berubah; tanyakan ke kantor pajak bila ragu.'],
+    rencana: ['Rencana sebulan', 'Isi berapa barang yang ingin dijual sebulan untuk melihat perkiraan untung bersih (sudah dikurangi semua biaya). Atau isi untung yang Anda inginkan, lalu HargaPas menghitung berapa barang yang harus terjual.'],
     tampilan: ['Tampilan Sederhana atau Lengkap', 'Sederhana: langkah demi langkah, hanya modal, harga jual, dan untung. Lengkap: semua fitur, termasuk tempat menjual, cek harga, dan simulasi. Bisa diganti kapan saja.']
   };
   const pop = $('#pop'); let popFor = null;
@@ -1815,9 +2076,15 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     minuman: '<path d="M6 8h12l-1.5 12h-9z"/><path d="M5 8h14M10 8l1-5h3"/>',
     camilan: '<path d="M7 3h10l-1 3 1 15H7L8 6z"/><path d="M9 11h6M9 15h6"/>',
     konveksi: '<path d="M8 4l4 2 4-2 4 4-3 3v9H7v-9L4 8z"/>',
-    kerajinan: '<path d="M4 10h16l-2 10H6z"/><path d="M8 10a4 4 0 018 0M9 14l.5 3M15 14l-.5 3"/>'
+    kerajinan: '<path d="M4 10h16l-2 10H6z"/><path d="M8 10a4 4 0 018 0M9 14l.5 3M15 14l-.5 3"/>',
+    abonayam: '<path d="M5 9h14l-1.2 10.5a1.5 1.5 0 01-1.5 1.5H7.7a1.5 1.5 0 01-1.5-1.5z"/><path d="M8 9V6a4 4 0 018 0v3M9 14c1 1 2 1 3 0s2-1 3 0"/>',
+    abonikan: '<path d="M3 12c3-4 8-5 12-3l4-3v12l-4-3c-4 2-9 1-12-3z"/><circle cx="8" cy="11" r=".8"/>',
+    tuing: '<path d="M3 12c3-3 7-4 11-2l2-4 1 5 4 1-4 2-1 4-2-4c-4 2-8 1-11-2z"/><circle cx="7" cy="11.5" r=".8"/>',
+    bawanggoreng: '<path d="M12 3c3 3 6 6 6 10a6 6 0 01-12 0c0-4 3-7 6-10z"/><path d="M12 9v9M9 12l3 3 3-3"/>',
+    boncabe: '<path d="M9 3h6v3H9z"/><path d="M8 6h8l1 3v10a2 2 0 01-2 2H9a2 2 0 01-2-2V9z"/><path d="M10 13c1.5-1.5 3-1 4 1"/>'
   };
-  $('#tplGrid').innerHTML = TEMPLATES.map(t => `<button type="button" data-tpl="${t.id}"><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TPL_ICON[t.id] || ''}</svg></span><span><b>${esc(t.judul)}</b><span>${esc(t.ket)}</span></span></button>`).join('');
+  const tplBtn = (t) => `<button type="button" data-tpl="${t.id}"${t.lokal ? ' class="lokal"' : ''}><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TPL_ICON[t.id] || ''}</svg></span><span><b>${esc(t.judul)}</b><span>${esc(t.ket)}</span></span></button>`;
+  $('#tplGrid').innerHTML = '<div class="tpl-h">Produk khas Majene</div>' + TEMPLATES.filter(t => t.lokal).map(tplBtn).join('') + '<div class="tpl-h">Jenis usaha umum</div>' + TEMPLATES.filter(t => !t.lokal).map(tplBtn).join('');
   $('#tplGrid').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-tpl]'); if (!btn) return;
     const t = TEMPLATES.find(x => x.id === btn.dataset.tpl), p = blank();
@@ -1829,6 +2096,8 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       return { nama, harga:'', isi:'', satuanIsi: beli, pakai:'', satuanPakai: pakai };
     });
     p.touched = false;
+    const u = state.usaha.overhead;
+    if (state.products.some(x => x.ohMode === 'bersama') && Object.values(u).some(v => Number(v) > 0)) p.ohMode = 'bersama';
     state.products.push(p); state.activeId = p.id; openRows = new Set();
     closeOverlays(); if (location.hash !== '#hitung') { location.hash = '#hitung'; } renderSelect(); fillInputs(); compute(); save();
     $('#secBahan').open = true; $('#f_nama').focus();
@@ -1853,14 +2122,14 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   $('#cfNo').addEventListener('click', closeOverlays);
 
   // ---------- routing ----------
-  const VIEWS = ['beranda', 'hitung', 'bahan', 'lainnya', 'laporan', 'tentang', 'privasi', 'lembar'];
+  const VIEWS = ['beranda', 'hitung', 'bahan', 'lainnya', 'laporan', 'tentang', 'privasi', 'lembar', 'belajar'];
   function route(){
     if (location.hash.startsWith('#impor=')) { handleImport(location.hash.slice(7)); return; }
     let v = (location.hash || '#beranda').slice(1);
     if (!VIEWS.includes(v)) v = 'beranda';
     if ((v === 'hitung' || v === 'laporan') && !state.products.length) { history.replaceState(null, '', '#beranda'); v = 'beranda'; setTimeout(() => openOverlay('tplDlg'), 50); }
     $$('[data-page]').forEach(m => m.hidden = m.dataset.page !== v);
-    const navOf = { laporan: 'lainnya', tentang: 'lainnya', privasi: 'lainnya', lembar: 'lainnya' };
+    const navOf = { laporan: 'lainnya', tentang: 'lainnya', privasi: 'lainnya', lembar: 'lainnya', belajar: 'lainnya' };
     $$('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.dataset.view === (navOf[v] || v) ? 'page' : 'false'));
     document.body.classList.toggle('view-other', v !== 'hitung');
     if (v === 'beranda') renderBeranda();
@@ -1878,7 +2147,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     const val = el.classList.contains('num') ? onNumInput(el) : el.value;
     if (p && el.closest('#view-hitung') && (el.dataset.k || el.dataset.b !== undefined)) p.touched = true;
     if (el.dataset.k) {
-      setPath(p, el.dataset.k, el.tagName === 'SELECT' ? Number(val) : val);
+      setPath(ohTarget(p, el.dataset.k), el.dataset.k, el.tagName === 'SELECT' ? Number(val) : val);
       if (el.dataset.k === 'nama') renderSelect();
     } else if (el.dataset.b !== undefined) {
       const b = p.bahan[Number(el.dataset.b)];
@@ -2074,11 +2343,11 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   // ---------- beranda ----------
   function summaryOf(p){
     const r = H.hitungHPP(toEngine(p));
-    const h = { ...p.harga, metode: state.ui === 'sederhana' ? 'margin' : p.harga.metode };
+    const h = { ...p.harga, metode: state.ui === 'sederhana' ? 'margin' : p.harga.metode, pajak: state.usaha.pph ? 0.5 : 0 };
     const toko = H.hargaSemuaKanal(r.hpp, h, h.kanal).find(c => c.tipe === 'langsung');
     const harga = toko && toko.harga !== null ? toko.harga : null;
-    const m = harga && r.hpp > 0 ? H.marginAktual(harga, r.hpp, 0, 0) : null;
-    return { r, harga, m, level: m === null ? '' : m < 0 ? 'bad' : m < 0.15 ? 'warn' : 'good' };
+    const m = harga && r.hpp > 0 ? toko.margin : null;
+    return { r, harga, m, laba: harga ? toko.laba : null, k: toko ? toko.potongan : 0, f: toko ? toko.biayaUnit : 0, level: m === null ? '' : m < 0 ? 'bad' : m < 0.15 ? 'warn' : 'good' };
   }
   function renderBeranda(){
     const g = $('#prodGrid'), list = state.products;
@@ -2091,10 +2360,10 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       const tag = p.isContoh ? 'Contoh' : !ok ? 'Belum lengkap' : s.level === 'good' ? 'Untung sehat' : s.level === 'warn' ? 'Untung tipis' : 'Rugi';
       return `<a class="pcard ${ok ? s.level : ''}" href="#hitung" data-open="${p.id}">
         <div class="pt"><div><div class="pn">${esc(p.nama || 'Produk tanpa nama')}</div><div class="ps">${p.mode === 'unit' ? 'Satu per satu' : 'Sekali produksi'} · dijual per ${esc(sat)}</div></div><span class="tag">${tag}</span></div>
-        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.harga - s.r.hpp) : '—'}</b></div></div>` : `<div class="ps">Ketuk untuk melanjutkan pengisian.</div>`}
+        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.laba) : '—'}</b></div></div>` : `<div class="ps">Ketuk untuk melanjutkan pengisian.</div>`}
       </a>`;
     }).join('');
-    checkBackup();
+    checkBackup(); renderUsaha();
   }
   $('#prodGrid').addEventListener('click', (e) => {
     const c = e.target.closest('[data-open]'); if (!c) return;
@@ -2194,6 +2463,78 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     setTimeout(() => { s.classList.add('hide'); setTimeout(() => s.remove(), 500); }, 900);
   }
 
+  // ---------- biaya bersama & PPh ----------
+  function applyOh(){
+    const p = cur(); if (!p) return;
+    document.body.classList.toggle('oh-bersama', p.ohMode === 'bersama');
+    $$('[data-oh]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.oh === p.ohMode)));
+    $('#f_bagi').value = state.usaha.bagi;
+  }
+  $$('[data-oh]').forEach(b => b.addEventListener('click', () => {
+    const p = cur(); if (!p || p.ohMode === b.dataset.oh) return;
+    if (b.dataset.oh === 'bersama') {
+      const u = state.usaha.overhead;
+      if (!Object.values(u).some(v => Number(v) > 0)) { Object.keys(u).forEach(k => { u[k] = p.overhead[k]; }); toast('Biaya bulanan produk ini dijadikan biaya usaha bersama'); }
+      else toast('Memakai biaya bulanan usaha yang sudah ada');
+    }
+    p.ohMode = b.dataset.oh; p.touched = true; fillInputs(); compute(); save();
+  }));
+  $('#f_bagi').addEventListener('change', (e) => { state.usaha.bagi = e.target.value; compute(); save(); });
+  $('#f_pph').addEventListener('change', (e) => { state.usaha.pph = e.target.checked; compute(); save(); toast(e.target.checked ? 'PPh final 0,5% ikut diperhitungkan' : 'PPh final tidak diperhitungkan'); });
+
+  // ---------- catatan penjualan & ringkasan bulan ini ----------
+  const today = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+  function renderUsaha(){
+    const card = $('#usahaCard'); const list = state.products.filter(p => !p.isContoh);
+    card.hidden = !list.length;
+    if (!list.length) return;
+    const bln = today().slice(0, 7);
+    $('#bulanNama').textContent = new Date(bln + '-01T00:00:00').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+    let terjual = 0, omzet = 0, kontrib = 0, fc = 0, rencanaUntung = 0, adaRencana = false;
+    list.forEach(p => {
+      const s = summaryOf(p); if (!s.harga) return;
+      const sold = state.penjualan.filter(x => x.pid === p.id && x.tgl.startsWith(bln)).reduce((t, x) => t + (Number(x.qty) || 0), 0);
+      terjual += sold; omzet += sold * s.harga; kontrib += sold * H.kontribusiUnit(s.harga, s.r.vc, s.k, s.f); fc += s.r.fc;
+      if (Number(p.rencana.unit) > 0) { adaRencana = true; rencanaUntung += H.proyeksi(s.r.fc, s.r.vc, s.harga, p.rencana.unit, s.k, s.f).untung; }
+    });
+    const untung = kontrib - fc;
+    $('#outUsaha').innerHTML = `<div class="box"><div class="lbl2">Terjual</div><div class="val">${fmtNum(terjual)}</div></div>
+      <div class="box"><div class="lbl2">Omzet</div><div class="val">${fmtRp(omzet)}</div></div>
+      <div class="box"><div class="lbl2">Perkiraan untung</div><div class="val" style="color:${terjual ? (untung < 0 ? 'var(--bad)' : 'var(--good)') : 'inherit'}">${terjual ? fmtRp(untung) : '—'}</div></div>`;
+    $('#usahaNote').textContent = terjual
+      ? `Untung dihitung dari penjualan tercatat dikurangi biaya tetap sebulan ${fmtRp(fc)}.` + (adaRencana ? ` Rencana bulan ini: untung ${fmtRp(rencanaUntung)}.` : '')
+      : 'Catat jumlah yang terjual setiap hari untuk melihat untung sebenarnya bulan ini.' + (adaRencana ? ` Rencana: untung ${fmtRp(rencanaUntung)}.` : '');
+  }
+  function openJual(){
+    const list = state.products.filter(p => !p.isContoh);
+    if (!list.length) return toast('Buat produk dulu');
+    const tgl = $('#jualTgl'); tgl.value = today(); tgl.max = today();
+    const fill = () => {
+      $('#jualList').innerHTML = list.map(p => {
+        const rec = state.penjualan.find(x => x.pid === p.id && x.tgl === tgl.value);
+        return `<div class="jrow"><div><b>${esc(p.nama || 'Produk tanpa nama')}</b><small>per ${esc(p.satuan || 'unit')}</small></div><div><label class="sr" for="jq_${p.id}">Jumlah ${esc(p.nama)}</label><input id="jq_${p.id}" class="num" data-jual="${p.id}" type="text" inputmode="decimal" placeholder="0" value="${rec ? esc(fmtInput(rec.qty)) : ''}"></div></div>`;
+      }).join('');
+    };
+    tgl.onchange = fill; fill(); openOverlay('jualDlg');
+  }
+  $('#btnCatat').addEventListener('click', openJual);
+  $('#jualBatal').addEventListener('click', closeOverlays);
+  $('#jualSimpan').addEventListener('click', () => {
+    const tgl = $('#jualTgl').value || today(); let n = 0;
+    $$('[data-jual]').forEach(el => {
+      const pid = el.dataset.jual, q = Number(parseInput(el.value)) || 0;
+      state.penjualan = state.penjualan.filter(x => !(x.pid === pid && x.tgl === tgl));
+      if (q > 0) { const s = summaryOf(state.products.find(p => p.id === pid)); state.penjualan.push({ tgl, pid, qty: q, harga: s.harga }); n += q; }
+    });
+    closeOverlays(); saveNow(); renderUsaha(); toast(n ? `Tersimpan: ${fmtNum(n)} terjual pada ${new Date(tgl + 'T00:00:00').toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })}` : 'Catatan tanggal itu dikosongkan');
+  });
+
+  // ---------- kirim masukan ----------
+  (function(){
+    const body = `\n\n---\nVersi HargaPas: ${VERSION}\nPerangkat: ${navigator.userAgent.slice(0, 160)}`;
+    $('#lnkMasukan').href = 'mailto:rakasiwifajar@ecampus.ut.ac.id?subject=' + encodeURIComponent('Masukan HargaPas ' + VERSION) + '&body=' + encodeURIComponent('Tulis masukan Anda di sini:' + body);
+  })();
+
   // ---------- start ----------
   if (embedded) { $$('[data-standalone]').forEach(el => el.hidden = true); $$('[data-embedded-only]').forEach(el => el.hidden = false); }
   hideSplash();
@@ -2201,6 +2542,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   load(); setUi(state.ui || 'sederhana'); renderSelect(); route();
   if (lsGet(OBKEY) !== '1' && !location.hash.startsWith('#impor=')) startTour();
 })();
+
 </script>
 <script>
 if ('serviceWorker' in navigator && location.protocol === 'https:') {

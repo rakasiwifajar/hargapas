@@ -15,6 +15,12 @@ jobs:
           node-version: 20
       - name: Uji rumus
         run: node tests/engine.test.js
+      - name: Uji tampilan (Playwright)
+        run: |
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+          node tools/build.js
+          node tests/e2e.js
       - name: Pastikan index.html sudah dibangun ulang dari src/
         run: |
           node tools/build.js

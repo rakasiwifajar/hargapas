@@ -104,24 +104,90 @@
   const marginDariMarkup = (m) => m / (1 + m);
 
   // Harga per kanal. kanal: [{ nama, tipe: 'langsung'|'diskon'|'komisi', persen, biaya }]
-  // 'langsung' = harga toko; 'diskon' = harga toko dikurangi persen; 'komisi' = harga tayang menutup komisi.
+  // 'langsung' = harga toko (boleh punya potongan persen, mis. QRIS, dan biaya per unit, mis. ongkir);
+  // 'diskon' = harga toko dikurangi persen; 'komisi' = harga tayang menutup komisi.
+  // opsi.pajak = persen dari omzet (mis. PPh final 0,5%) yang dipotong di semua kanal.
   function hargaSemuaKanal(hpp, opsi, kanal) {
-    const metode = opsi.metode, persen = num(opsi.persen), step = num(opsi.bulat);
+    const metode = opsi.metode, persen = num(opsi.persen), step = num(opsi.bulat), pajak = num(opsi.pajak);
     const gTarget = metode === 'margin' ? persen : marginDariMarkup(persen / 100) * 100;
-    const toko = bulatkan(hargaDasar(hpp, metode, persen), step);
+    const tokoK = (kanal || []).find((c) => c.tipe === 'langsung');
+    const kToko = pajak + (tokoK ? num(tokoK.persen) : 0), fToko = tokoK ? num(tokoK.biaya) : 0;
+    const toko = bulatkan(hargaKanal(hpp, kToko, fToko, gTarget), step);
     return (kanal || []).map((c) => {
-      let harga, k = 0, f = num(c.biaya);
+      let harga, k = pajak, f = 0;
       if (c.tipe === 'diskon') harga = toko * (1 - num(c.persen) / 100);
-      else if (c.tipe === 'komisi') { k = num(c.persen); harga = bulatkan(hargaKanal(hpp, k, f, gTarget), step); }
-      else { harga = toko; f = 0; }
+      else if (c.tipe === 'komisi') { k = pajak + num(c.persen); f = num(c.biaya); harga = bulatkan(hargaKanal(hpp, k, f, gTarget), step); }
+      else { harga = toko; k = kToko; f = fToko; }
       const ok = Number.isFinite(harga) && harga > 0;
       const diterima = ok ? harga * (1 - k / 100) - f : null;
-      return { ...c, harga: ok ? harga : null, diterima, laba: ok ? diterima - hpp : null, margin: ok ? marginAktual(harga, hpp, k, f) : null };
+      return { ...c, harga: ok ? harga : null, diterima, laba: ok ? diterima - hpp : null, margin: ok ? marginAktual(harga, hpp, k, f) : null, potongan: k, biayaUnit: f };
     });
   }
 
-  function bep(fc, harga, vc) {
-    const kontribusi = num(harga) - num(vc);
+  // Bagian biaya bulanan bersama untuk satu produk.
+  // produk: [{ id, bersama: bool, jamBulan, porsi }], cara: 'rata' | 'waktu' | 'manual'
+  function bagianBersama(produk, id, cara) {
+    const ikut = (produk || []).filter((p) => p.bersama);
+    const p = ikut.find((x) => x.id === id);
+    if (!p || !ikut.length) return 0;
+    if (cara === 'manual') return clamp(num(p.porsi) / 100, 0, 1);
+    if (cara === 'waktu') {
+      const tot = ikut.reduce((s, x) => s + num(x.jamBulan), 0);
+      if (tot > 0) return num(p.jamBulan) / tot;
+    }
+    return 1 / ikut.length;
+  }
+  function skalaOverhead(oh, f) {
+    oh = oh || {};
+    const out = {};
+    ['gas', 'listrik', 'sewa', 'hargaAlat'].forEach((k) => { out[k] = num(oh[k]) * f; });
+    out.umurAlat = oh.umurAlat;
+    out.lain = (oh.lain || []).map((x) => ({ nilai: num(x.nilai) * f }));
+    return out;
+  }
+
+  // Kontribusi per unit setelah potongan (pajak, komisi) dan biaya per unit.
+  const kontribusiUnit = (harga, vc, potonganPct, biayaUnit) => num(harga) * (1 - num(potonganPct) / 100) - num(biayaUnit) - num(vc);
+
+  // Jumlah unit per bulan agar untung bersih = target.
+  function unitUntukTarget(fc, vc, harga, target, potonganPct, biayaUnit) {
+    const k = kontribusiUnit(harga, vc, potonganPct, biayaUnit);
+    if (!(k > 0)) return null;
+    return Math.max(0, Math.ceil((num(fc) + num(target)) / k - 1e-9));
+  }
+
+  // Proyeksi sebulan dari rencana jumlah terjual.
+  function proyeksi(fc, vc, harga, unit, potonganPct, biayaUnit) {
+    const u = num(unit), P = num(harga);
+    const omzet = u * P;
+    const potongan = omzet * num(potonganPct) / 100 + u * num(biayaUnit);
+    const biayaVariabel = u * num(vc);
+    const untung = omzet - potongan - biayaVariabel - num(fc);
+    return { omzet, potongan, biayaVariabel, biayaTetap: num(fc), untung };
+  }
+
+  // Pilihan harga "enak dibaca" di sekitar harga dasar, tidak di bawah batas margin minimum.
+  function hargaPsikologis(hargaMin, hpp, potonganPct, biayaUnit) {
+    const P = num(hargaMin);
+    if (!(P > 0)) return [];
+    const step = P >= 50000 ? 5000 : P >= 10000 ? 1000 : P >= 2000 ? 500 : 100;
+    const naik = Math.ceil(P / step - 1e-9) * step;
+    const cand = new Set([naik - (step >= 1000 ? 100 : step >= 500 ? 50 : 10), naik, naik + step, naik + step - (step >= 1000 ? 100 : 50)]);
+    return [...cand].filter((x) => x > hpp && x >= P * 0.97).sort((a, b) => a - b).slice(0, 3)
+      .map((x) => ({ harga: x, margin: marginAktual(x, hpp, potonganPct, biayaUnit) }));
+  }
+
+  // Harga paket isi n dengan diskon persen dari total harga satuan.
+  function hargaPaket(hargaSatuan, hpp, n, diskonPct, potonganPct, biayaUnit, step) {
+    const isi = Math.max(1, Math.round(num(n)));
+    const harga = bulatkan(num(hargaSatuan) * isi * (1 - num(diskonPct) / 100), num(step));
+    const modal = num(hpp) * isi;
+    const diterima = harga * (1 - num(potonganPct) / 100) - num(biayaUnit);
+    return { isi, harga, untung: diterima - modal, margin: harga > 0 ? (diterima - modal) / harga : null, hematPerUnit: num(hargaSatuan) - harga / isi };
+  }
+
+  function bep(fc, harga, vc, potonganPct, biayaUnit) {
+    const kontribusi = kontribusiUnit(harga, vc, potonganPct, biayaUnit);
     if (!(kontribusi > 0)) return null;
     const unit = num(fc) / kontribusi;
     const unitBulat = Math.max(0, Math.ceil(unit - 1e-9));
@@ -156,6 +222,6 @@
     return out;
   }
 
-  const api = { SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
+  const api = { bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);

@@ -6,6 +6,7 @@ Buka aplikasinya: **https://rakasiwifajar.github.io/hargapas/**
 
 ## Fitur
 
+- Biaya bulanan dipakai bersama antar produk, PPh final 0,5% (pilihan), rencana sebulan dan target untung, catatan penjualan harian, template produk khas Majene (abon ayam, abon ikan, sambal ikan tuing-tuing, bawang goreng, bon cabe).
 - **Tampilan Sederhana** (langkah demi langkah, bahasa sehari-hari, kesimpulan berupa kalimat yang bisa dibacakan) dan **Lengkap** (semua fitur).
 - Satuan beli dan pakai dipilih dari daftar, dikonversi otomatis (kg↔gram, liter↔ml, meter↔cm). Pilihan ukuran huruf untuk pengguna lanjut usia.
 - Untuk pendamping: lembar isian cetak (`#lembar`) dan kirim produk ke HP lain lewat tautan WhatsApp.
@@ -21,11 +22,14 @@ Buka aplikasinya: **https://rakasiwifajar.github.io/hargapas/**
 | Lokasi | Isi |
 | --- | --- |
 | `index.html` | Aplikasi siap pakai (hasil build, jangan diedit langsung) |
-| `src/app.html` | Tampilan dan logika antarmuka |
+| `src/app.html` | Kerangka halaman |
+| `src/app.css` | Gaya tampilan |
+| `src/app.js` | Logika antarmuka |
 | `src/engine.js` | Semua rumus perhitungan (fungsi murni) |
 | `assets/` | Logo Universitas Terbuka dan ikon sumber (SVG) |
 | `icons/`, `manifest.webmanifest`, `sw.js` | PWA: ikon, pemasangan di layar utama, mode offline |
 | `tests/engine.test.js` | Uji otomatis rumus |
+| `tests/e2e.js` | Uji tampilan otomatis (Playwright) |
 | `tools/build.js` | Menggabungkan `src/` dan `assets/` menjadi `index.html` |
 | `docs/play-store.md` | Panduan menerbitkan ke Google Play |
 | `CHANGELOG.md` | Catatan perubahan per versi |
@@ -36,6 +40,8 @@ Butuh [Node.js](https://nodejs.org) versi 18 atau lebih baru.
 
 ```bash
 node tests/engine.test.js   # uji rumus
+npm install --no-save playwright@1 && npx playwright install chromium
+node tools/build.js && node tests/e2e.js   # uji tampilan
 node tools/build.js         # bangun ulang index.html setelah mengubah src/
 ```
 

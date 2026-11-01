@@ -101,4 +101,41 @@ near(H.biayaBahan({ harga: 14000, isi: 1000, satuanIsi: 'g', pakai: 500 }), 7000
 eq(H.biayaBahan({ harga: 2000, isi: 1, satuanIsi: 'butir', pakai: 1, satuanPakai: 'kg' }), 0, 'satuan tak cocok = 0');
 eq(H.periksa({ mode: 'unit', batchBulan: 1, bahan: [{ nama: 'Telur', harga: 2000, isi: 1, satuanIsi: 'butir', pakai: 1, satuanPakai: 'kg' }] }).some(x => x.level === 'bad' && x.pesan.includes('tidak bisa dikonversi')), true, 'cek satuan tak cocok');
 
+// --- 1.5: pajak & potongan per kanal ---
+const kp = H.hargaSemuaKanal(r.hpp, { metode: 'margin', persen: 30, bulat: 0, pajak: 0.5 }, [{ nama: 'Toko', tipe: 'langsung' }, { nama: 'MP', tipe: 'komisi', persen: 12 }]);
+near(kp[0].harga, r.hpp / (1 - 0.005 - 0.30), 0.01, 'harga toko dengan PPh 0,5%');
+near(kp[0].margin, 0.30, 1e-9, 'margin bersih toko tetap 30% setelah PPh');
+near(kp[1].margin, 0.30, 1e-9, 'margin bersih marketplace tetap 30% setelah PPh + komisi');
+const kq = H.hargaSemuaKanal(r.hpp, { metode: 'margin', persen: 30, bulat: 0 }, [{ nama: 'Toko', tipe: 'langsung', persen: 0.3, biaya: 500 }]);
+near(kq[0].margin, 0.30, 1e-9, 'potongan QRIS & ongkir di toko tetap menjaga margin');
+const km = H.hargaSemuaKanal(r.hpp, { metode: 'markup', persen: 30, bulat: 0 }, [{ nama: 'Toko', tipe: 'langsung' }]);
+near(km[0].harga, r.hpp * 1.3, 0.01, 'markup tetap sama tanpa potongan');
+
+// --- biaya bulanan bersama ---
+const prs = [{ id: 'a', bersama: true, jamBulan: 60 }, { id: 'b', bersama: true, jamBulan: 30 }, { id: 'c', bersama: false }];
+near(H.bagianBersama(prs, 'a', 'rata'), 0.5, 1e-9, 'bagi rata 2 produk');
+near(H.bagianBersama(prs, 'a', 'waktu'), 2 / 3, 1e-9, 'bagi sesuai waktu');
+eq(H.bagianBersama(prs, 'c', 'rata'), 0, 'produk tidak ikut = 0');
+near(H.bagianBersama([{ id: 'a', bersama: true, porsi: 40 }], 'a', 'manual'), 0.4, 1e-9, 'porsi manual');
+const so = H.skalaOverhead({ gas: 120000, listrik: 150000, sewa: 0, hargaAlat: 3000000, umurAlat: 36, lain: [{ nilai: 50000 }] }, 0.5);
+const rb = H.hitungHPP({ ...bolu, overhead: so });
+near(rb.overheadBulan, 403333.33 / 2, 0.01, 'overhead setengah');
+near(rb.hpp, 6744.44 - 840.28 / 2, 0.01, 'HPP turun karena biaya bersama dibagi');
+
+// --- target, proyeksi, BEP dengan potongan ---
+eq(H.bep(r.fc, 10000, r.vc, 0.5).unitBulat, Math.ceil(r.fc / (10000 * 0.995 - r.vc) - 1e-9), 'BEP dengan PPh');
+eq(H.unitUntukTarget(r.fc, r.vc, 10000, 1000000), Math.ceil((r.fc + 1000000) / (10000 - r.vc) - 1e-9), 'unit untuk target untung');
+eq(H.unitUntukTarget(r.fc, r.vc, 5000, 1000000), null, 'target mustahil jika harga < biaya variabel');
+const pr = H.proyeksi(r.fc, r.vc, 10000, 400);
+near(pr.omzet, 4000000, 1e-6, 'omzet proyeksi');
+near(pr.untung, 400 * (10000 - r.vc) - r.fc, 1e-6, 'untung proyeksi');
+
+// --- harga psikologis & paket ---
+const ps = H.hargaPsikologis(9635, r.hpp, 0, 0);
+eq(ps.length > 0 && ps.every(x => x.harga > r.hpp), true, 'pilihan harga di atas modal');
+eq(ps.some(x => x.harga === 9900 || x.harga === 10000), true, 'ada 9.900 atau 10.000');
+const pk = H.hargaPaket(10000, r.hpp, 3, 10, 0, 0, 500);
+eq(pk.harga, 27000, 'paket isi 3 diskon 10%');
+near(pk.untung, 27000 - r.hpp * 3, 0.01, 'untung paket');
+
 console.log(`Semua ${lulus} uji lulus.`);

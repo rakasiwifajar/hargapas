@@ -1,5 +1,20 @@
 # Catatan perubahan HargaPas
 
+## 1.5.0 — 1 November 2026
+
+Fokus: ketepatan ekonomi dan relevansi bagi UMKM Majene.
+
+- **Biaya bulanan dipakai bersama.** Gas, listrik, sewa, dan alat dicatat sekali untuk seluruh usaha lalu dibagi ke produk: rata, sesuai lama produksi, atau persen yang diatur sendiri. Modal tiap produk tidak lagi terhitung terlalu tinggi bagi UKM dengan banyak produk.
+- **PPh final 0,5% dari omzet** (pilihan). Harga dinaikkan secukupnya agar untung bersih tetap sesuai target.
+- **Potongan di harga toko** (mis. QRIS) dan **biaya per unit** (mis. ongkir) ikut dihitung; titik impas memakai untung setelah potongan.
+- **Rencana sebulan:** perkiraan omzet dan untung bersih dari rencana penjualan, serta jumlah yang harus terjual untuk mencapai target untung.
+- **Atur harga** (tampilan Lengkap): posisi harga terhadap pesaing, pilihan harga yang enak dibaca (mis. Rp9.900), dan harga paket.
+- **Catat penjualan** harian di Beranda, dengan ringkasan **Bulan ini** (terjual, omzet, perkiraan untung) dibandingkan rencana.
+- **Template produk khas Majene:** abon ayam, abon ikan, sambal ikan tuing-tuing, bawang goreng, bon cabe.
+- **Pelajaran singkat** (6 topik), **Kirim masukan** ke pengembang, dan **penafian** di Tentang, footer, dan laporan.
+- **Struktur kode:** `src/app.html`, `src/app.css`, `src/app.js`, `src/engine.js` digabung oleh `tools/build.js`.
+- **Uji otomatis:** 70 uji rumus dan 22 uji tampilan (Playwright) dijalankan di GitHub Actions setiap push.
+
 ## 1.4.0 — 1 November 2026
 
 - **Beranda** berisi sapaan "Selamat datang di HargaPas by Universitas Terbuka Majene", kartu per produk (modal, harga jual, untung, tanda untung sehat/tipis/rugi), dan tombol besar **Hitung produk baru**. Data contoh tidak lagi menjadi produk pertama; tersedia lewat **Lihat contoh perhitungan**.

@@ -13,10 +13,12 @@ const icon = dataUri('assets/icon.svg', 'image/svg+xml');
 const logoUT = dataUri('assets/logo-ut.webp', 'image/webp');
 const sure = dataUri('assets/sure.svg', 'image/svg+xml');
 const engine = read('src/engine.js').toString();
+const css = read('src/app.css').toString();
+const appJs = read('src/app.js').toString();
 
 function build(pwa) {
   let html = read('src/app.html').toString();
-  html = html.replace('/*__ENGINE__*/', () => engine)
+  html = html.replace('/*__CSS__*/', () => css).replace('/*__APP__*/', () => appJs).replace('/*__ENGINE__*/', () => engine)
     .replace(/__ICON__/g, icon)
     .replace(/__LOGO_UT__/g, logoUT)
     .replace(/__SURE__/g, sure)
