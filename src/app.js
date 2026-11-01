@@ -948,6 +948,15 @@
     state.activeId = c.dataset.open; openRows = new Set(); saveNow();
   });
   $('#btnBerandaBaru').addEventListener('click', () => openOverlay('tplDlg'));
+  $$('[data-qa-trx]').forEach(b => b.addEventListener('click', () => { const j = b.dataset.qaTrx; location.hash = '#keuangan'; setTimeout(() => openTrx(j), 60); }));
+  const TIPS_BAN = [
+    ['Catat setiap hari, walau sedikit', 'Laporan dipercaya bank bila catatannya rutin 3–6 bulan.'],
+    ['Pisahkan uang usaha dan uang dapur', 'Ambil "gaji" untuk diri sendiri dan catat sebagai Ambil untuk pribadi.'],
+    ['Harga bahan naik? Hitung ulang', 'Perbarui harga di menu Harga bahan, semua produk ikut terhitung ulang.'],
+    ['Jangan lupa upah sendiri', 'Tenaga Anda juga biaya. Masukkan upah per jam agar harga tidak kemurahan.'],
+    ['Cadangkan data sepekan sekali', 'Data hanya di HP ini. Kirim file cadangan ke WhatsApp atau Drive Anda.'],
+  ];
+  (function(){ const d = Math.floor(Date.now() / 864e5) % TIPS_BAN.length; $('#tipT').textContent = TIPS_BAN[d][0]; $('#tipS').textContent = TIPS_BAN[d][1]; })();
   $('#btnLihatContoh').addEventListener('click', () => {
     let p = state.products.find(x => x.isContoh);
     if (!p) { p = contoh(); state.products.push(p); }

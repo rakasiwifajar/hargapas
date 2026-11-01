@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <!-- Varian emas pola sure' lipaq saqbe Mandar (gubahan bebas) untuk pita hias -->
+  <rect width="48" height="48" fill="#5A3C0C"/>
+  <g>
+    <rect x="4" y="0" width="12" height="48" fill="#B98A2E" fill-opacity=".75"/>
+    <rect x="20" y="0" width="3" height="48" fill="#F6D98A"/>
+    <rect x="26" y="0" width="1.5" height="48" fill="#FFF3D1"/>
+    <rect x="29.5" y="0" width="1.5" height="48" fill="#E7BE5A"/>
+    <rect x="35" y="0" width="8" height="48" fill="#3A2606" fill-opacity=".8"/>
+    <rect x="0" y="4" width="48" height="12" fill="#B98A2E" fill-opacity=".6"/>
+    <rect x="0" y="20" width="48" height="3" fill="#F6D98A" fill-opacity=".9"/>
+    <rect x="0" y="26" width="48" height="1.5" fill="#FFF3D1" fill-opacity=".9"/>
+    <rect x="0" y="29.5" width="48" height="1.5" fill="#E7BE5A" fill-opacity=".9"/>
+    <rect x="0" y="35" width="48" height="8" fill="#3A2606" fill-opacity=".6"/>
+    <path d="M10 6l4 4-4 4-4-4z M10 34l4 4-4 4-4-4z M39 6l3 4-3 4-3-4z M39 34l3 4-3 4-3-4z" fill="#FFE7A3"/>
+    <path d="M24.5 21.5l3 3-3 3-3-3z" fill="#FFF3D1"/>
+  </g>
+</svg>

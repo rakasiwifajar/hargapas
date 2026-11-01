@@ -1,5 +1,11 @@
 # Catatan perubahan HargaPas
 
+## 2.3.0 — 1 November 2026
+### Tampilan
+- Gaya biru malam berpendar dengan pita emas bermotif sure' Mandar yang meliuk di layar pembuka dan kartu sambutan.
+- Menu cepat berbentuk tombol bundar di panel kaca: Hitung harga, Uang masuk, Uang keluar, Laporan, Harga bahan.
+- Pita tips emas yang berganti setiap hari; kartu kas Keuangan bergaya kartu saldo; tombol utama berbentuk kapsul.
+
 ## 2.2.0 — 1 November 2026
 - Saldo awal kini bisa memuat pembeli yang masih berutang (piutang awal) dan bon ke pemasok (utang usaha awal); ikut daftar Belum dibayar dan bisa dilunasi.
 - Konfirmasi untuk jumlah ≥ Rp50 juta agar salah ketik nol tidak lolos.

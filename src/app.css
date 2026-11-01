@@ -6,6 +6,7 @@
   --warn:#7A5000; --warn-soft:#FDF2D2; --bad:#A3271F; --bad-soft:#FBE4E1; --good:#1D6B3E; --good-soft:#E2F2E8;
   --c1:#1E4094; --c2:#E5A100; --c3:#5BA4D6; --c4:#B3BBCB; --r:14px;
   --sure:url("__SURE__");
+  --sure-emas:url("__SURE_EMAS__");
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -735,3 +736,72 @@ ol.steps li{margin-bottom:8px;font-size:15px;line-height:1.5}
 .wlink:hover{color:#fff}
 .welcome-in{display:flex;flex-direction:column;align-items:flex-start}
 .contoh-mark{background:var(--warn-soft);color:var(--warn);border:1px dashed #D9A400;border-radius:6px;text-align:center;font-weight:800;letter-spacing:.06em;padding:6px;margin-bottom:12px;font-size:12px}
+/* ===================== 2.3: tampilan premium (biru malam + pita emas sure') ===================== */
+:root{--navy:#0B1B4D;--navy-2:#102766;--glow:#2F7BFF;--emas:#D9A93A;--emas-2:#F6D98A;--emas-ink:#5A3C0C}
+.btn.primary{background:linear-gradient(180deg,#2449A8,#163584);border-color:#163584;border-radius:999px;box-shadow:0 2px 6px rgba(22,53,132,.25)}
+.btn.primary:hover{background:linear-gradient(180deg,#1E4094,#102766)}
+.btn.cta{border-radius:999px;background:linear-gradient(180deg,#FFE45C,#F2C400);border-color:#E3B700}
+.btn{border-radius:12px}
+.pita{position:absolute;pointer-events:none}
+/* layar pembuka */
+.splash{background:
+  radial-gradient(70% 45% at 85% 105%,rgba(47,123,255,.75),transparent 70%),
+  radial-gradient(60% 40% at 0% 0%,rgba(30,64,148,.9),transparent 70%),
+  linear-gradient(165deg,#0A1840 0%,#0E2463 55%,#0B1B4D 100%)}
+.splash .pita{inset:-5% -25% -5% 5%;width:120%;height:110%;opacity:.95}
+.sp-in{position:relative;z-index:1;text-shadow:0 2px 18px rgba(4,10,30,.6)}
+.sp-icon{box-shadow:0 20px 50px rgba(2,8,28,.6),0 0 0 2px rgba(246,217,138,.55)}
+.sp-load i{background:linear-gradient(90deg,var(--emas),var(--emas-2))}
+.sp-foot{z-index:1;background:rgba(10,24,64,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 16px}
+.sp-band{display:none}
+/* kartu sambutan */
+.welcome{display:block;padding:0;border-radius:24px;overflow:hidden;color:#fff;background:
+  radial-gradient(80% 70% at 100% 100%,rgba(47,123,255,.8),transparent 65%),
+  radial-gradient(60% 60% at 0% 0%,rgba(36,73,168,.9),transparent 70%),
+  linear-gradient(160deg,#0A1840,#0E2463 60%,#13307F);box-shadow:0 14px 34px rgba(10,24,64,.28)}
+.welcome::before{display:none}
+.welcome .pita{top:-30%;right:-18%;width:62%;height:160%;opacity:.95}
+.welcome-in{position:relative;padding:22px 22px 18px;max-width:72%}
+.welcome .wb{color:var(--emas-2)}
+.welcome h1{text-shadow:0 2px 14px rgba(4,10,30,.45)}
+.welcome .wd{text-shadow:0 1px 8px rgba(4,10,30,.5)}
+.qa{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:14px 10px 16px;background:rgba(255,255,255,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.14)}
+.qa-i{display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:0;color:#fff;font:inherit;font-size:12.5px;font-weight:600;line-height:1.2;text-align:center;text-decoration:none;cursor:pointer;padding:2px}
+.qa-c{width:52px;height:52px;border-radius:50%;background:#EAF0FF;color:#1E4094;display:grid;place-items:center;box-shadow:0 4px 12px rgba(4,10,30,.3),inset 0 -2px 0 rgba(30,64,148,.12);transition:transform .1s}
+.qa-i:active .qa-c{transform:scale(.93)}
+.qa-c.in{color:#1D7A45}.qa-c.out{color:#B2402F}
+.qa-i:first-child .qa-c{background:linear-gradient(180deg,#FFE45C,#F2C400);color:#102766}
+@media (max-width:400px){ .qa-c{width:46px;height:46px} .qa-i{font-size:11.5px} .welcome-in{max-width:80%} }
+@media (min-width:768px){ .welcome .pita{right:-6%;width:44%} .welcome-in{max-width:62%} }
+/* pita info emas */
+.tipban{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;background:linear-gradient(100deg,#B98523,#D9A93A 45%,#C99430);border-radius:16px;padding:12px 14px;margin:-4px 0 16px;box-shadow:0 6px 16px rgba(185,133,35,.25)}
+.tipban b{display:block;font-size:15px;line-height:1.3}
+.tipban span span,.tipban .grow>span{display:block;font-size:13.5px;opacity:.95;line-height:1.4}
+.tb-go{width:34px;height:34px;border-radius:50%;background:#fff;color:#8A5D14;display:grid;place-items:center;flex:none}
+.note.warn{border-radius:14px}
+/* kartu kas Keuangan bergaya kartu saldo */
+.ksum{background:
+  radial-gradient(70% 90% at 100% 100%,rgba(47,123,255,.55),transparent 65%),
+  linear-gradient(150deg,#0B1B4D,#13307F);color:#fff;border:0;box-shadow:0 12px 28px rgba(10,24,64,.25)}
+.ksum::before{left:auto;right:0;top:0;bottom:0;width:22px;background-image:var(--sure-emas);background-size:22px 22px;opacity:.9;box-shadow:inset 3px 0 0 #F6D98A}
+.ksum .term{color:#B9C8EC}
+.ks-main span{color:#C9D6F5}
+.ks-main b{color:#fff}
+.ks-grid{border-top-color:rgba(255,255,255,.16);padding-right:20px}
+.ks-grid span{color:#B9C8EC}
+.ksum .pos{color:#86E3AE!important}.ksum .neg{color:#FFA597!important}
+.ksum .ks-note{color:#C9D6F5}
+.ksum .ks-warn{background:rgba(255,120,100,.16);color:#FFD0C8}
+.ks-speak{color:#F6D98A!important;border-color:rgba(255,255,255,.2)!important;right:14px!important}
+.mbar{border-radius:999px}
+.mbar .btn.icon{border-radius:50%}
+/* lembar dialog: pita emas tipis di atas */
+.ob-banner{background:radial-gradient(80% 120% at 100% 100%,rgba(47,123,255,.7),transparent 60%),linear-gradient(150deg,#0B1B4D,#13307F);position:relative}
+.ob-banner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background-image:var(--sure-emas);background-size:18px 18px}
+.splash .pita{inset:-8% -55% -8% 38%;width:120%;height:116%;opacity:.85}
+.splash::after{content:"";position:absolute;inset:0;background:radial-gradient(55% 32% at 50% 52%,rgba(10,24,64,.85),transparent 75%);pointer-events:none}
+.sp-in,.sp-foot{z-index:2}
+.usaha .val{font-size:clamp(14px,3.9vw,18px);white-space:nowrap}
+.usaha .box{min-width:0;padding:10px 8px}
+.splash .pita{inset:-6% -30% -6% 12%;width:118%;height:112%;opacity:.8}
+.splash::after{background:radial-gradient(48% 26% at 50% 50%,rgba(10,24,64,.9),rgba(10,24,64,.4) 60%,transparent 85%)}
