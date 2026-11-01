@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F5E4E">
+<title>HargaPas — Kalkulator HPP & Harga Jual UKM by Universitas Terbuka Majene</title>
+<style>
+:root{
+  --bg:#F5F4EF; --card:#FFFFFF; --ink:#1B1A17; --muted:#5E5B53; --line:#E3E0D7;
+  --accent:#0F5E4E; --accent-soft:#E3EFEA; --warn:#8A5A00; --warn-soft:#FBF0D9;
+  --bad:#A3271F; --bad-soft:#FBE4E1; --good:#1F6B3A; --good-soft:#E2F1E6;
+  --c1:#0F5E4E; --c2:#D9822B; --c3:#6C8EBF; --c4:#B9A98A;
+  --r:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body.mode-unit .only-batch{display:none!important}
+body:not(.mode-unit) .only-unit{display:none!important}
+.modebox{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.modebox .seg{display:flex}
+.modebox .seg button{flex:1}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 120px}
+header.top{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:4px 0 12px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px}
+.brand h1{font-size:18px;margin:0;letter-spacing:-.2px}
+.brand p{margin:0;font-size:12.5px;color:var(--muted)}
+.prodbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.prodbar select{flex:1 1 200px;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 12px}
+.btn{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-weight:600;font-size:14.5px;display:inline-flex;align-items:center;gap:6px;justify-content:center;white-space:nowrap}
+.btn:hover{border-color:#C9C5B8}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{background:transparent}
+.btn.small{min-height:36px;padding:0 10px;font-size:13.5px}
+.btn.icon{width:44px;padding:0}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #7FB8A8;outline-offset:2px}
+details.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+details.card>summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;gap:12px}
+details.card>summary::-webkit-details-marker{display:none}
+.step{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
+.sumtxt{flex:1}
+.sumtxt b{display:block;font-size:16px}
+.sumtxt span{font-size:13px;color:var(--muted)}
+.sumval{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;white-space:nowrap}
+.chev{transition:transform .2s;color:var(--muted)}
+details[open] .chev{transform:rotate(180deg)}
+.body{padding:0 16px 16px;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:13px;color:var(--muted);font-weight:600}
+.field .hint{font-size:12px;color:var(--muted)}
+.inp{position:relative;display:flex;align-items:center}
+.inp input,.inp select,.field>input,.field>select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:#FCFBF8;padding:0 12px;font-variant-numeric:tabular-nums}
+.inp .pre{position:absolute;left:12px;color:var(--muted);font-size:14px;pointer-events:none}
+.inp .suf{position:absolute;right:12px;color:var(--muted);font-size:14px;pointer-events:none}
+.inp.has-pre input{padding-left:38px}
+.inp.has-suf input{padding-right:44px}
+.full{grid-column:1/-1}
+.bahan{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.brow{border:1px solid var(--line);border-radius:12px;padding:12px;background:#FCFBF8}
+.brow .rowhead{display:flex;gap:8px;align-items:center}
+.brow .rowhead input{flex:1;min-height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-weight:600;background:#fff}
+.brow .grid{margin-top:10px}
+.brow .cost{margin-top:8px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+.brow .cost b{color:var(--ink);font-variant-numeric:tabular-nums}
+.addrow{margin-top:10px}
+.note{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:flex;gap:8px;align-items:flex-start}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.note.info{background:var(--accent-soft);color:var(--accent)}
+.note.bad{background:var(--bad-soft);color:var(--bad)}
+.note svg{flex:none;margin-top:2px}
+.result{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.result h2{font-size:16px;margin:0 0 2px}
+.result .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
+.big{font-size:34px;font-weight:750;letter-spacing:-.8px;font-variant-numeric:tabular-nums;line-height:1.1}
+.big small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
+.stack{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:14px 0 10px;background:var(--line)}
+.stack i{display:block;height:100%}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;font-size:13.5px}
+.legend div{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.legend span.k{display:flex;align-items:center;gap:8px;color:var(--muted)}
+.legend span.k i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.legend b{font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:#FCFBF8;gap:3px}
+.seg button{min-height:38px;border:0;background:transparent;border-radius:8px;padding:0 14px;font-weight:600;font-size:14px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.ctrl{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px}
+.ctrl .field{flex:1 1 140px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.compare .box{border:1px solid var(--line);border-radius:12px;padding:12px;background:#FCFBF8}
+.compare .box.on{border-color:var(--accent);background:var(--accent-soft)}
+.compare .lbl{font-size:12.5px;color:var(--muted);font-weight:600}
+.compare .val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.compare .eq{font-size:12.5px;color:var(--muted)}
+table.ch{width:100%;border-collapse:collapse;font-size:14px}
+table.ch th{text-align:left;font-size:12.5px;color:var(--muted);font-weight:600;padding:8px 6px;border-bottom:1px solid var(--line)}
+table.ch td{padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:middle;font-variant-numeric:tabular-nums}
+table.ch td.n,table.ch th.n{text-align:right}
+table.ch tr:last-child td{border-bottom:0}
+.chname{font-weight:600}
+.chname small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12.5px;font-weight:700}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.chset{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kv .box{border:1px solid var(--line);border-radius:12px;padding:12px;background:#FCFBF8}
+.kv .lbl{font-size:12.5px;color:var(--muted);font-weight:600}
+.kv .val{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);min-height:36px}
+.rangehead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0}
+.rangehead b{font-size:20px;font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:5}
+.sticky .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.sticky .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.sticky .v{font-size:20px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.sticky .grp{display:flex;gap:20px}
+footer{font-size:12.5px;color:var(--muted);text-align:center;margin-top:24px}
+.toast{width:max-content;max-width:calc(100% - 32px);text-align:center;position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.welcome{background:var(--accent);color:#fff;border-radius:var(--r);padding:18px 18px 16px;margin-bottom:14px}
+.welcome .wk{margin:0;font-size:13px;opacity:.85;font-weight:600}
+.welcome h2{margin:2px 0 8px;font-size:24px;letter-spacing:-.4px;line-height:1.2}
+.welcome h2 span{display:block;font-size:14px;font-weight:600;opacity:.9;letter-spacing:0}
+.welcome .wd{margin:0 0 14px;font-size:14px;line-height:1.5;opacity:.95}
+.welcome .wa{display:flex;gap:8px;flex-wrap:wrap}
+.welcome .btn.primary{background:#fff;color:var(--accent);border-color:#fff}
+footer .dev{display:block;font-weight:700;color:var(--ink);margin-bottom:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:560px){
+  .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kv,.chset{grid-template-columns:1fr 1fr}
+  .big{font-size:30px}
+  .legend{grid-template-columns:1fr}
+  table.ch .hide-s{display:none}
+}
+@media print{
+  .sticky,.prodbar,details.card,.actions,.noprint,header .btn{display:none!important}
+  body{background:#fff}
+  .result{break-inside:avoid;border-color:#ccc}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">Rp</div>
+      <div><h1>HargaPas</h1><p>by Universitas Terbuka Majene</p></div>
+    </div>
+    <button class="btn small ghost" id="btnContoh" type="button">Isi contoh</button>
+  </header>
+
+  <section class="welcome" id="welcome" aria-labelledby="hWelcome">
+    <p class="wk">Selamat datang di</p>
+    <h2 id="hWelcome">HargaPas <span>by Universitas Terbuka Majene</span></h2>
+    <p class="wd">Hitung HPP dan harga jual produk Anda dengan benar, gratis. Isi tiga langkah di bawah, hasilnya langsung muncul. Data hanya tersimpan di HP Anda.</p>
+    <div class="wa">
+      <button class="btn primary small" id="btnMulai" type="button">Mulai hitung</button>
+      <button class="btn small ghost" id="btnTutupWelcome" type="button" style="color:#fff;border-color:rgba(255,255,255,.45)">Tutup</button>
+    </div>
+  </section>
+
+  <div class="prodbar">
+    <label class="sr" for="prodSel">Pilih produk</label>
+    <select id="prodSel"></select>
+    <button class="btn" id="btnNew" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Produk baru</button>
+    <button class="btn icon" id="btnDel" type="button" aria-label="Hapus produk ini">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
+  </div>
+
+  <!-- 1. Produk & bahan -->
+  <details class="card" open id="secBahan">
+    <summary><span class="step">1</span><span class="sumtxt"><b>Produk & bahan baku</b><span class="only-batch">Per satu kali produksi (batch)</span><span class="only-unit">Per satu unit produk</span></span><span class="sumval" id="sumBahan">Rp0</span>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <div class="modebox">
+        <span style="font-size:13px;color:var(--muted);font-weight:600">Cara mengisi data</span>
+        <div class="seg" role="group" aria-label="Cara mengisi data">
+          <button type="button" data-mode="batch" aria-pressed="true">Per batch (resep)</button>
+          <button type="button" data-mode="unit" aria-pressed="false">Per unit</button>
+        </div>
+        <span class="hint" style="font-size:12px;color:var(--muted)"><span class="only-batch">Cocok untuk makanan & minuman: isi bahan untuk satu resep, aplikasi membaginya per unit.</span><span class="only-unit">Cocok untuk kerajinan, konveksi, atau produk satuan: isi bahan untuk satu buah produk.</span></span>
+      </div>
+      <div class="grid">
+        <div class="field full"><label for="f_nama">Nama produk</label><input id="f_nama" data-k="nama" type="text" placeholder="mis. Bolu pisang"></div>
+        <div class="field only-batch"><label for="f_hasil">Hasil per batch</label>
+          <div class="inp has-suf"><input id="f_hasil" data-k="hasilBatch" type="number" inputmode="decimal" min="0" placeholder="24"><span class="suf">unit</span></div>
+          <span class="hint">Hanya yang layak jual</span></div>
+        <div class="field" id="fieldSatuan"><label for="f_satuan">Nama satuan jual</label><input id="f_satuan" data-k="satuan" type="text" placeholder="potong / pcs / toples"></div>
+      </div>
+      <div class="bahan" id="bahanList"></div>
+      <button class="btn addrow" id="btnAddBahan" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Tambah bahan</button>
+    </div>
+  </details>
+
+  <!-- 2. Tenaga kerja & kemasan -->
+  <details class="card" id="secTK">
+    <summary><span class="step">2</span><span class="sumtxt"><b>Tenaga kerja & kemasan</b><span>Termasuk upah Anda sendiri</span></span><span class="sumval" id="sumTK">Rp0/unit</span>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <div class="grid">
+        <div class="field"><label for="f_upah">Upah per jam</label>
+          <div class="inp has-pre"><span class="pre">Rp</span><input id="f_upah" data-k="upahJam" type="number" inputmode="decimal" min="0" placeholder="15000"></div></div>
+        <div class="field only-batch"><label for="f_jam">Jam kerja per batch</label>
+          <div class="inp has-suf"><input id="f_jam" data-k="jamBatch" type="number" inputmode="decimal" min="0" step="0.25" placeholder="3"><span class="suf">jam</span></div>
+          <span class="hint">Total semua orang yang bekerja</span></div>
+        <div class="field only-unit"><label for="f_menit">Waktu kerja per unit</label>
+          <div class="inp has-suf"><input id="f_menit" data-k="menitUnit" type="number" inputmode="decimal" min="0" placeholder="30"><span class="suf">menit</span></div>
+          <span class="hint">Total semua orang yang bekerja</span></div>
+        <div class="field full"><label for="f_kemasan">Biaya kemasan per unit</label>
+          <div class="inp has-pre"><span class="pre">Rp</span><input id="f_kemasan" data-k="kemasan" type="number" inputmode="decimal" min="0" placeholder="1000"></div>
+          <span class="hint">Mika, plastik, stiker, label, tali</span></div>
+      </div>
+      <div class="note warn" id="noteUpah" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+        <span>Upah masih nol. Kalau Anda sendiri yang membuat, tetap masukkan upah yang wajar. Tanpa itu, "laba" yang terlihat sebenarnya adalah gaji Anda.</span></div>
+    </div>
+  </details>
+
+  <!-- 3. Overhead -->
+  <details class="card" id="secOH">
+    <summary><span class="step">3</span><span class="sumtxt"><b>Biaya bulanan (overhead)</b><span>Gas, listrik, sewa, penyusutan alat</span></span><span class="sumval" id="sumOH">Rp0/bln</span>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <div class="grid">
+        <div class="field"><label for="f_gas">Gas per bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_gas" data-k="overhead.gas" type="number" inputmode="decimal" min="0" placeholder="0"></div></div>
+        <div class="field"><label for="f_listrik">Listrik & air per bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_listrik" data-k="overhead.listrik" type="number" inputmode="decimal" min="0" placeholder="0"></div></div>
+        <div class="field"><label for="f_sewa">Sewa tempat per bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_sewa" data-k="overhead.sewa" type="number" inputmode="decimal" min="0" placeholder="0"></div></div>
+        <div class="field"><label for="f_lain">Lain-lain per bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_lain" data-k="overhead.lain0" type="number" inputmode="decimal" min="0" placeholder="0"></div>
+          <span class="hint">Pulsa usaha, transport belanja, dll.</span></div>
+        <div class="field"><label for="f_alat">Harga alat (oven, mixer, mesin)</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_alat" data-k="overhead.hargaAlat" type="number" inputmode="decimal" min="0" placeholder="0"></div></div>
+        <div class="field"><label for="f_umur">Umur pakai alat</label><div class="inp has-suf"><input id="f_umur" data-k="overhead.umurAlat" type="number" inputmode="decimal" min="0" placeholder="36"><span class="suf">bulan</span></div>
+          <span class="hint" id="hintSusut">Penyusutan: Rp0/bulan</span></div>
+        <div class="field full"><label for="f_batch">Jumlah produksi per bulan</label><div class="inp has-suf"><input id="f_batch" data-k="batchBulan" type="number" inputmode="decimal" min="0" placeholder="20"><span class="suf" id="sufProd">batch</span></div>
+          <span class="hint only-batch" id="hintProd">= 0 unit per bulan</span></div>
+      </div>
+    </div>
+  </details>
+
+  <!-- HASIL -->
+  <section class="result" aria-labelledby="hHPP">
+    <h2 id="hHPP">HPP per unit</h2>
+    <p class="sub">Biaya pokok untuk membuat satu <span class="satuanTxt">unit</span></p>
+    <div class="big" id="outHPP">Rp0</div>
+    <div class="stack" id="outStack" role="img" aria-label="Porsi komponen biaya"></div>
+    <div class="legend" id="outLegend"></div>
+  </section>
+
+  <section class="result" aria-labelledby="hHarga">
+    <h2 id="hHarga">Harga jual</h2>
+    <p class="sub">Markup dihitung dari HPP, margin dihitung dari harga jual. Keduanya tidak sama.</p>
+    <div class="ctrl">
+      <div class="field" style="flex:0 0 auto"><span style="font-size:13px;color:var(--muted);font-weight:600">Metode</span>
+        <div class="seg" role="group" aria-label="Metode harga">
+          <button type="button" data-metode="margin" aria-pressed="true">Margin</button>
+          <button type="button" data-metode="markup" aria-pressed="false">Markup</button>
+        </div></div>
+      <div class="field"><label for="f_persen">Target</label><div class="inp has-suf"><input id="f_persen" data-k="harga.persen" type="number" inputmode="decimal" min="0" max="95" placeholder="30"><span class="suf">%</span></div></div>
+      <div class="field"><label for="f_bulat">Bulatkan ke atas</label>
+        <select id="f_bulat" data-k="harga.bulat"><option value="0">Tidak</option><option value="100">Rp100</option><option value="500">Rp500</option><option value="1000">Rp1.000</option></select></div>
+    </div>
+    <div class="compare" id="outCompare"></div>
+    <div class="note bad" id="noteHarga" hidden></div>
+
+    <table class="ch" aria-label="Harga per kanal penjualan">
+      <thead><tr><th>Kanal</th><th class="n">Harga</th><th class="n hide-s">Diterima</th><th class="n">Laba/unit</th><th class="n">Margin</th></tr></thead>
+      <tbody id="outKanal"></tbody>
+    </table>
+    <div class="chset">
+      <div class="field"><label for="f_reseller">Diskon reseller</label><div class="inp has-suf"><input id="f_reseller" data-k="harga.diskonReseller" type="number" inputmode="decimal" min="0" max="90" placeholder="15"><span class="suf">%</span></div></div>
+      <div class="field"><label for="f_komisi">Komisi marketplace</label><div class="inp has-suf"><input id="f_komisi" data-k="harga.komisi" type="number" inputmode="decimal" min="0" max="90" placeholder="12"><span class="suf">%</span></div></div>
+      <div class="field"><label for="f_biayamp">Biaya lain per unit</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_biayamp" data-k="harga.biayaMP" type="number" inputmode="decimal" min="0" placeholder="0"></div></div>
+    </div>
+    <p class="sub" style="margin:10px 0 0">Tarif komisi marketplace berubah-ubah; cek tarif terbaru di aplikasi penjual Anda.</p>
+  </section>
+
+  <section class="result" aria-labelledby="hMundur">
+    <h2 id="hMundur">Hitung mundur dari harga pasar</h2>
+    <p class="sub">Sudah punya harga atau melihat harga pesaing? Cek margin sebenarnya.</p>
+    <div class="grid" style="margin-top:0">
+      <div class="field"><label for="f_pasar">Harga jual</label><div class="inp has-pre"><span class="pre">Rp</span><input id="f_pasar" data-k="mundur.harga" type="number" inputmode="decimal" min="0" placeholder="10000"></div></div>
+      <div class="field"><label for="f_pasark">Komisi di kanal itu</label><div class="inp has-suf"><input id="f_pasark" data-k="mundur.komisi" type="number" inputmode="decimal" min="0" max="90" placeholder="0"><span class="suf">%</span></div></div>
+    </div>
+    <div class="kv" style="margin-top:12px" id="outMundur"></div>
+  </section>
+
+  <section class="result" aria-labelledby="hBEP">
+    <h2 id="hBEP">Titik impas (BEP) per bulan</h2>
+    <p class="sub">Berapa yang harus terjual supaya biaya bulanan tertutup, pada harga toko <b id="bepHargaTxt">Rp0</b></p>
+    <div class="kv" id="outBEP"></div>
+    <div class="note" id="noteBEP" hidden></div>
+  </section>
+
+  <section class="result" aria-labelledby="hSim">
+    <h2 id="hSim">Simulasi: kalau harga bahan naik</h2>
+    <div class="rangehead"><label for="f_sim">Kenaikan harga bahan baku</label><b id="simPct">10%</b></div>
+    <input id="f_sim" type="range" min="0" max="50" step="1" value="10">
+    <div class="kv" style="margin-top:10px" id="outSim"></div>
+  </section>
+
+  <section class="result noprint" aria-labelledby="hShare">
+    <h2 id="hShare">Bagikan & simpan</h2>
+    <p class="sub">Data tersimpan otomatis di HP ini saja. Buat cadangan sesekali.</p>
+    <div class="actions">
+      <a class="btn primary" id="btnWA" href="https://wa.me/" target="_blank" rel="noopener" style="text-decoration:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 01-13.5 7.8L3 21l1.2-4.4A9 9 0 1121 12z"/></svg>Kirim ke WhatsApp</a>
+      <button class="btn" id="btnCopy" type="button">Salin ringkasan</button>
+      <button class="btn" id="btnPrint" type="button" data-standalone>Cetak / PDF</button>
+      <button class="btn" id="btnExport" type="button">Cadangkan data</button>
+      <label class="btn" for="fileImport" style="cursor:pointer">Pulihkan data</label>
+      <input type="file" id="fileImport" accept="application/json,.json" class="sr">
+    </div>
+  </section>
+
+  <footer><span class="dev">HargaPas dikembangkan oleh Universitas Terbuka Majene</span>Versi 0.2 (prototipe) · Gratis untuk UKM · Data tidak dikirim ke mana pun<br><button class="btn small ghost" id="btnTampilWelcome" type="button" style="margin-top:8px">Tentang HargaPas</button></footer>
+</div>
+
+<div class="sticky" aria-live="polite">
+  <div class="in">
+    <div class="grp">
+      <div><div class="lbl">HPP / unit</div><div class="v" id="stHPP">Rp0</div></div>
+      <div><div class="lbl">Harga toko</div><div class="v" id="stHarga">Rp0</div></div>
+    </div>
+    <span class="pill good" id="stMargin">—</span>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+(function(){
+  const $ = (s, el=document) => el.querySelector(s);
+  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+  const KEY = 'hargapas.v1', OLDKEY = 'hitunghpp.v1', WKEY = 'hargapas.welcome';
+  const fmtRp = (x) => (x === null || !Number.isFinite(x)) ? '—' : 'Rp' + (Math.round(x) || 0).toLocaleString('id-ID');
+  const fmtPct = (x) => (x === null || !Number.isFinite(x)) ? '—' : (x*100).toLocaleString('id-ID',{maximumFractionDigits:1}) + '%';
+  const fmtNum = (x) => Number.isFinite(x) ? x.toLocaleString('id-ID',{maximumFractionDigits:0}) : '—';
+  const uid = () => Math.random().toString(36).slice(2,9);
+
+  const blank = () => ({
+    id: uid(), mode: 'batch', menitUnit: '', nama: '', satuan: '', hasilBatch: '', upahJam: '', jamBatch: '', kemasan: '', batchBulan: '',
+    bahan: [{ nama:'', harga:'', isi:'', satuanIsi:'', pakai:'' }],
+    overhead: { gas:'', listrik:'', sewa:'', hargaAlat:'', umurAlat:'', lain0:'' },
+    harga: { metode:'margin', persen:30, bulat:500, diskonReseller:15, komisi:12, biayaMP:0 },
+    mundur: { harga:'', komisi:0 }
+  });
+  const contoh = () => ({
+    id: uid(), mode:'batch', menitUnit:'', nama:'Bolu pisang (contoh)', satuan:'potong', hasilBatch:24, upahJam:15000, jamBatch:3, kemasan:1000, batchBulan:20,
+    bahan: [
+      { nama:'Tepung terigu', harga:14000, isi:1000, satuanIsi:'g', pakai:500 },
+      { nama:'Gula pasir', harga:18000, isi:1000, satuanIsi:'g', pakai:400 },
+      { nama:'Telur', harga:2000, isi:1, satuanIsi:'butir', pakai:8 },
+      { nama:'Mentega', harga:45000, isi:500, satuanIsi:'g', pakai:250 },
+      { nama:'Pisang', harga:20000, isi:10, satuanIsi:'buah', pakai:10 }
+    ],
+    overhead: { gas:120000, listrik:150000, sewa:0, hargaAlat:3000000, umurAlat:36, lain0:50000 },
+    harga: { metode:'margin', persen:30, bulat:500, diskonReseller:15, komisi:12, biayaMP:0 },
+    mundur: { harga:10000, komisi:0 }
+  });
+
+  let state;
+  function load(){
+    try { state = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(OLDKEY)); } catch(e) { state = null; }
+    if (!state || !Array.isArray(state.products) || !state.products.length) {
+      const p = contoh(); state = { products:[p], activeId:p.id };
+    }
+  }
+  let saveT;
+  function saveNow(){ clearTimeout(saveT); try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+  function save(){ clearTimeout(saveT); saveT = setTimeout(saveNow, 250); }
+  window.addEventListener('pagehide', saveNow);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveNow(); });
+  const cur = () => state.products.find(p => p.id === state.activeId) || state.products[0];
+
+  function getPath(obj, path){ return path.split('.').reduce((o,k) => (o ? o[k] : undefined), obj); }
+  function setPath(obj, path, val){ const ks = path.split('.'); const last = ks.pop(); const t = ks.reduce((o,k) => (o[k] ??= {}), obj); t[last] = val; }
+
+  function toEngine(p){
+    const e = { ...p, overhead: { ...p.overhead, lain: [{ nilai: p.overhead.lain0 }] } };
+    if (p.mode === 'unit') { e.hasilBatch = 1; e.jamBatch = (Number(p.menitUnit) || 0) / 60; }
+    return e;
+  }
+  // Pindah mode tanpa mengubah HPP: angka dikonversi.
+  function switchMode(p, to){
+    if (p.mode === to) return;
+    const r2 = (x) => Math.round(x * 100) / 100;
+    if (to === 'unit') {
+      const n = Number(p.hasilBatch) || 0;
+      if (n > 0) {
+        p.bahan.forEach(b => { if (b.pakai !== '') b.pakai = Math.round(Number(b.pakai) / n * 1000) / 1000; });
+        p.menitUnit = r2((Number(p.jamBatch) || 0) * 60 / n);
+        if (p.batchBulan !== '') p.batchBulan = n * Number(p.batchBulan);
+      }
+    } else {
+      p.hasilBatch = 1;
+      p.jamBatch = r2((Number(p.menitUnit) || 0) / 60);
+    }
+    p.mode = to;
+  }
+  function applyMode(){
+    const unit = cur().mode === 'unit';
+    document.body.classList.toggle('mode-unit', unit);
+    $$('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === cur().mode)));
+    $('#sufProd').textContent = unit ? (cur().satuan || 'unit') : 'batch';
+  }
+
+  // ---- render product selector & inputs
+  function renderSelect(){
+    const sel = $('#prodSel'); sel.innerHTML = '';
+    state.products.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.nama || 'Produk tanpa nama'; if (p.id === state.activeId) o.selected = true; sel.appendChild(o); });
+  }
+  function fillInputs(){
+    const p = cur();
+    $$('[data-k]').forEach(el => { const v = getPath(p, el.dataset.k); el.value = (v === undefined || v === null) ? '' : v; });
+    $$('[data-metode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.metode === p.harga.metode)));
+    if (!p.mode) p.mode = 'batch';
+    applyMode();
+    renderBahan();
+  }
+  function renderBahan(){
+    const p = cur(), list = $('#bahanList'); list.innerHTML = '';
+    p.bahan.forEach((b, i) => {
+      const d = document.createElement('div'); d.className = 'brow';
+      d.innerHTML = `
+        <div class="rowhead"><label class="sr" for="bn${i}">Nama bahan ${i+1}</label>
+          <input id="bn${i}" data-b="${i}" data-f="nama" type="text" placeholder="Nama bahan, mis. Tepung terigu">
+          <button class="btn icon small" type="button" data-del="${i}" aria-label="Hapus bahan ${i+1}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div class="grid three">
+          <div class="field"><label for="bh${i}">Harga beli</label><div class="inp has-pre"><span class="pre">Rp</span><input id="bh${i}" data-b="${i}" data-f="harga" type="number" inputmode="decimal" min="0" placeholder="14000"></div></div>
+          <div class="field"><label for="bi${i}">Isi kemasan</label><div class="inp"><input id="bi${i}" data-b="${i}" data-f="isi" type="number" inputmode="decimal" min="0" placeholder="1000"></div></div>
+          <div class="field"><label for="bs${i}">Satuan</label><input id="bs${i}" data-b="${i}" data-f="satuanIsi" type="text" placeholder="g / ml / butir"></div>
+          <div class="field full"><label for="bp${i}"><span class="only-batch">Dipakai per batch</span><span class="only-unit">Dipakai per unit</span></label><div class="inp has-suf"><input id="bp${i}" data-b="${i}" data-f="pakai" type="number" inputmode="decimal" min="0" placeholder="500"><span class="suf" data-sufb="${i}"></span></div></div>
+        </div>
+        <div class="cost"><span><span class="only-batch">Biaya bahan ini per batch</span><span class="only-unit">Biaya bahan ini per unit</span></span><b data-costb="${i}">Rp0</b></div>`;
+      list.appendChild(d);
+      $$('[data-b]', d).forEach(el => { const v = b[el.dataset.f]; el.value = (v === undefined || v === null) ? '' : v; });
+    });
+    updateBahanSuffix();
+  }
+  function updateBahanSuffix(){ const p = cur(); p.bahan.forEach((b,i) => { const s = $(`[data-sufb="${i}"]`); if (s) s.textContent = b.satuanIsi || ''; }); }
+
+  // ---- compute & render outputs
+  function compute(){
+    const p = cur(), e = toEngine(p), H = window.HPP;
+    const r = H.hitungHPP(e);
+    const sat = p.satuan || 'unit';
+    $$('.satuanTxt').forEach(s => s.textContent = sat);
+
+    // section sums
+    $('#sumBahan').textContent = fmtRp(r.bahanBatch) + (p.mode === 'unit' ? '/unit' : '');
+    $('#sufProd').textContent = p.mode === 'unit' ? sat : 'batch';
+    $('#sumTK').textContent = fmtRp(r.perUnit.tenagaKerja + r.perUnit.kemasan) + '/unit';
+    $('#sumOH').textContent = fmtRp(r.overheadBulan) + '/bln';
+    $('#hintSusut').textContent = 'Penyusutan: ' + fmtRp(r.susut) + '/bulan';
+    $('#hintProd').textContent = '= ' + fmtNum(r.produksiBulan) + ' ' + sat + ' per bulan';
+    $('#noteUpah').hidden = Number(p.upahJam) > 0;
+    p.bahan.forEach((b,i) => { const c = $(`[data-costb="${i}"]`); if (c) { const isi = Number(b.isi); c.textContent = isi > 0 ? fmtRp(Number(b.harga)/isi*Number(b.pakai||0)) : 'Isi kemasan belum diisi'; } });
+
+    // HPP
+    $('#outHPP').innerHTML = fmtRp(r.hpp) + ` <small>/ ${sat}</small>`;
+    const comps = [['Bahan baku', r.perUnit.bahan, 'var(--c1)'], ['Tenaga kerja', r.perUnit.tenagaKerja, 'var(--c2)'], ['Kemasan', r.perUnit.kemasan, 'var(--c3)'], ['Overhead', r.perUnit.overhead, 'var(--c4)']];
+    $('#outStack').innerHTML = r.hpp > 0 ? comps.map(c => `<i style="width:${c[1]/r.hpp*100}%;background:${c[2]}"></i>`).join('') : '';
+    $('#outLegend').innerHTML = comps.map(c => `<div><span class="k"><i style="background:${c[2]}"></i>${c[0]}</span><b>${fmtRp(c[1])} <span style="color:var(--muted);font-weight:500">${r.hpp>0?fmtPct(c[1]/r.hpp):''}</span></b></div>`).join('');
+
+    // Harga
+    const h = p.harga, step = Number(h.bulat) || 0, persen = Number(h.persen) || 0;
+    const dasar = H.hargaDasar(r.hpp, h.metode, persen);
+    const pMarkup = H.hargaDasar(r.hpp, 'markup', persen), pMargin = H.hargaDasar(r.hpp, 'margin', persen);
+    const eqMarkup = H.marginDariMarkup(persen/100), eqMargin = H.markupDariMargin(persen/100);
+    $('#outCompare').innerHTML = `
+      <div class="box ${h.metode==='margin'?'on':''}"><div class="lbl">Margin ${persen}%</div><div class="val">${fmtRp(pMargin)}</div><div class="eq">setara markup ${fmtPct(eqMargin)}</div></div>
+      <div class="box ${h.metode==='markup'?'on':''}"><div class="lbl">Markup ${persen}%</div><div class="val">${fmtRp(pMarkup)}</div><div class="eq">laba hanya ${fmtPct(eqMarkup)} dari harga</div></div>`;
+    const nh = $('#noteHarga');
+    if (h.metode === 'margin' && persen >= 100) { nh.hidden = false; nh.textContent = 'Margin tidak bisa 100% atau lebih. Pakai angka di bawah 100%.'; } else nh.hidden = true;
+
+    const hargaToko = H.bulatkan(dasar, step);
+    const resellerP = hargaToko * (1 - (Number(h.diskonReseller)||0)/100);
+    const mpRaw = H.hargaKanal(r.hpp, h.komisi, h.biayaMP, h.metode === 'margin' ? persen : eqMarkup*100);
+    const mpP = H.bulatkan(mpRaw, step);
+    const kanal = [
+      { n:'Toko langsung', s:'tanpa potongan', P:hargaToko, k:0, f:0 },
+      { n:'Reseller', s:`diskon ${Number(h.diskonReseller)||0}% dari harga toko`, P:resellerP, k:0, f:0 },
+      { n:'Marketplace', s:`komisi ${Number(h.komisi)||0}%` + (Number(h.biayaMP)?` + ${fmtRp(Number(h.biayaMP))}`:''), P:mpP, k:Number(h.komisi)||0, f:Number(h.biayaMP)||0 }
+    ];
+    $('#outKanal').innerHTML = kanal.map(c => {
+      const ok = Number.isFinite(c.P) && c.P > 0;
+      const terima = ok ? c.P*(1-c.k/100) - c.f : null;
+      const m = ok ? H.marginAktual(c.P, r.hpp, c.k, c.f) : null;
+      const cls = m === null ? 'bad' : m < 0 ? 'bad' : m < 0.15 ? 'warn' : 'good';
+      return `<tr><td class="chname">${c.n}<small>${c.s}</small></td><td class="n"><b>${ok?fmtRp(c.P):'Tidak mungkin'}</b></td><td class="n hide-s">${fmtRp(terima)}</td><td class="n">${ok?fmtRp(terima - r.hpp):'—'}</td><td class="n"><span class="pill ${cls}">${fmtPct(m)}</span></td></tr>`;
+    }).join('');
+
+    // Hitung mundur
+    const mh = Number(p.mundur.harga)||0, mk = Number(p.mundur.komisi)||0;
+    const ma = H.marginAktual(mh, r.hpp, mk, 0);
+    const mcls = ma === null ? '' : ma < 0 ? 'var(--bad)' : ma < 0.15 ? 'var(--warn)' : 'var(--good)';
+    $('#outMundur').innerHTML = mh > 0 ? `
+      <div class="box"><div class="lbl">Laba per ${sat}</div><div class="val">${fmtRp(mh*(1-mk/100) - r.hpp)}</div></div>
+      <div class="box"><div class="lbl">Margin sebenarnya</div><div class="val" style="color:${mcls}">${fmtPct(ma)}</div></div>
+      <div class="box"><div class="lbl">Setara markup</div><div class="val">${r.hpp>0?fmtPct((mh*(1-mk/100) - r.hpp)/r.hpp):'—'}</div></div>`
+      : `<div class="box full" style="grid-column:1/-1"><div class="lbl">Isi harga jual untuk melihat hasilnya</div></div>`;
+
+    // BEP
+    $('#bepHargaTxt').textContent = fmtRp(hargaToko);
+    const b = Number.isFinite(hargaToko) ? H.bep(r.fc, hargaToko, r.vc) : null;
+    const nb = $('#noteBEP');
+    if (b) {
+      $('#outBEP').innerHTML = `
+        <div class="box"><div class="lbl">Minimal terjual</div><div class="val">${fmtNum(b.unitBulat)} ${sat}</div></div>
+        <div class="box"><div class="lbl">Omzet minimal</div><div class="val">${fmtRp(b.rupiah)}</div></div>
+        <div class="box"><div class="lbl">Sumbangan per ${sat}</div><div class="val">${fmtRp(b.kontribusi)}</div></div>`;
+      if (r.produksiBulan > 0) {
+        const pct = b.unitBulat / r.produksiBulan;
+        nb.hidden = false;
+        nb.className = 'note ' + (pct > 1 ? 'bad' : pct > 0.7 ? 'warn' : 'info');
+        nb.textContent = pct > 1
+          ? `Produksi ${fmtNum(r.produksiBulan)} ${sat}/bulan belum cukup untuk balik modal. Naikkan harga, tekan biaya bulanan, atau tambah produksi.`
+          : `Titik impas = ${fmtPct(pct)} dari produksi bulanan Anda (${fmtNum(r.produksiBulan)} ${sat}). Sisanya menjadi laba.`;
+      } else nb.hidden = true;
+    } else {
+      $('#outBEP').innerHTML = `<div class="box" style="grid-column:1/-1"><div class="lbl">Harga belum menutup biaya per unit</div><div class="val" style="font-size:15px">Harga harus di atas ${fmtRp(r.vc)} (bahan + tenaga kerja + kemasan).</div></div>`;
+      nb.hidden = true;
+    }
+
+    // Simulasi
+    const sp = Number($('#f_sim').value);
+    $('#simPct').textContent = '+' + sp + '%';
+    const s = H.simulasiBahan(e, sp, hargaToko);
+    $('#outSim').innerHTML = `
+      <div class="box"><div class="lbl">HPP baru</div><div class="val">${fmtRp(s.hppBaru)}</div></div>
+      <div class="box"><div class="lbl">Margin jika harga tetap</div><div class="val">${fmtPct(s.marginBaru)}</div></div>
+      <div class="box"><div class="lbl">Harga agar margin tetap</div><div class="val">${fmtRp(s.hargaPertahankan === null ? null : H.bulatkan(s.hargaPertahankan, step))}</div></div>`;
+
+    // sticky
+    $('#stHPP').textContent = fmtRp(r.hpp);
+    $('#stHarga').textContent = fmtRp(hargaToko);
+    const mt = Number.isFinite(hargaToko) ? H.marginAktual(hargaToko, r.hpp, 0, 0) : null;
+    const st = $('#stMargin'); st.textContent = 'Margin ' + fmtPct(mt);
+    st.className = 'pill ' + (mt === null || mt < 0 ? 'bad' : mt < 0.15 ? 'warn' : 'good');
+
+    lastSummary = { p, r, hargaToko, resellerP, mpP, b, sat };
+    $('#btnWA').href = 'https://wa.me/?text=' + encodeURIComponent(summaryText());
+  }
+  let lastSummary;
+
+  function summaryText(){
+    const { p, r, hargaToko, resellerP, mpP, b, sat } = lastSummary;
+    const L = [
+      `*${p.nama || 'Produk'}* — ringkasan HPP`,
+      `HPP per ${sat}: ${fmtRp(r.hpp)}`,
+      `  • Bahan baku: ${fmtRp(r.perUnit.bahan)}`,
+      `  • Tenaga kerja: ${fmtRp(r.perUnit.tenagaKerja)}`,
+      `  • Kemasan: ${fmtRp(r.perUnit.kemasan)}`,
+      `  • Overhead: ${fmtRp(r.perUnit.overhead)}`,
+      ``,
+      `Harga toko: ${fmtRp(hargaToko)} (margin ${fmtPct(window.HPP.marginAktual(hargaToko, r.hpp, 0, 0))})`,
+      `Harga reseller: ${fmtRp(resellerP)}`,
+      `Harga marketplace: ${fmtRp(mpP)}`,
+      b ? `Titik impas: ${fmtNum(b.unitBulat)} ${sat}/bulan` : `Titik impas: harga belum menutup biaya per unit`,
+      ``, `Dihitung dengan HargaPas by Universitas Terbuka Majene`
+    ];
+    return L.join('\n');
+  }
+
+  function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2200); }
+
+  // ---- events
+  document.addEventListener('input', (ev) => {
+    const el = ev.target, p = cur();
+    if (el.dataset.k) {
+      let v = el.value;
+      if (el.type === 'number' || el.tagName === 'SELECT') v = v === '' ? '' : Number(v);
+      setPath(p, el.dataset.k, v);
+      if (el.dataset.k === 'nama') renderSelect();
+    } else if (el.dataset.b !== undefined) {
+      const b = p.bahan[Number(el.dataset.b)];
+      b[el.dataset.f] = el.type === 'number' ? (el.value === '' ? '' : Number(el.value)) : el.value;
+      if (el.dataset.f === 'satuanIsi') updateBahanSuffix();
+    } else if (el.id !== 'f_sim') return;
+    compute(); save();
+  });
+  document.addEventListener('change', (ev) => { if (ev.target.tagName === 'SELECT' && ev.target.dataset.k) ev.target.dispatchEvent(new Event('input', {bubbles:true})); });
+
+  $('#bahanList').addEventListener('click', (ev) => {
+    const btn = ev.target.closest('[data-del]'); if (!btn) return;
+    const p = cur(); p.bahan.splice(Number(btn.dataset.del), 1);
+    if (!p.bahan.length) p.bahan.push({ nama:'', harga:'', isi:'', satuanIsi:'', pakai:'' });
+    renderBahan(); compute(); save();
+  });
+  $('#btnAddBahan').addEventListener('click', () => {
+    cur().bahan.push({ nama:'', harga:'', isi:'', satuanIsi:'', pakai:'' });
+    renderBahan(); compute(); save();
+    const i = cur().bahan.length - 1; const el = $('#bn' + i); if (el) el.focus();
+  });
+  $$('[data-mode]').forEach(b => b.addEventListener('click', () => {
+    const p = cur(); if (p.mode === b.dataset.mode) return;
+    switchMode(p, b.dataset.mode);
+    fillInputs(); compute(); save();
+    toast(b.dataset.mode === 'unit' ? 'Mode per unit: angka sudah dikonversi, HPP tetap sama' : 'Mode per batch aktif');
+  }));
+  $$('[data-metode]').forEach(b => b.addEventListener('click', () => {
+    cur().harga.metode = b.dataset.metode;
+    $$('[data-metode]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    compute(); save();
+  }));
+  $('#prodSel').addEventListener('change', (e) => { state.activeId = e.target.value; fillInputs(); compute(); save(); });
+  $('#btnNew').addEventListener('click', () => {
+    const p = blank(); state.products.push(p); state.activeId = p.id;
+    renderSelect(); fillInputs(); compute(); save();
+    $('#secBahan').open = true; $('#f_nama').focus();
+  });
+  let delArm = 0;
+  $('#btnDel').addEventListener('click', () => {
+    const p = cur();
+    if (Date.now() - delArm > 3000) { delArm = Date.now(); toast(`Ketuk sekali lagi untuk menghapus "${p.nama || 'produk ini'}"`); return; }
+    delArm = 0;
+    state.products = state.products.filter(x => x.id !== p.id);
+    if (!state.products.length) state.products.push(blank());
+    state.activeId = state.products[0].id;
+    renderSelect(); fillInputs(); compute(); save();
+  });
+  $('#btnContoh').addEventListener('click', () => {
+    const p = contoh(); state.products.push(p); state.activeId = p.id;
+    renderSelect(); fillInputs(); compute(); save(); toast('Contoh bolu pisang ditambahkan');
+  });
+  
+  $('#btnCopy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(summaryText()); toast('Ringkasan disalin'); }
+    catch(e) { toast('Gagal menyalin; coba tombol WhatsApp'); }
+  });
+  $('#btnPrint').addEventListener('click', () => window.print());
+  const embedded = (() => { try { return window.self !== window.top; } catch(e) { return true; } })();
+  if (embedded) $$('[data-standalone]').forEach(el => el.hidden = true);
+  $('#btnExport').addEventListener('click', async () => {
+    if (embedded) {
+      try { await navigator.clipboard.writeText(JSON.stringify(state)); toast('Data cadangan disalin. Tempel ke catatan atau chat untuk disimpan.'); }
+      catch(e) { toast('Gagal menyalin data'); }
+      return;
+    }
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'hargapas-cadangan-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('File cadangan diunduh');
+  });
+  $('#fileImport').addEventListener('change', async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      if (!data || !Array.isArray(data.products) || !data.products.length) throw new Error('format');
+      state = data; if (!state.products.find(p => p.id === state.activeId)) state.activeId = state.products[0].id;
+      renderSelect(); fillInputs(); compute(); save(); toast('Data dipulihkan: ' + state.products.length + ' produk');
+    } catch(err) { toast('File tidak dikenali sebagai cadangan HargaPas'); }
+    e.target.value = '';
+  });
+
+  const welcome = $('#welcome');
+  let seen = false; try { seen = localStorage.getItem(WKEY) === '1'; } catch(e) {}
+  welcome.hidden = seen;
+  const hideWelcome = () => { welcome.hidden = true; try { localStorage.setItem(WKEY, '1'); } catch(e) {} };
+  $('#btnTutupWelcome').addEventListener('click', hideWelcome);
+  $('#btnMulai').addEventListener('click', () => { hideWelcome(); $('#secBahan').open = true; $('#f_nama').focus(); });
+  $('#btnTampilWelcome').addEventListener('click', () => { welcome.hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  load(); renderSelect(); fillInputs(); compute();
+})();
+</script>
+</body>
+</html>
