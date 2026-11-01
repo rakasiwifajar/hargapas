@@ -850,3 +850,36 @@ footer.ft{display:block;text-align:left;margin-top:26px;gap:0}
 .ft-note{text-align:center;font-size:12px;color:var(--muted);line-height:1.6;margin:12px 0 0}
 @media print{ footer.ft{display:none} }
 .home-links{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+/* 2.3.2: bagian bawah lebih ringkas dan bersih */
+.pgrid{gap:10px}
+.pcard{padding:12px 14px;gap:10px;border-radius:16px;box-shadow:none}
+.pcard:hover{box-shadow:0 4px 14px rgba(18,26,44,.06)}
+.pav{width:36px;height:36px;border-radius:11px;font-size:13px;box-shadow:none}
+.pcard .pt{gap:10px}
+.pcard .pn{font-size:15.5px}
+.pcard .ps{font-size:12.5px}
+.pcard .tag{font-size:11.5px;padding:3px 9px}
+.pcard .pv{background:none;padding:0 0 0 46px;gap:6px}
+.pcard .pv span{font-size:11.5px;font-weight:500}
+.pcard .pv b{font-size:14.5px}
+.pprog{padding-left:46px;gap:6px}
+.pbar2{height:4px}
+.pprog-l{font-size:12.5px}
+.home-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.hl{min-height:40px;padding:6px 14px 6px 8px;border-radius:999px;gap:8px;box-shadow:none;background:transparent}
+.hl small{display:none}
+.hl b{font-size:13.5px;font-weight:600}
+.hl-ic{width:28px;height:28px;border-radius:50%}
+.hl-ic svg{width:16px;height:16px}
+footer.ft{margin-top:28px;padding:16px 4px 0;border-top:1px solid var(--line);text-align:center}
+.ft-row{display:flex;align-items:center;justify-content:center;gap:10px}
+.ft-logo{height:30px;width:auto;display:block}
+.ft-id{text-align:left;line-height:1.3}
+.ft-id b{display:block;font-size:13.5px;color:var(--ut-blue-dark)}
+.ft-id span{display:block;font-size:12px;color:var(--muted)}
+.ft-id a{color:var(--ut-blue);text-decoration:none;font-weight:600}
+.ft-links{display:flex;justify-content:center;gap:0;margin:10px 0 0;padding:0;border:0}
+.ft-links a{font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 10px;border:0;background:none;border-radius:0}
+.ft-links a+a{border-left:1px solid var(--line)}
+.ft-links a:hover{color:var(--ut-blue);background:none}
+.ft-note{font-size:11.5px;margin:6px 0 0;line-height:1.5}

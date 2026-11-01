@@ -1,5 +1,8 @@
 # Catatan perubahan HargaPas
 
+## 2.3.2 — 1 November 2026
+- Bagian bawah Beranda dibuat lebih ringkas dan bersih: kartu produk lebih kecil, pintasan berupa tombol kapsul kecil, kaki halaman satu baris dengan logo UT dan tautan teks.
+
 ## 2.3.1 — 1 November 2026
 - Bagian bawah Beranda diperhalus: kartu produk dengan inisial berwarna, status berwarna, dan bilah kemajuan untuk produk yang belum lengkap; pintasan "Lihat contoh" dan "Panduan singkat" berbentuk kartu; kaki halaman berupa kartu biru malam dengan pita emas sure', logo UT, dan tautan berbentuk kapsul.
 
