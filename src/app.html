@@ -62,12 +62,11 @@
       <span class="grow">Data hanya tersimpan di HP ini. Sudah lebih dari sebulan sejak cadangan terakhir.</span>
       <button class="btn small" type="button" data-backup>Cadangkan</button>
     </div>
-    <section class="usaha" id="usahaCard" hidden>
-      <div class="sec-head" style="margin:0 0 8px"><h2>Bulan ini</h2><span class="hint" id="bulanNama"></span></div>
+    <a class="usaha" id="usahaCard" href="#keuangan" hidden>
+      <div class="sec-head" style="margin:0 0 8px"><h2>Bulan ini</h2><span class="hint u-more"><span id="bulanNama"></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="kv" id="outUsaha"></div>
       <p class="hint" id="usahaNote" style="margin:8px 0 0"></p>
-      <div class="actions" style="margin-top:10px"><a class="btn" href="#keuangan" id="btnKeHome">Buka Keuangan</a><button class="btn primary" type="button" id="btnCatat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Catat penjualan</button></div>
-    </section>
+    </a>
     <div class="sec-head"><h2>Produk saya</h2><span class="hint" id="prodCount"></span></div>
     <div class="pgrid" id="prodGrid"></div>
     <div class="empty-home" id="emptyHome" hidden>
@@ -588,6 +587,22 @@
       <div class="formula" style="margin-top:8px">Laba bersih = penjualan − harga pokok penjualan + pemasukan lain − beban usaha − penyusutan − bunga − pajak</div>
       <p>Pembelian peralatan dicatat sebagai aset dan disusutkan garis lurus sesuai umur manfaat. Cicilan pokok pinjaman dan pengambilan pribadi (prive) bukan beban, sehingga tidak mengurangi laba, tetapi mengurangi kas. Neraca diperiksa otomatis: aset = utang + modal.</p>
 
+      <h2>Daftar istilah</h2>
+      <p>Di aplikasi dipakai bahasa sehari-hari; di laporan untuk bank dipakai istilah resmi.</p>
+      <div class="tw"><table class="gloss"><thead><tr><th>Di aplikasi</th><th>Istilah resmi</th></tr></thead><tbody>
+        <tr><td>Modal per barang</td><td>Harga pokok produksi (HPP)</td></tr>
+        <tr><td>Untung per barang</td><td>Laba kotor per unit / margin</td></tr>
+        <tr><td>Untung bersih</td><td>Laba bersih</td></tr>
+        <tr><td>Balik modal</td><td>Titik impas (BEP)</td></tr>
+        <tr><td>Biaya bulanan</td><td>Overhead / biaya tidak langsung</td></tr>
+        <tr><td>Sisa uang usaha</td><td>Kas</td></tr>
+        <tr><td>Sisa bahan & barang</td><td>Persediaan</td></tr>
+        <tr><td>Pembeli belum bayar</td><td>Piutang usaha</td></tr>
+        <tr><td>Bon ke pemasok</td><td>Utang usaha</td></tr>
+        <tr><td>Ambil untuk pribadi</td><td>Prive</td></tr>
+        <tr><td>Peralatan</td><td>Aset tetap</td></tr>
+      </tbody></table></div>
+
       <h2>Rujukan</h2>
       <ul>
         <li>Mulyadi, <i>Akuntansi Biaya</i>: konsep harga pokok produksi dengan metode full costing dan variable costing.</li>
@@ -605,6 +620,7 @@
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
       <ul>
+        <li>Penjualan per produk langsung di Keuangan, nota dan pengingat tagihan lewat WhatsApp, belanja bahan memperbarui harga bahan, produk terlaris, ringkasan 7 hari, daftar istilah.</li>
         <li>Tampilan baru: biru malam dengan pita emas bermotif sure' Mandar, menu cepat bundar, pita tips harian, kartu saldo di Keuangan.</li>
         <li>Piutang dan bon saat mulai mencatat, konfirmasi jumlah sangat besar, contoh laporan keuangan, pengingat data usaha.</li>
         <li>Pembeli belum bayar dan bon ke pemasok (piutang & utang usaha), daftar Belum dibayar dengan tombol pelunasan.</li>
@@ -781,6 +797,19 @@
     <div class="lbl" style="margin-top:12px">Untuk apa?</div>
     <div class="katgrid" id="trxKat" role="radiogroup" aria-label="Jenis"></div>
     <p class="hint" id="trxKatHint" style="margin:6px 0 0"></p>
+    <div class="titems" id="trxItems" hidden>
+      <div class="lbl">Produk yang terjual <span class="term">(boleh dilewati)</span></div>
+      <div id="trxItemList"></div>
+      <p class="hint" id="trxItemSum" style="margin:6px 0 0"></p>
+    </div>
+    <details class="helper" id="trxBahanUpd" hidden>
+      <summary>Harga bahan berubah? Perbarui sekalian</summary>
+      <div class="grid2" style="margin-top:6px">
+        <div class="field"><label for="trxBhn">Bahan</label><select id="trxBhn"></select></div>
+        <div class="field"><label for="trxBhnIsi">Dapat berapa</label><div class="inp has-suf"><input id="trxBhnIsi" class="num" type="text" inputmode="decimal" placeholder="0"><span class="suf" id="trxBhnSat"></span></div></div>
+      </div>
+      <p class="hint" style="margin:6px 0 0">Harga belinya = jumlah uang di atas. Modal semua produk yang memakai bahan ini ikut dihitung ulang.</p>
+    </details>
     <label class="chk tempo" id="trxTempoF" hidden style="margin:10px 0 0"><input type="checkbox" id="trxTempo"><span id="trxTempoL">Belum dibayar</span></label>
     <div class="field" id="trxLunasF" hidden style="margin-top:8px"><label for="trxLunas">Sudah dilunasi tanggal <span class="term">(kosongkan bila belum)</span></label><input id="trxLunas" type="date"></div>
     <div class="field only-alat" id="trxUmurF" hidden><label for="trxUmur">Perkiraan bisa dipakai berapa tahun? <span class="term">(umur manfaat)</span></label><input id="trxUmur" class="num" type="text" inputmode="decimal" placeholder="4"></div>
@@ -788,7 +817,7 @@
       <div class="field"><label for="trxTgl">Tanggal</label><input id="trxTgl" type="date"></div>
       <div class="field"><label for="trxKet">Keterangan <span class="term">(opsional)</span></label><input id="trxKet" type="text" placeholder="mis. tepung 10 kg" maxlength="80"></div>
     </div>
-    <div class="ob-actions" style="margin-top:14px"><button class="btn danger-ghost" type="button" id="trxDel" hidden>Hapus</button><span class="grow"></span><button class="btn" type="button" id="trxBatal">Batal</button><button class="btn primary" type="button" id="trxSimpan">Simpan</button></div>
+    <div class="ob-actions" style="margin-top:14px"><button class="btn danger-ghost" type="button" id="trxDel" hidden>Hapus</button><button class="btn small" type="button" id="trxNota" hidden>Kirim nota</button><span class="grow"></span><button class="btn" type="button" id="trxBatal">Batal</button><button class="btn primary" type="button" id="trxSimpan">Simpan</button></div>
   </div>
 </div>
 

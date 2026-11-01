@@ -1,5 +1,18 @@
 # Catatan perubahan HargaPas
 
+## 2.4.0 — 1 November 2026
+### Baru
+- Penjualan per produk menyatu dengan Keuangan: di Uang masuk → Penjualan pilih produk dan jumlahnya (tombol − / +), jumlah uang terisi otomatis dari harga jual; masih bisa diubah manual untuk diskon.
+- Kirim nota penjualan lewat WhatsApp setelah mencatat atau dari catatan yang sudah ada.
+- Tombol "Ingatkan" untuk pembeli yang belum bayar: pesan tagihan sopan lewat WhatsApp.
+- Belanja bahan bisa sekaligus memperbarui harga bahan; modal semua produk yang memakai bahan itu ikut dihitung ulang.
+- Produk terlaris bulan ini (jumlah dan perkiraan untung) di Keuangan; ringkasan penjualan 7 hari dibanding pekan sebelumnya di Beranda.
+- Daftar istilah (bahasa sehari-hari ↔ istilah resmi) di halaman Tentang.
+### Perubahan
+- Kartu "Bulan ini" di Beranda menjadi tautan ke Keuangan; tombol ganda dihapus sehingga menu cepat menjadi jalan utama.
+- Istilah diseragamkan: "Untung bersih" di aplikasi, "Laba bersih" di laporan; kartu produk menulis "Modal / satuan" dan "Untung / satuan".
+- Jendela yang terbuka otomatis tertutup saat pindah halaman.
+
 ## 2.3.3 — 1 November 2026
 - Perbaikan: tombol Uang masuk/keluar meluap 2 px di layar 360 px; area sentuh tombol bantuan "?" diperbesar menjadi ±46 px.
 

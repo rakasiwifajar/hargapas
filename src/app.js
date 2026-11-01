@@ -642,7 +642,7 @@
   function startTour(){ showSlide(0); openOverlay('onboard'); }
   function endTour(){ $('#onboard').hidden = true; lsSet(OBKEY, '1'); }
   $('#obNext').addEventListener('click', () => { if (slide < 2) showSlide(slide + 1); });
-  $$('[data-obui]').forEach(b => b.addEventListener('click', () => { setUi(b.dataset.obui); endTour(); if (state.products.length) { location.hash = '#hitung'; openStep(1); } else { location.hash = '#beranda'; openOverlay('tplDlg'); } }));
+  $$('[data-obui]').forEach(b => b.addEventListener('click', () => { setUi(b.dataset.obui); endTour(); if (state.products.length) { location.hash = '#hitung'; openStep(1); } else { location.hash = '#beranda'; setTimeout(() => openOverlay('tplDlg'), 80); } }));
   $('#obSkip').addEventListener('click', endTour);
   $$('[data-tour]').forEach(b => b.addEventListener('click', () => { closeOverlays(); startTour(); }));
 
@@ -704,6 +704,7 @@
     let v = (location.hash || '#beranda').slice(1);
     if (!VIEWS.includes(v)) v = 'beranda';
     if ((v === 'hitung' || v === 'laporan') && !state.products.length) { history.replaceState(null, '', '#beranda'); v = 'beranda'; setTimeout(() => openOverlay('tplDlg'), 50); }
+    $$('.overlay').forEach(o => { if (o.id !== 'onboard') o.hidden = true; });
     $$('[data-page]').forEach(m => m.hidden = m.dataset.page !== v);
     const navOf = { lapkeu: 'keuangan', laporan: 'lainnya', tentang: 'lainnya', privasi: 'lainnya', lembar: 'lainnya', belajar: 'lainnya' };
     $$('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.dataset.view === (navOf[v] || v) ? 'page' : 'false'));
@@ -942,7 +943,7 @@
       const nama = p.nama || 'Produk tanpa nama', ini = (p.nama || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
       return `<a class="pcard ${lv}" href="#hitung" data-open="${p.id}">
         <div class="pt"><span class="pav" aria-hidden="true">${esc(ini || '?')}</span><div class="pti"><div class="pn">${esc(nama)}</div><div class="ps">${p.mode === 'unit' ? 'Satu per satu' : 'Sekali produksi'} · per ${esc(sat.toLowerCase())}</div></div><span class="tag">${tag}</span></div>
-        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.laba) : '—'}</b></div></div>`
+        ${ok ? `<div class="pv"><div><span>Modal / ${esc(sat.toLowerCase())}</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung / ${esc(sat.toLowerCase())}</span><b>${s.harga ? fmtRp(s.laba) : '—'}</b></div></div>`
           : `<div class="pprog"><div class="pbar2"><i style="width:${Math.max(6, done / 4 * 100)}%"></i></div><div class="pprog-l"><span>${done} dari 4 langkah terisi</span><span class="pgo">Lanjutkan<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></div></div>`}
       </a>`;
     }).join('');
@@ -1076,13 +1077,23 @@
 
   // ---------- catatan penjualan & ringkasan bulan ini ----------
   const today = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+  function terjualProduk(pid, bln){
+    const a = state.penjualan.filter(x => x.pid === pid && x.tgl.startsWith(bln)).reduce((t, x) => t + (Number(x.qty) || 0), 0);
+    const b = state.kas.trx.filter(t => t.items && t.tgl.startsWith(bln)).reduce((t, x) => t + x.items.filter(i => i.pid === pid).reduce((s, i) => s + (Number(i.qty) || 0), 0), 0);
+    return a + b;
+  }
+  function ringkas7(){
+    const d = (n) => { const x = new Date(today() + 'T00:00:00'); x.setDate(x.getDate() - n); return new Date(x.getTime() - x.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+    const sum = (from, to, j) => state.kas.trx.filter(t => t.jenis === j && t.tgl > from && t.tgl <= to && ['jual', 'lain'].includes(t.kat)).reduce((s, t) => s + Number(t.nominal), 0);
+    const ini = sum(d(7), today(), 'masuk'), lalu = sum(d(14), d(7), 'masuk');
+    return { ini, lalu, naik: lalu > 0 ? (ini - lalu) / lalu : null };
+  }
   function renderUsaha(){
     const card = $('#usahaCard'); const list = state.products.filter(p => !p.isContoh);
     const bln = today().slice(0, 7);
     const wd = $('#wDate'); if (wd) { const h = new Date().getHours(); wd.textContent = (h < 11 ? 'Selamat pagi' : h < 15 ? 'Selamat siang' : h < 18 ? 'Selamat sore' : 'Selamat malam') + ' · ' + new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
     const pakaiKas = state.kas.trx.some(t => t.tgl.startsWith(bln));
     card.hidden = !list.length && !pakaiKas;
-    $('#btnCatat').hidden = !list.length;
     $('#bulanNama').textContent = new Date(bln + '-01T00:00:00').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
     if (pakaiKas) {
       const L = H.laporanBulan(bukuEngine(), bln);
@@ -1091,24 +1102,25 @@
         <div class="box"><div class="lbl2">Uang keluar</div><div class="val">${fmtRp(keluar)}</div></div>
         <div class="box"><div class="lbl2">Untung bersih</div><div class="val" style="color:${laba < 0 ? 'var(--bad)' : 'var(--good)'}">${fmtRp(laba)}</div></div>`;
       const lastT = state.kas.trx.reduce((m, t) => (t.t || 0) > m ? t.t : m, 0), hari = lastT ? Math.floor((Date.now() - lastT) / 864e5) : 0;
-      $('#usahaNote').textContent = `Dari catatan Keuangan. Sisa uang usaha saat ini ${fmtRp(L ? L.arusKas.kasAkhir : 0)}.` + (hari >= 3 ? ` Terakhir mencatat ${hari} hari lalu; jangan lupa catat transaksi hari ini.` : '');
+      const w = ringkas7();
+      $('#usahaNote').textContent = `Sisa uang usaha ${fmtRp(L ? L.arusKas.kasAkhir : 0)}.` + (w.ini ? ` Penjualan 7 hari terakhir ${fmtRp(w.ini)}${w.naik !== null ? ` (${w.naik >= 0 ? 'naik' : 'turun'} ${fmtPct(Math.abs(w.naik))} dari pekan sebelumnya)` : ''}.` : '') + (hari >= 3 ? ` Terakhir mencatat ${hari} hari lalu; jangan lupa catat transaksi hari ini.` : '');
       return;
     }
     if (!list.length) return;
     let terjual = 0, omzet = 0, kontrib = 0, fc = 0, rencanaUntung = 0, adaRencana = false;
     list.forEach(p => {
       const s = summaryOf(p); if (!s.harga) return;
-      const sold = state.penjualan.filter(x => x.pid === p.id && x.tgl.startsWith(bln)).reduce((t, x) => t + (Number(x.qty) || 0), 0);
+      const sold = terjualProduk(p.id, bln);
       terjual += sold; omzet += sold * s.harga; kontrib += sold * H.kontribusiUnit(s.harga, s.r.vc, s.k, s.f); fc += s.r.fc;
       if (Number(p.rencana.unit) > 0) { adaRencana = true; rencanaUntung += H.proyeksi(s.r.fc, s.r.vc, s.harga, p.rencana.unit, s.k, s.f).untung; }
     });
     const untung = kontrib - fc;
     $('#outUsaha').innerHTML = `<div class="box"><div class="lbl2">Terjual</div><div class="val">${fmtNum(terjual)}</div></div>
       <div class="box"><div class="lbl2">Omzet</div><div class="val">${fmtRp(omzet)}</div></div>
-      <div class="box"><div class="lbl2">Perkiraan untung</div><div class="val" style="color:${terjual ? (untung < 0 ? 'var(--bad)' : 'var(--good)') : 'inherit'}">${terjual ? fmtRp(untung) : '—'}</div></div>`;
+      <div class="box"><div class="lbl2">Untung bersih <span class="term">(perkiraan)</span></div><div class="val" style="color:${terjual ? (untung < 0 ? 'var(--bad)' : 'var(--good)') : 'inherit'}">${terjual ? fmtRp(untung) : '—'}</div></div>`;
     $('#usahaNote').textContent = terjual
       ? `Untung dihitung dari penjualan tercatat dikurangi biaya tetap sebulan ${fmtRp(fc)}.` + (adaRencana ? ` Rencana bulan ini: untung ${fmtRp(rencanaUntung)}.` : '')
-      : 'Catat jumlah yang terjual setiap hari untuk melihat untung sebenarnya bulan ini.' + (adaRencana ? ` Rencana: untung ${fmtRp(rencanaUntung)}.` : '');
+      : 'Catat penjualan lewat tombol Uang masuk untuk melihat untung sebenarnya bulan ini.' + (adaRencana ? ` Rencana: untung ${fmtRp(rencanaUntung)}.` : '');
   }
   function openJual(){
     const list = state.products.filter(p => !p.isContoh);
@@ -1122,7 +1134,6 @@
     };
     tgl.onchange = fill; fill(); openOverlay('jualDlg');
   }
-  $('#btnCatat').addEventListener('click', openJual);
   $('#jualBatal').addEventListener('click', closeOverlays);
   $('#jualSimpan').addEventListener('click', () => {
     const tgl = $('#jualTgl').value || today(); let n = 0;
@@ -1266,6 +1277,8 @@
       const nyata = lap.labaRugi.laba / lap.labaRugi.pendapatan, jauh = nyata < rm - 0.1;
       parts.push(`<div class="kcard-i ${jauh ? 'warn' : ''}"><div class="grow"><b>Untung nyata vs rencana</b><p>Rencana di hitungan harga: untung rata-rata <b>${fmtPct(rm)}</b> dari harga jual. Kenyataan bulan ini: untung bersih <b>${fmtPct(nyata)}</b> dari penjualan.${jauh ? ' Selisihnya besar. Periksa apakah harga bahan naik, banyak barang tidak laku, ada biaya yang belum masuk hitungan, atau stok akhir bulan belum diisi.' : ''}</p></div></div>`);
     }
+    const top = state.products.filter(p => !p.isContoh).map(p => ({ p, q: terjualProduk(p.id, kMonth), s: summaryOf(p) })).filter(x => x.q > 0).sort((a, b) => b.q * (b.s.laba || 0) - a.q * (a.s.laba || 0)).slice(0, 3);
+    if (top.length) parts.push(`<div class="kcard-i"><div class="grow"><b>Produk terlaris bulan ini</b>${top.map((x, i) => `<div class="toprow"><span class="tr-n">${i + 1}</span><span class="grow">${esc(x.p.nama || 'Produk')}</span><span>${fmtInput(x.q)} ${esc((x.p.satuan || 'unit').toLowerCase())}</span>${x.s.laba ? `<b>untung ±${fmtRp(x.q * x.s.laba)}</b>` : ''}</div>`).join('')}</div></div>`);
     box.hidden = !parts.length; box.innerHTML = parts.join('');
     const bp = $('#kPajak'); if (bp) bp.onclick = () => { openTrx('keluar'); trx.kat = 'pajak'; renderTrxKat(); $('#trxNom').value = fmtInput(Math.round(lap.k.jual * 0.005)); $('#trxKet').value = 'PPh final 0,5% ' + namaBulan(kMonth); };
   }
@@ -1276,13 +1289,15 @@
     const box = $('#kOpen'); box.hidden = !open.length; if (!open.length) { box.innerHTML = ''; return; }
     const sum = (j) => open.filter(t => t.jenis === j).reduce((s, t) => s + Number(t.nominal), 0);
     const row = (t) => { const c = KAT_ALL[t.jenis + ':' + t.kat] || {}; const hari = Math.round((new Date(today()) - new Date(t.tgl)) / 864e5);
-      return `<div class="orow"><div class="grow"><b>${esc(t.ket || c.nama)}</b><small>${esc(c.nama)} · ${tglPanjang(t.tgl)}${hari > 30 ? ` · <span class="neg">${hari} hari</span>` : ''}</small></div><span class="tn ${t.jenis === 'masuk' ? 'pos' : ''}">${fmtRp(Number(t.nominal))}</span><button class="btn small" type="button" ${t.awalKey ? `data-lunas-awal="${t.awalKey}" data-si="${t.idx}"` : `data-lunas="${t.id}"`}>${t.jenis === 'masuk' ? 'Sudah dibayar' : 'Sudah lunas'}</button></div>`; };
+      return `<div class="orow"><div class="grow"><b>${esc(t.ket || c.nama)}</b><small>${esc(c.nama)} · ${tglPanjang(t.tgl)}${hari > 30 ? ` · <span class="neg">${hari} hari</span>` : ''}</small></div><span class="tn ${t.jenis === 'masuk' ? 'pos' : ''}">${fmtRp(Number(t.nominal))}</span>${t.jenis === 'masuk' ? `<button class="btn small ghost wa" type="button" data-ingat="${esc(t.ket || '')}" data-nom="${t.nominal}" data-tgl="${t.tgl}" aria-label="Ingatkan lewat WhatsApp">Ingatkan</button>` : ''}<button class="btn small" type="button" ${t.awalKey ? `data-lunas-awal="${t.awalKey}" data-si="${t.idx}"` : `data-lunas="${t.id}"`}>${t.jenis === 'masuk' ? 'Sudah dibayar' : 'Sudah lunas'}</button></div>`; };
     const pi = open.filter(t => t.jenis === 'masuk'), ut = open.filter(t => t.jenis === 'keluar');
     box.innerHTML = `<div class="sec-head" style="margin:0 0 8px"><h2>Belum dibayar</h2><span class="hint">semua bulan</span></div>
       ${pi.length ? `<div class="ohead"><span>Pembeli yang belum bayar <span class="term">(piutang)</span></span><b class="pos">${fmtRp(sum('masuk'))}</b></div>${pi.map(row).join('')}` : ''}
       ${ut.length ? `<div class="ohead"><span>Bon yang belum kita bayar <span class="term">(utang usaha)</span></span><b>${fmtRp(sum('keluar'))}</b></div>${ut.map(row).join('')}` : ''}`;
   }
   $('#kOpen').addEventListener('click', (e) => {
+    const ig = e.target.closest('[data-ingat]');
+    if (ig) { const P = state.kas.profil; return kirimWA(`Assalamualaikum/Salam sejahtera Bapak/Ibu${ig.dataset.ingat ? ' (' + ig.dataset.ingat.replace(/ \(saldo awal\)$/, '') + ')' : ''}. Mohon maaf mengganggu, kami ingin mengingatkan pembayaran sebesar ${fmtRp(Number(ig.dataset.nom))} untuk pembelian tanggal ${tglPanjang(ig.dataset.tgl)}. Terima kasih atas kepercayaannya.${P.namaUsaha ? '\n\n' + P.namaUsaha : ''}`); }
     const ba = e.target.closest('[data-lunas-awal]');
     if (ba) { const x = state.kas.awal[ba.dataset.lunasAwal][Number(ba.dataset.si)]; x.lunasTgl = today(); saveNow(); renderKeuangan(); toast(`Ditandai lunas hari ini (${fmtRp(Number(x.nilai))})`, 'Urungkan', () => { delete x.lunasTgl; saveNow(); renderKeuangan(); }); return; }
     const b = e.target.closest('[data-lunas]'); if (!b) return;
@@ -1311,11 +1326,58 @@
     $('#trxTempoF').hidden = !bt;
     $('#trxTempoL').innerHTML = trx.jenis === 'masuk' ? 'Pembeli belum bayar <span class="term">(piutang)</span>' : 'Belum dibayar / masih bon <span class="term">(utang usaha)</span>';
     $('#trxLunasF').hidden = !(bt && $('#trxTempo').checked && trx.id);
+    renderItems(); renderBahanUpd();
   }
   function terbilangSingkat(n){ return n >= 1e9 ? (n / 1e9).toLocaleString('id-ID', { maximumFractionDigits: 2 }) + ' miliar' : n >= 1e6 ? (n / 1e6).toLocaleString('id-ID', { maximumFractionDigits: 2 }) + ' juta' : n.toLocaleString('id-ID'); }
+  const produkJual = () => state.products.filter(p => !p.isContoh).map(p => ({ p, s: summaryOf(p) })).filter(x => x.s.harga > 0);
+  function renderItems(){
+    const list = produkJual(), box = $('#trxItems');
+    box.hidden = !(trx.jenis === 'masuk' && trx.kat === 'jual' && list.length);
+    if (box.hidden) return;
+    $('#trxItemList').innerHTML = list.map(({ p, s }) => { const q = trx.items[p.id] || 0, h = trx.harga[p.id] ?? Math.round(s.harga);
+      return `<div class="irow${q ? ' on' : ''}"><div class="grow"><b>${esc(p.nama || 'Produk tanpa nama')}</b><small>${fmtRp(h)} / ${esc((p.satuan || 'unit').toLowerCase())}</small></div><div class="qty"><button type="button" class="qb" data-qm="${p.id}" aria-label="Kurangi">−</button><label class="sr" for="iq_${p.id}">Jumlah ${esc(p.nama)}</label><input id="iq_${p.id}" class="num" data-iq="${p.id}" type="text" inputmode="decimal" value="${q ? fmtInput(q) : ''}" placeholder="0"><button type="button" class="qb" data-qp="${p.id}" aria-label="Tambah">+</button></div></div>`; }).join('');
+    updItemSum();
+  }
+  function itemTotal(){ return produkJual().reduce((t, { p, s }) => t + (trx.items[p.id] || 0) * (trx.harga[p.id] ?? Math.round(s.harga)), 0); }
+  function updItemSum(){
+    const tot = itemTotal(), n = Object.values(trx.items).filter(q => q > 0).length;
+    $('#trxItemSum').innerHTML = n ? `Total dari ${n} produk: <b>${fmtRp(tot)}</b>${trx.nomManual && Math.round(Number(parseInput($('#trxNom').value)) || 0) !== Math.round(tot) ? ' · jumlah di atas diubah manual (mis. ada diskon)' : ''}` : 'Ketuk + pada produk yang terjual; jumlah uang terisi otomatis.';
+    if (n && !trx.nomManual) $('#trxNom').value = fmtInput(Math.round(tot));
+  }
+  $('#trxItemList').addEventListener('click', (e) => {
+    const m = e.target.closest('[data-qm]'), pl = e.target.closest('[data-qp]'); if (!m && !pl) return;
+    const id = (m || pl).dataset[m ? 'qm' : 'qp']; trx.items[id] = Math.max(0, (trx.items[id] || 0) + (pl ? 1 : -1));
+    const inp = $('#iq_' + id); inp.value = trx.items[id] ? fmtInput(trx.items[id]) : ''; inp.closest('.irow').classList.toggle('on', trx.items[id] > 0); updItemSum();
+  });
+  $('#trxItemList').addEventListener('input', (e) => { const el = e.target.closest('[data-iq]'); if (!el) return; trx.items[el.dataset.iq] = Number(parseInput(el.value)) || 0; el.closest('.irow').classList.toggle('on', trx.items[el.dataset.iq] > 0); updItemSum(); });
+  $('#trxNom').addEventListener('input', () => { trx.nomManual = true; if (!$('#trxItems').hidden) updItemSum(); });
+  function libBahan(){ const m = new Map(); allBahanRows().forEach(({ b }) => { const k = norm(b.nama); if (!m.has(k)) m.set(k, b); }); return Array.from(m.values()).sort((a, b) => a.nama.localeCompare(b.nama, 'id')); }
+  function renderBahanUpd(){
+    const d = $('#trxBahanUpd'), lib = libBahan();
+    d.hidden = !(trx.jenis === 'keluar' && trx.kat === 'bahan' && lib.length && !trx.id);
+    if (d.hidden) return;
+    const sel = $('#trxBhn'), cur = sel.value;
+    sel.innerHTML = '<option value="">— pilih bahan —</option>' + lib.map(b => `<option value="${esc(norm(b.nama))}">${esc(b.nama)} (sekarang ${fmtRp(Number(b.harga))} / ${fmtInput(b.isi)} ${esc(uLabel(b.satuanIsi))})</option>`).join('');
+    sel.value = cur; updBhnSat();
+  }
+  function updBhnSat(){ const b = libBahan().find(x => norm(x.nama) === $('#trxBhn').value); $('#trxBhnSat').textContent = b ? uLabel(b.satuanIsi) : ''; if (b && !$('#trxBhnIsi').value) $('#trxBhnIsi').value = fmtInput(b.isi); }
+  $('#trxBhn').addEventListener('change', () => { $('#trxBhnIsi').value = ''; updBhnSat(); });
+  function notaText(t){
+    const P = state.kas.profil, lines = [`*${P.namaUsaha || 'Nota penjualan'}*`, P.alamat || '', `Tanggal: ${tglPanjang(t.tgl)}`, ''].filter((x, i) => x || i === 3);
+    (t.items || []).forEach(it => lines.push(`${it.nama} × ${fmtInput(it.qty)} @ ${fmtRp(it.harga)} = ${fmtRp(it.qty * it.harga)}`));
+    if (!(t.items || []).length && t.ket) lines.push(t.ket);
+    lines.push('', `*Total: ${fmtRp(Number(t.nominal))}*`, t.tempo && !t.lunasTgl ? 'Status: belum dibayar' : 'Status: lunas', '', 'Terima kasih atas pembeliannya 🙏');
+    return lines.join('\n');
+  }
+  const kirimWA = (text) => { const u = 'https://wa.me/?text=' + encodeURIComponent(text); if (embedded) { navigator.clipboard && navigator.clipboard.writeText(text); toast('Teks disalin. Tempel di WhatsApp.'); } else window.open(u, '_blank', 'noopener'); };
+  $('#trxNota').addEventListener('click', () => { const t = state.kas.trx.find(x => x.id === trx.id); if (t) kirimWA(notaText(t)); });
   function openTrx(jenis, id){
     const t = id ? state.kas.trx.find(x => x.id === id) : null;
     trx = t ? { id: t.id, jenis: t.jenis, kat: t.kat } : { id: null, jenis, kat: jenis === 'masuk' ? 'jual' : 'bahan' };
+    trx.items = {}; trx.harga = {}; trx.nomManual = !!t;
+    if (t && t.items) t.items.forEach(it => { trx.items[it.pid] = it.qty; trx.harga[it.pid] = it.harga; });
+    $('#trxBhnIsi').value = ''; $('#trxBhn').value = ''; $('#trxBahanUpd').open = false;
+    $('#trxNota').hidden = !(t && t.jenis === 'masuk' && t.kat === 'jual');
     $('#trxNom').value = t ? fmtInput(t.nominal) : '';
     $('#trxKet').value = t ? (t.ket || '') : '';
     $('#trxUmur').value = t && t.umur ? fmtInput(t.umur) : '';
@@ -1346,13 +1408,25 @@
     const data = { tgl, jenis: trx.jenis, kat: trx.kat, nominal, ket: $('#trxKet').value.trim() };
     if (trx.kat === 'alat') data.umur = Number(parseInput($('#trxUmur').value)) || 4;
     const tempo = H.BOLEH_TEMPO.includes(trx.kat) && $('#trxTempo').checked;
+    let items = null;
+    if (trx.jenis === 'masuk' && trx.kat === 'jual') {
+      items = produkJual().filter(({ p }) => trx.items[p.id] > 0).map(({ p, s }) => ({ pid: p.id, nama: p.nama || 'Produk', qty: trx.items[p.id], harga: trx.harga[p.id] ?? Math.round(s.harga) }));
+      if (items.length) { data.items = items; if (!data.ket) data.ket = items.map(it => `${it.nama} ${fmtInput(it.qty)}`).join(', '); } else items = null;
+    }
+    let bhnMsg = '';
+    if (trx.kat === 'bahan' && !$('#trxBahanUpd').hidden && $('#trxBhn').value) {
+      const isi = Number(parseInput($('#trxBhnIsi').value)) || 0, key = $('#trxBhn').value;
+      if (isi > 0) { let src = null, nProd = new Set(); allBahanRows().forEach(({ p, b }) => { if (norm(b.nama) === key) { b.harga = nominal; b.isi = isi; src = b; nProd.add(p.id); } }); if (src) { propagate(src); bhnMsg = ` Harga ${src.nama} diperbarui di ${nProd.size} produk.`; if (!data.ket) data.ket = `${src.nama} ${fmtInput(isi)} ${uLabel(src.satuanIsi)}`; } }
+    }
     if (tempo) { data.tempo = true; const l = $('#trxLunas').value; if (trx.id && l) data.lunasTgl = l < tgl ? tgl : l; }
     if (!trx.id && trx.kat === 'jual' && state.kas.trx.some(x => x.src === 'pj:' + tgl.slice(0, 7))) toast('Perhatian: rekap catatan penjualan bulan ini sudah masuk. Pastikan penjualan ini tidak tercatat dua kali.');
-    if (trx.id) { const t = state.kas.trx.find(x => x.id === trx.id); Object.assign(t, data); if (trx.kat !== 'alat') delete t.umur; if (!tempo) { delete t.tempo; delete t.lunasTgl; } else if (!data.lunasTgl) delete t.lunasTgl; delete t.src; }
+    if (trx.id) { const t = state.kas.trx.find(x => x.id === trx.id); Object.assign(t, data); if (!items) delete t.items; if (trx.kat !== 'alat') delete t.umur; if (!tempo) { delete t.tempo; delete t.lunasTgl; } else if (!data.lunasTgl) delete t.lunasTgl; delete t.src; }
     else state.kas.trx.push({ id: uid(), t: Date.now(), ...data });
+    const saved = trx.id ? state.kas.trx.find(x => x.id === trx.id) : state.kas.trx[state.kas.trx.length - 1];
     kMonth = tgl.slice(0, 7);
     saveNow(); closeOverlays(); renderKeuangan(); if (location.hash === '#beranda' || !location.hash) renderBeranda();
-    toast(okMulai ? (trx.id ? 'Catatan diperbarui' : `${trx.jenis === 'masuk' ? 'Uang masuk' : 'Uang keluar'} ${fmtRp(nominal)} dicatat`) : 'Tersimpan, tetapi tanggalnya sebelum awal pencatatan sehingga belum dihitung');
+    const msg = okMulai ? (trx.id ? 'Catatan diperbarui.' : `${trx.jenis === 'masuk' ? 'Uang masuk' : 'Uang keluar'} ${fmtRp(nominal)} dicatat.`) + bhnMsg : 'Tersimpan, tetapi tanggalnya sebelum awal pencatatan sehingga belum dihitung';
+    if (saved && saved.kat === 'jual' && saved.jenis === 'masuk' && !trx.id) toast(msg, 'Kirim nota', () => kirimWA(notaText(saved))); else toast(msg);
   });
   $('#trxDel').addEventListener('click', () => {
     const id = trx.id; const t = state.kas.trx.find(x => x.id === id); if (!t) return;

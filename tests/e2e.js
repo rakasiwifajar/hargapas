@@ -79,11 +79,14 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   await page.waitForSelector('.pcard');
   const nCard = (await page.$$('.pcard')).length;
   ok(nCard === 2, 'beranda menampilkan 2 kartu produk');
-  await page.click('#btnCatat');
-  await page.waitForSelector('#jualDlg:not([hidden])');
-  const first = await page.$('[data-jual]'); await first.fill('10');
-  await page.click('#jualSimpan');
-  ok((await text('#outUsaha')).includes('10'), 'catatan penjualan masuk ke ringkasan bulan ini');
+  await page.click('[data-qa-trx="masuk"]');
+  await page.waitForSelector('#trxDlg:not([hidden])');
+  ok(!(await page.isHidden('#trxItems')), 'penjualan menampilkan daftar produk');
+  const firstQ = await page.$('[data-iq]'); await firstQ.fill('10');
+  ok(Number((await page.inputValue('#trxNom')).replace(/\./g, '')) > 0, 'jumlah uang terisi otomatis dari produk');
+  await page.click('#trxSimpan');
+  await page.goto(URL + '#beranda'); await page.waitForSelector('.pcard');
+  ok(/Rp[1-9]/.test(await text('#outUsaha')), 'penjualan per produk masuk ke ringkasan bulan ini');
 
   // 8. Kartu harga bergambar
   await page.click('.pcard'); await page.waitForFunction(() => location.hash === '#hitung');
@@ -94,17 +97,19 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
 
   // 9. Keuangan: catat, saldo awal, penjualan, laporan seimbang
   await page.goto(URL + '#keuangan'); await page.waitForSelector('#view-keuangan:not([hidden])');
-  ok(!(await page.isHidden('#kJualNote')), 'catatan penjualan ditawarkan untuk dimasukkan ke Keuangan');
-  await page.click('#kJualAdd');
+  ok(!(await page.isHidden('#kInfo')) && (await text('#kInfo')).includes('terlaris'), 'produk terlaris bulan ini tampil');
   await page.click('[data-trx="keluar"]'); await page.fill('#trxNom', '400000'); await page.click('#trxSimpan');
   await page.click('[data-trx="keluar"]'); await page.click('[data-kat="prive"]'); await page.fill('#trxNom', '50000'); await page.click('#trxSimpan');
-  ok((await page.$$('.trow')).length === 3, 'tiga catatan keuangan tampil');
+  ok((await page.$$('.trow')).length === 3, 'tiga catatan keuangan tampil (penjualan, belanja, prive)');
   await page.click('#kSetup [data-open-profil]');
   await page.fill('#pfUsaha', 'Abon Uji'); await page.fill('#pfPemilik', 'Penguji'); await page.fill('#awKas', '1.000.000');
   await page.click('#awUtangAdd'); await page.fill('#ut_n0', 'KUR'); await page.fill('#ut_s0', '2000000');
   await page.click('#profilClose');
   ok(await page.isHidden('#kSetup'), 'pengingat data usaha hilang setelah diisi');
   ok(/Rp/.test(await text('#kSum')), 'ringkasan kas tampil');
+  // belanja bahan memperbarui harga bahan di produk
+  await page.click('[data-trx="keluar"]'); await page.fill('#trxNom', '50000'); await page.click('#trxBahanUpd summary'); await page.selectOption('#trxBhn', { index: 1 }); await page.fill('#trxBhnIsi', '1'); await page.click('#trxSimpan');
+  ok((await text('#toast')).includes('diperbarui'), 'belanja bahan memperbarui harga bahan di produk');
   // pembeli belum bayar -> piutang -> dilunasi
   await page.click('[data-trx="masuk"]'); await page.fill('#trxNom', '250000'); await page.fill('#trxKet', 'Toko Bu Ani'); await page.check('#trxTempo'); await page.click('#trxSimpan');
   ok(!(await page.isHidden('#kOpen')) && (await text('#kOpen')).includes('Toko Bu Ani'), 'pembeli belum bayar muncul di daftar Belum dibayar');
