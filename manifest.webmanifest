@@ -1,18 +1,26 @@
 {
+  "id": "./",
   "name": "HargaPas by Universitas Terbuka Majene",
   "short_name": "HargaPas",
-  "description": "Kalkulator HPP dan harga jual gratis untuk UKM, bisa dipakai offline. Dikembangkan oleh Universitas Terbuka Majene.",
+  "description": "Hitung modal (HPP) dan harga jual produk UKM dengan mudah. Gratis, bisa dipakai offline. Dikembangkan oleh Universitas Terbuka Majene.",
   "lang": "id",
-  "start_url": "./",
+  "dir": "ltr",
+  "start_url": "./#beranda",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F3F5F9",
+  "background_color": "#1E4094",
   "theme_color": "#1E4094",
-  "categories": ["business", "finance", "productivity"],
+  "categories": ["business", "finance", "productivity", "education"],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512-monochrome.png", "sizes": "512x512", "type": "image/png", "purpose": "monochrome" }
+  ],
+  "shortcuts": [
+    { "name": "Hitung produk baru", "short_name": "Produk baru", "url": "./#beranda", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Harga bahan", "short_name": "Bahan", "url": "./#bahan", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

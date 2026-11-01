@@ -47,7 +47,7 @@ Setiap rilis baru:
 
 ## Pengembang
 
-Dikembangkan oleh Universitas Terbuka Majene. Logo Universitas Terbuka digunakan untuk menunjukkan identitas pengembang.
+Fajar Rakasiwi, Universitas Terbuka Majene — rakasiwifajar@ecampus.ut.ac.id. Logo Universitas Terbuka digunakan untuk menunjukkan identitas pengembang.
 
 ## Lisensi
 

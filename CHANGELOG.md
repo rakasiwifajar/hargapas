@@ -1,5 +1,20 @@
 # Catatan perubahan HargaPas
 
+## 1.4.0 — 1 November 2026
+
+- **Beranda** berisi sapaan "Selamat datang di HargaPas by Universitas Terbuka Majene", kartu per produk (modal, harga jual, untung, tanda untung sehat/tipis/rugi), dan tombol besar **Hitung produk baru**. Data contoh tidak lagi menjadi produk pertama; tersedia lewat **Lihat contoh perhitungan**.
+- **Navigasi bawah berikon** di HP (Beranda · Hitung · Bahan · Lainnya); di laptop tampil di atas.
+- **Menu Lainnya** (Laporan, Pengaturan, Cadangan data, Lembar isian, Panduan, Tentang, Privasi) dan **Pengaturan** lewat ikon roda gigi (tampilan Sederhana/Lengkap, ukuran huruf).
+- **Tampilan kosong yang ramah:** peringatan baru muncul setelah pengguna mulai mengisi; hasil diganti kartu "Hasil akan muncul di sini" dengan penanda kemajuan 3 langkah; bilah bawah disembunyikan sampai ada hasil.
+- **Tanda "Tersimpan"** setelah setiap perubahan, animasi halus saat angka berubah.
+- **Harga bahan berbentuk kartu** dengan pencarian dan keterangan "dipakai di N produk".
+- **Ikon jenis usaha** di pilihan template.
+- **Kartu harga bergambar** (PNG 1080×1350) berisi nama produk, harga jual, modal, untung, batas balik modal, logo HargaPas dan UT, serta pola sure'; dibagikan langsung ke WhatsApp/aplikasi lain atau diunduh.
+- **Layar pembuka** bermotif sure' saat aplikasi dibuka dari layar utama HP; latar layar pembuka Android ikut biru UT.
+- **Ikon aplikasi baru:** label harga dengan centang kuning di atas gradasi biru UT dan pita sure'; versi maskable (Android bulat/kotak) dan monochrome (ikon bertema Android 13+). Pintasan "Hitung produk baru" dan "Harga bahan" saat ikon ditekan lama.
+- **Pengembang dan kontak:** Fajar Rakasiwi, Universitas Terbuka Majene, rakasiwifajar@ecampus.ut.ac.id (halaman Tentang, Privasi, dan footer). Rujukan metode ditambahkan.
+- Pesan pemeriksaan isian memakai bahasa sehari-hari; perbaikan titik impas tanpa biaya tetap.
+
 ## 1.3.0 — 1 November 2026
 
 Fokus: mudah dipakai oleh pelaku UMKM/IKM dengan latar pendidikan, kemampuan teknologi, dan usia yang beragam.

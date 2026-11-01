@@ -1,8 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#1E4094"/>
-  <g transform="rotate(-18 256 256)">
-    <path d="M150 168 h170 l70 88 l-70 88 h-170 a24 24 0 0 1 -24 -24 v-128 a24 24 0 0 1 24 -24 z" fill="#FFFFFF"/>
-    <circle cx="322" cy="256" r="17" fill="#1E4094"/>
-    <path d="M178 258 l38 36 l70 -78" fill="none" stroke="#F2C500" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <clipPath id="r"><rect width="512" height="512" rx="114"/></clipPath>
+    <radialGradient id="bg" cx="0.28" cy="0.2" r="0.95">
+      <stop offset="0" stop-color="#3561C6"/>
+      <stop offset="0.55" stop-color="#1E4094"/>
+      <stop offset="1" stop-color="#132B66"/>
+    </radialGradient>
+    <pattern id="sure" width="64" height="64" patternUnits="userSpaceOnUse">
+      <rect width="64" height="64" fill="#1E4094"/>
+      <g fill-opacity="0.6">
+        <rect x="5" width="16" height="64" fill="#3E66C4"/><rect x="27" width="4" height="64" fill="#F9D800"/>
+        <rect x="35" width="2" height="64" fill="#FFFFFF"/><rect x="39.5" width="2" height="64" fill="#F9D800"/><rect x="47" width="11" height="64" fill="#0E2457"/>
+        <rect y="5" width="64" height="16" fill="#3E66C4"/><rect y="27" width="64" height="4" fill="#F9D800"/>
+        <rect y="35" width="64" height="2" fill="#FFFFFF"/><rect y="39.5" width="64" height="2" fill="#F9D800"/><rect y="47" width="64" height="11" fill="#0E2457"/>
+      </g>
+    </pattern>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#081A44" flood-opacity="0.45"/></filter>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <rect y="402" width="512" height="110" fill="url(#sure)"/>
+    <rect y="394" width="512" height="8" fill="#F9D800"/>
+  </g>
+  <g filter="url(#sh)" transform="translate(256 222) rotate(-16) translate(-256 -256)">
+    <path d="M132 160 h196 l82 96 l-82 96 h-196 a28 28 0 0 1 -28 -28 v-136 a28 28 0 0 1 28 -28 z" fill="#FFFFFF"/>
+    <circle cx="334" cy="256" r="19" fill="#1E4094"/>
+    <path d="M168 258 l44 42 l84 -92" fill="none" stroke="#F9D800" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

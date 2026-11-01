@@ -124,7 +124,7 @@
     const kontribusi = num(harga) - num(vc);
     if (!(kontribusi > 0)) return null;
     const unit = num(fc) / kontribusi;
-    const unitBulat = Math.ceil(unit - 1e-9);
+    const unitBulat = Math.max(0, Math.ceil(unit - 1e-9));
     return { unit, unitBulat, rupiah: unitBulat * num(harga), kontribusi };
   }
 
@@ -142,17 +142,17 @@
   function periksa(p) {
     const out = [];
     const unit = p.mode === 'unit';
-    if (!unit && !(num(p.hasilBatch) > 0)) out.push({ level: 'bad', pesan: 'Isi "hasil per batch" agar biaya bisa dibagi per unit.' });
+    if (!unit && !(num(p.hasilBatch) > 0)) out.push({ level: 'bad', pesan: 'Isi "sekali produksi jadi berapa" agar biaya bisa dibagi per barang.' });
     (p.bahan || []).forEach((b, i) => {
       const nama = b.nama || `Bahan ${i + 1}`;
       const adaAngka = num(b.harga) > 0 || num(b.pakai) > 0;
-      if (adaAngka && !(num(b.isi) > 0)) out.push({ level: 'bad', pesan: `${nama}: "isi kemasan" belum diisi.` });
+      if (adaAngka && !(num(b.isi) > 0)) out.push({ level: 'bad', pesan: `${nama}: "beli berapa" belum diisi.` });
       const f = faktor(b.satuanPakai || b.satuanIsi, b.satuanIsi);
       if (adaAngka && f === null) out.push({ level: 'bad', pesan: `${nama}: satuan beli (${b.satuanIsi}) dan satuan pakai (${b.satuanPakai}) tidak bisa dikonversi.` });
       else if (num(b.isi) > 0 && num(b.pakai) * (f || 1) > num(b.isi) * 20) out.push({ level: 'warn', pesan: `${nama}: jumlah dipakai lebih dari 20× jumlah yang dibeli. Periksa satuannya.` });
     });
-    if (!(num(p.batchBulan) > 0)) out.push({ level: 'warn', pesan: 'Isi jumlah produksi per bulan agar biaya bulanan ikut terhitung.' });
-    if (num(p.susutPct) >= 50) out.push({ level: 'warn', pesan: 'Persentase gagal/susut 50% atau lebih. Pastikan angkanya benar.' });
+    if (!(num(p.batchBulan) > 0)) out.push({ level: 'warn', pesan: 'Isi berapa kali produksi dalam sebulan agar biaya bulanan ikut terhitung.' });
+    if (num(p.susutPct) >= 50) out.push({ level: 'warn', pesan: 'Barang rusak/tidak laku 50% atau lebih. Pastikan angkanya benar.' });
     return out;
   }
 

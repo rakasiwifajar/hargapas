@@ -92,6 +92,92 @@ details.helper[open]{background:var(--ut-blue-soft);border-radius:10px;padding:0
 .btn.danger{background:var(--bad);border-color:var(--bad);color:#fff}
 .lembar .line{border-bottom:1px solid #9AA3B5;min-height:26px}
 .lembar td{height:30px}
+/* 1.4: beranda, navigasi, kartu */
+.hdr-r{display:flex;align-items:center;gap:8px}
+.saved{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:650;color:var(--good);opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+nav.tabs a{display:flex;align-items:center;justify-content:center;gap:6px}
+nav.tabs a svg{flex:none}
+.welcome{border-radius:20px;color:#fff;display:flex;justify-content:space-between;gap:16px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.welcome::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(21,46,107,.97) 0%,rgba(30,64,148,.9) 55%,rgba(30,64,148,.55) 100%)}
+.welcome>*{position:relative}
+.welcome .wk{margin:0;font-weight:600;color:#D7E2F8;font-size:15px}
+.welcome h1{margin:2px 0 0;font-size:34px;letter-spacing:-.6px;line-height:1.1}
+.welcome .wb{margin:2px 0 10px;font-weight:700;color:var(--ut-yellow);font-size:16px}
+.welcome .wd{margin:0 0 16px;max-width:440px;color:#EEF2FB;font-size:15.5px;line-height:1.5}
+.welcome-ut{align-self:flex-start;background:#fff;border-radius:12px;padding:6px 8px;flex:none}
+.welcome-ut img{height:56px;display:block}
+.btn.big{min-height:52px;font-size:16.5px;padding:0 18px;border-radius:12px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin:4px 2px 10px}
+.sec-head h2{font-size:19px;margin:0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pcard{display:flex;flex-direction:column;gap:12px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;cursor:pointer;color:var(--ink);text-decoration:none;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s}
+.pcard:hover{box-shadow:0 6px 18px rgba(20,27,45,.08);transform:translateY(-1px)}
+.pcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c4)}
+.pcard.good::before{background:var(--good)}.pcard.warn::before{background:#D99A00}.pcard.bad::before{background:var(--bad)}
+.pcard .pt{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pcard .pn{font-size:17px;font-weight:700;line-height:1.3}
+.pcard .ps{font-size:13.5px;color:var(--muted)}
+.pcard .pv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pcard .pv span{display:block;font-size:12.5px;color:var(--muted);font-weight:600}
+.pcard .pv b{font-size:16px;color:var(--ut-blue-dark);font-variant-numeric:tabular-nums}
+.pcard .tag{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;background:var(--ut-blue-soft);color:var(--ut-blue-dark)}
+.empty-home,.empty-res{text-align:center;padding:24px 16px}
+.empty-home{background:var(--card);border:1px dashed var(--line);border-radius:16px}
+.empty-home>b{display:block;font-size:17px;margin-top:6px}
+.empty-home p{margin:6px 0 0;color:var(--muted)}
+.empty-ill{width:96px;height:96px;margin:0 auto;border-radius:50%;background:var(--ut-blue-soft);color:var(--ut-blue);display:grid;place-items:center}
+.empty-res h2{justify-content:center;margin-top:12px!important}
+.prog{display:flex;gap:6px;justify-content:center;margin:12px 0 6px}
+.prog i{width:44px;height:8px;border-radius:4px;background:var(--line)}
+.prog i.on{background:var(--ut-blue)}
+.col-out:not(.has-res) .res{display:none!important}
+.col-out.has-res .empty-res{display:none}
+body.no-res .sticky{display:none}
+.home-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:16px 0 4px}
+.menu-list{display:flex;flex-direction:column;margin-top:8px}
+.mrow{display:flex;align-items:center;gap:14px;padding:14px 4px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;cursor:pointer;color:var(--ink);text-decoration:none;font:inherit;min-height:64px}
+.mrow:last-child{border-bottom:0}
+.mrow .mi{width:42px;height:42px;border-radius:12px;background:var(--ut-blue-soft);color:var(--ut-blue);display:grid;place-items:center;flex:none}
+.mrow b{display:block;font-size:16px}
+.mrow small{display:block;font-size:13.5px;color:var(--muted)}
+.setrow{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.seg.wide,.tsz.wide{display:flex}
+.seg.wide button,.tsz.wide button{flex:1}
+.search{position:relative;margin:4px 0 12px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;background:var(--field);padding:0 12px 0 40px;font-size:16px}
+.liblist{display:flex;flex-direction:column;gap:10px}
+.libcard{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--field)}
+.libcard .lt{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.libcard .lt b{font-size:16px}
+.libcard .lt small{font-size:13px;color:var(--muted);text-align:right}
+.libcard .lf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:8px;margin-top:8px}
+.libcard .lf input,.libcard .lf select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 10px;font-size:15px}
+.libcard .lf .inp.has-pre input{padding-left:34px}
+.tpl button{display:flex;align-items:center;gap:10px}
+.tpl .ti{width:40px;height:40px;border-radius:12px;background:var(--ut-yellow-soft);color:var(--ut-blue-dark);display:grid;place-items:center;flex:none}
+.dev-card{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0 0;background:var(--field)}
+.dev-av{width:56px;height:56px;border-radius:50%;background:var(--ut-blue);color:var(--ut-yellow);font-weight:800;font-size:20px;display:grid;place-items:center;flex:none}
+.dev-card b{display:block;font-size:17px;color:var(--ut-blue-dark)}
+.dev-card span{display:block;font-size:14px}
+.dev-card a{font-size:14.5px;overflow-wrap:break-word}
+.splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;transition:opacity .45s ease}
+.splash::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(30,64,148,.72),rgba(19,43,102,.97) 70%)}
+.splash>*{position:relative}
+.splash.hide{opacity:0;pointer-events:none}
+.sp-in{text-align:center;animation:spIn .6s ease both}
+.sp-icon{width:112px;height:112px;border-radius:28px;box-shadow:0 12px 32px rgba(0,0,0,.35)}
+.sp-name{font-size:34px;font-weight:800;letter-spacing:-.5px;margin-top:16px}
+.sp-tag{color:#D7E2F8;font-size:15px;margin-top:2px}
+.sp-foot{position:absolute;bottom:calc(36px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.sp-ut{background:#fff;border-radius:10px;padding:4px 6px;display:flex}
+.sp-ut img{height:36px;display:block}
+@keyframes spIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+.bump{animation:bump .45s ease}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.sp-in,.bump{animation:none}.pcard{transition:none}}
+
 /* identity strip */
 .utbar{background:#fff}
 .utbar .in{max-width:760px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;font-size:14px}
@@ -356,7 +442,6 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
 @media (max-width:560px){
   .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}
-  nav.tabs a{padding:9px 8px;font-size:14px}
   .prodbar{grid-template-columns:minmax(0,1fr) auto}
   .prodbar select{grid-column:1/-1}
   .kv{gap:8px}
@@ -382,51 +467,97 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   .report{border:0;padding:0}
   @page{size:A4;margin:16mm}
 }
+/* navigasi bawah di HP */
+@media (max-width:767px){
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;border-radius:0;background:#fff;border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(20,27,45,.06);overflow:visible;zoom:var(--z,1)}
+  nav.tabs a{flex:1;flex-direction:column;gap:2px;font-size:12.5px;padding:6px 2px;min-height:54px;border-radius:12px}
+  nav.tabs a[aria-current="page"]{background:var(--ut-blue-soft);box-shadow:none;color:var(--ut-blue-dark)}
+  nav.tabs a[aria-current="page"] svg{color:var(--ut-blue)}
+  .sticky{bottom:calc(68px + env(safe-area-inset-bottom))}
+  .wrap{padding-bottom:200px}
+  body.view-other .wrap{padding-bottom:110px}
+  .welcome{padding:18px}
+  .welcome h1{font-size:30px}
+  .welcome-ut img{height:44px}
+  .toast{bottom:150px}
+}
+@media (min-width:768px){ nav.tabs{max-width:560px} }
 </style>
 </head>
 <body>
 <div class="utbar"><div class="in"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"><span><b>Universitas Terbuka Majene</b></span><span class="r">Layanan gratis untuk UKM</span></div><div class="sure-strip" aria-hidden="true"></div></div>
 <div class="wrap">
   <header class="top">
-    <a class="brand" href="#hitung" aria-label="HargaPas, beranda">
+    <a class="brand" href="#beranda" aria-label="HargaPas, beranda">
       <img src="__ICON__" alt="">
       <div><b>HargaPas</b><span>by Universitas Terbuka Majene</span></div>
     </a>
+    <div class="hdr-r">
+      <span class="saved" id="saved" aria-live="polite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Tersimpan</span>
+      <button class="btn icon" type="button" id="btnSettings" aria-label="Pengaturan tampilan dan huruf"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button>
+    </div>
   </header>
 
   <nav class="tabs" aria-label="Menu utama">
-    <a href="#hitung" data-view="hitung">Hitung</a>
-    <a href="#bahan" data-view="bahan">Harga bahan</a>
-    <a href="#laporan" data-view="laporan">Laporan</a>
-    <a href="#tentang" data-view="tentang">Tentang</a>
+    <a href="#beranda" data-view="beranda"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6h-6v6H5a1 1 0 01-1-1z"/></svg><span>Beranda</span></a>
+    <a href="#hitung" data-view="hitung"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg><span>Hitung</span></a>
+    <a href="#bahan" data-view="bahan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 016 0"/></svg><span>Bahan</span></a>
+    <a href="#lainnya" data-view="lainnya"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>Lainnya</span></a>
   </nav>
+
+  <!-- ================= BERANDA ================= -->
+  <main id="view-beranda" data-page="beranda" hidden>
+    <section class="welcome sure">
+      <div class="welcome-in">
+        <p class="wk">Selamat datang di</p>
+        <h1>HargaPas</h1>
+        <p class="wb">by Universitas Terbuka Majene</p>
+        <p class="wd">Hitung modal dan harga jual produk Anda dengan benar. Gratis, tanpa daftar akun.</p>
+        <button class="btn cta big" type="button" id="btnBerandaBaru"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Hitung produk baru</button>
+      </div>
+      <div class="welcome-ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
+    </section>
+    <div class="note warn" id="noteBackupHome" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      <span class="grow">Data hanya tersimpan di HP ini. Sudah lebih dari sebulan sejak cadangan terakhir.</span>
+      <button class="btn small" type="button" data-backup>Cadangkan</button>
+    </div>
+    <div class="sec-head"><h2>Produk saya</h2><span class="hint" id="prodCount"></span></div>
+    <div class="pgrid" id="prodGrid"></div>
+    <div class="empty-home" id="emptyHome" hidden>
+      <div class="empty-ill" aria-hidden="true"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5L12 12l9-4.5M12 12v9"/></svg></div>
+      <b>Belum ada produk</b>
+      <p>Mulai dengan menekan <b>Hitung produk baru</b>, atau lihat dulu contohnya.</p>
+    </div>
+    <div class="home-links">
+      <button class="btn" type="button" id="btnLihatContoh">Lihat contoh perhitungan</button>
+      <button class="btn ghost" type="button" data-tour>Panduan singkat</button>
+    </div>
+  </main>
+
+  <!-- ================= LAINNYA ================= -->
+  <main id="view-lainnya" data-page="lainnya" hidden>
+    <section class="page menu-page">
+      <h1>Lainnya</h1>
+      <div class="menu-list">
+        <a class="mrow" href="#laporan"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M16 12h0M8 16h2M12 16h2M16 16h0"/></svg></span><span><b>Laporan PDF</b><small>Laporan HPP berkop untuk dicetak</small></span></a>
+        <button class="mrow" type="button" data-open-settings><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><span><b>Pengaturan</b><small>Tampilan sederhana/lengkap, ukuran huruf</small></span></button>
+        <button class="mrow" type="button" id="btnDataMenu"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span><b>Cadangan & pemulihan data</b><small>Simpan atau pindahkan data ke HP lain</small></span></button>
+        <a class="mrow" href="#lembar"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><span><b>Lembar isian cetak</b><small>Untuk pendamping UKM</small></span></a>
+        <button class="mrow" type="button" data-tour><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.5M12 17h.01"/></svg></span><span><b>Panduan singkat</b><small>Cara memakai HargaPas</small></span></button>
+        <a class="mrow" href="#tentang"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg></span><span><b>Tentang & metode</b><small>Pengembang, kontak, cara hitung</small></span></a>
+        <a class="mrow" href="#privasi"><span class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></span><span><b>Kebijakan privasi</b><small>Data hanya di HP Anda</small></span></a>
+      </div>
+    </section>
+  </main>
 
   <!-- ================= HITUNG ================= -->
   <main id="view-hitung" data-page="hitung">
-    <div class="note warn" id="noteBackup" hidden>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
-      <span class="grow">Data hanya tersimpan di HP ini. Sudah lebih dari sebulan sejak cadangan terakhir.</span>
-      <button class="btn small" type="button" id="btnBackupNow">Cadangkan</button>
-    </div>
 
     <div class="note info" id="noteContoh" hidden>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
       <span class="grow">Anda sedang melihat <b>data contoh</b>. Angka-angka ini hanya ilustrasi cara pakai HargaPas.</span>
       <button class="btn small cta" type="button" id="btnMulaiSaya">Mulai produk saya</button>
-    </div>
-
-    <div class="viewbar">
-      <span class="lbl">Tampilan</span>
-      <div class="seg" role="group" aria-label="Tampilan">
-        <button type="button" data-ui="sederhana" aria-pressed="true">Sederhana</button>
-        <button type="button" data-ui="lengkap" aria-pressed="false">Lengkap</button>
-      </div>
-      <button type="button" class="tip" data-tip="tampilan" aria-label="Apa beda tampilan sederhana dan lengkap?">?</button>
-      <span class="vsp"></span>
-      <span class="lbl">Huruf</span>
-      <div class="tsz" role="group" aria-label="Ukuran huruf">
-        <button type="button" data-ts="1" aria-label="Huruf normal">A</button><button type="button" data-ts="1.12" aria-label="Huruf besar">A+</button><button type="button" data-ts="1.25" aria-label="Huruf sangat besar">A++</button>
-      </div>
     </div>
 
     <div class="hcols"><div class="col-in">
@@ -546,14 +677,22 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
     </div><aside class="col-out" aria-label="Hasil perhitungan">
     <!-- HASIL -->
-    <section class="result kesimpulan" id="kesimpulan" aria-labelledby="hKes" tabindex="-1">
+    <section class="result empty-res" id="emptyRes" aria-labelledby="hEmpty">
+      <div class="empty-ill" aria-hidden="true"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg></div>
+      <h2 id="hEmpty">Hasil akan muncul di sini</h2>
+      <p class="sub" id="emptyNext">Mulai dari langkah 1: tulis bahan yang dibeli.</p>
+      <div class="prog" aria-hidden="true"><i data-p="1"></i><i data-p="2"></i><i data-p="3"></i></div>
+      <p class="hint" id="emptyProg">0 dari 3 langkah selesai</p>
+    </section>
+
+    <section class="result kesimpulan res" id="kesimpulan" aria-labelledby="hKes" tabindex="-1">
       <div class="kes-head"><span class="kes-dot" id="kesDot" aria-hidden="true"></span><h2 id="hKes">Kesimpulan</h2>
         <button class="btn small ghost speak" type="button" id="btnBacakan" aria-label="Bacakan kesimpulan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>Bacakan</button></div>
       <p class="kes-main" id="kesMain">—</p>
       <p class="kes-sub" id="kesSub"></p>
     </section>
 
-    <section class="result hero-card" aria-labelledby="hHPP">
+    <section class="result hero-card res" aria-labelledby="hHPP">
       <h2 id="hHPP">Modal per <span class="satuanTxt">potong</span> <span class="term">(HPP)</span> <button type="button" class="tip" data-tip="hpp" aria-label="Apa itu HPP?">?</button></h2>
       <p class="sub">Biaya untuk membuat satu <span class="satuanTxt">potong</span> yang layak jual</p>
       <div class="big" id="outHPP">Rp0</div>
@@ -561,7 +700,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <div class="legend" id="outLegend"></div>
     </section>
 
-    <section class="result" aria-labelledby="hHarga">
+    <section class="result res" aria-labelledby="hHarga">
       <h2 id="hHarga">Harga jual <button type="button" class="tip" data-tip="margin" aria-label="Beda untung dari harga jual dan dari modal">?</button></h2>
       <p class="sub"><span class="only-simple">Berapa persen untung yang Anda inginkan dari harga jual?</span><span class="only-full">Untung bisa dihitung dari harga jual (margin) atau dari modal (markup). Hasilnya berbeda.</span></p>
       <div class="ctrl">
@@ -589,7 +728,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       </div>
     </section>
 
-    <section class="result only-full" aria-labelledby="hMundur">
+    <section class="result only-full res" aria-labelledby="hMundur">
       <h2 id="hMundur">Cek harga yang sudah ada</h2>
       <p class="sub">Masukkan harga jual Anda sekarang atau harga pesaing, lalu lihat untung sebenarnya.</p>
       <div class="grid" style="margin-top:0">
@@ -599,26 +738,27 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <div class="kv" style="margin-top:12px" id="outMundur"></div>
     </section>
 
-    <section class="result" aria-labelledby="hBEP">
+    <section class="result res" aria-labelledby="hBEP">
       <h2 id="hBEP">Batas balik modal per bulan <span class="term">(BEP)</span> <button type="button" class="tip" data-tip="bep" aria-label="Apa itu batas balik modal?">?</button></h2>
       <p class="sub">Paling sedikit harus terjual sebanyak ini agar biaya tetap bulanan tertutup, pada harga <b id="bepHargaTxt">Rp0</b></p>
       <div class="kv" id="outBEP"></div>
       <div class="note" id="noteBEP" hidden style="margin:12px 0 0"></div>
     </section>
 
-    <section class="result only-full" aria-labelledby="hSim">
+    <section class="result only-full res" aria-labelledby="hSim">
       <h2 id="hSim">Kalau harga bahan naik</h2>
       <div class="rangehead"><label for="f_sim">Kenaikan harga bahan baku</label><b id="simPct">+10%</b></div>
       <input id="f_sim" type="range" min="0" max="50" step="1" value="10">
       <div class="kv" style="margin-top:10px" id="outSim"></div>
     </section>
 
-    <section class="result" aria-labelledby="hShare">
+    <section class="result res" aria-labelledby="hShare">
       <h2 id="hShare">Bagikan & simpan</h2>
-      <p class="sub">Kirim hasil perhitungan atau simpan sebagai laporan.</p>
+      <p class="sub">Kirim kartu harga bergambar, ringkasan teks, atau laporan.</p>
       <div class="actions">
+        <button class="btn cta" type="button" id="btnKartu"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>Bagikan kartu harga</button>
         <a class="btn primary" id="btnWA" href="https://wa.me/" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 01-13.5 7.8L3 21l1.2-4.4A9 9 0 1121 12z"/></svg>Kirim ke WhatsApp</a>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 01-13.5 7.8L3 21l1.2-4.4A9 9 0 1121 12z"/></svg>Kirim teks ke WhatsApp</a>
         <a class="btn" href="#laporan">Laporan PDF</a>
         <button class="btn" id="btnCopy" type="button">Salin ringkasan</button>
         <a class="btn" id="btnKirimProduk" href="https://wa.me/" target="_blank" rel="noopener">Kirim produk ke HP lain</a>
@@ -641,13 +781,9 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   <main id="view-bahan" data-page="bahan" hidden>
     <section class="page">
       <h1>Harga bahan</h1>
-      <p>Semua bahan dari semua produk Anda. Ubah harga di sini, dan setiap produk yang memakai bahan dengan nama yang sama ikut terhitung ulang.</p>
-      <div style="overflow-x:auto">
-        <table class="libtable">
-          <thead><tr><th>Bahan</th><th>Harga</th><th>Beli berapa</th><th>Satuan</th></tr></thead>
-          <tbody id="libBody"></tbody>
-        </table>
-      </div>
+      <p>Harga naik? Ubah di sini sekali, semua produk yang memakai bahan itu ikut terhitung ulang.</p>
+      <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><label class="sr" for="libSearch">Cari bahan</label><input id="libSearch" type="search" placeholder="Cari bahan, mis. terigu" autocomplete="off"></div>
+      <div class="liblist" id="libBody"></div>
       <p class="hint" id="libEmpty" hidden>Belum ada bahan. Tambahkan bahan di menu Hitung.</p>
     </section>
   </main>
@@ -719,7 +855,13 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
         </div>
       </div>
       <p>HargaPas adalah kalkulator harga pokok produksi (HPP) dan harga jual yang bisa dipakai gratis oleh usaha mikro, kecil, dan menengah. Aplikasi ini dikembangkan oleh Universitas Terbuka Majene sebagai bagian dari upaya mendampingi UKM menetapkan harga yang menutup seluruh biaya dan menghasilkan laba.</p>
-      <div class="actions"><button class="btn" type="button" id="btnTour">Lihat panduan singkat</button><a class="btn" href="#privasi">Kebijakan privasi</a></div>
+      <div class="dev-card">
+        <div class="dev-av" aria-hidden="true">FR</div>
+        <div><span class="hint">Pengembang</span><b>Fajar Rakasiwi</b><span>Universitas Terbuka Majene</span>
+          <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@<wbr>ecampus.ut.ac.id</a></div>
+      </div>
+      <p class="hint" style="margin-top:6px">Kirim pertanyaan, saran, atau laporan kesalahan ke email di atas.</p>
+      <div class="actions"><button class="btn" type="button" data-tour>Lihat panduan singkat</button><a class="btn" href="#privasi">Kebijakan privasi</a></div>
 
       <h2>Untuk pendamping UKM</h2>
       <ul>
@@ -741,6 +883,12 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <p>Titik impas memakai pendekatan biaya variabel: biaya tetap = sewa + penyusutan + lain-lain; biaya variabel per unit = bahan + tenaga kerja + kemasan + (gas + listrik) ÷ produksi bulanan.</p>
       <div class="formula">BEP (unit) = biaya tetap bulanan ÷ (harga − biaya variabel per unit)</div>
 
+      <h2>Rujukan</h2>
+      <ul>
+        <li>Mulyadi, <i>Akuntansi Biaya</i>: konsep harga pokok produksi dengan metode full costing dan variable costing.</li>
+        <li>Horngren, Datar &amp; Rajan, <i>Cost Accounting: A Managerial Emphasis</i>: analisis biaya-volume-laba dan titik impas.</li>
+      </ul>
+
       <h2>Keterbatasan</h2>
       <ul>
         <li>Hasil perhitungan bergantung pada data yang Anda isi. Periksa kembali satuan dan harga bahan.</li>
@@ -750,6 +898,13 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
+      <ul>
+        <li>Beranda berisi kartu produk, navigasi bawah berikon, menu Lainnya, dan Pengaturan.</li>
+        <li>Kartu harga bergambar untuk dibagikan, layar pembuka, ikon aplikasi baru.</li>
+        <li>Tampilan kosong yang ramah dengan penanda kemajuan, tanda "Tersimpan", halaman Harga bahan berbentuk kartu.</li>
+        <li>Identitas pengembang dan kontak, rujukan metode.</li>
+      </ul>
+      <p style="margin-bottom:4px"><b>Versi 1.3.0</b> (1 November 2026)</p>
       <ul>
         <li>Tampilan Sederhana (langkah demi langkah) dan Lengkap, bahasa sehari-hari dengan istilah resmi dalam kurung.</li>
         <li>Satuan beli dan pakai dipilih dari daftar; kg↔gram, liter↔ml, meter↔cm dikonversi otomatis.</li>
@@ -799,6 +954,8 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <p>Data hanya keluar dari perangkat jika Anda sendiri yang membagikannya, misalnya mengirim ringkasan ke WhatsApp, mencetak laporan, atau menyimpan file cadangan.</p>
       <h2>Menghapus data</h2>
       <p>Hapus produk satu per satu dengan tombol hapus, atau hapus data situs ini dari pengaturan browser. Data yang sudah dihapus tidak bisa dipulihkan kecuali Anda punya file cadangan.</p>
+      <h2>Kontak</h2>
+      <p>Pertanyaan tentang privasi atau aplikasi: Fajar Rakasiwi, Universitas Terbuka Majene, <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@ecampus.ut.ac.id</a>.</p>
       <h2>Perubahan kebijakan</h2>
       <p>Jika kebijakan ini berubah, versi terbaru akan ditampilkan di halaman ini beserta tanggal berlakunya.</p>
       <a class="btn" href="#tentang">Kembali ke Tentang</a>
@@ -809,6 +966,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     <div class="ut-chip"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
     <div class="sure-strip" aria-hidden="true"></div>
     <b>HargaPas dikembangkan oleh Universitas Terbuka Majene</b>
+    <span>Dikembangkan oleh Fajar Rakasiwi · <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@ecampus.ut.ac.id</a></span>
     <span>Versi __VERSION__ · Gratis untuk UKM · <a href="#privasi">Privasi</a> · <a href="#tentang">Tentang & metode</a></span>
   </footer>
 </div>
@@ -820,6 +978,48 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <div><div class="l">Harga toko</div><div class="v" id="stHarga">Rp0</div></div>
     </div>
     <span class="pill good" id="stMargin">—</span>
+  </div>
+</div>
+
+<!-- Layar pembuka -->
+<div class="splash sure" id="splash" aria-hidden="true">
+  <div class="sp-in">
+    <img class="sp-icon" src="__ICON__" alt="">
+    <div class="sp-name">HargaPas</div>
+    <div class="sp-tag">Hitung modal & harga jual UKM</div>
+  </div>
+  <div class="sp-foot"><span class="sp-ut"><img src="__LOGO_UT__" alt=""></span><span>Universitas Terbuka Majene</span></div>
+</div>
+
+<!-- Pengaturan -->
+<div class="overlay" id="settingsDlg" hidden role="dialog" aria-modal="true" aria-labelledby="setTitle">
+  <div class="sheet">
+    <h2 id="setTitle">Pengaturan</h2>
+    <div class="setrow">
+      <span class="lbl">Tampilan <button type="button" class="tip" data-tip="tampilan" aria-label="Apa beda tampilan sederhana dan lengkap?">?</button></span>
+      <div class="seg wide" role="group" aria-label="Tampilan">
+        <button type="button" data-ui="sederhana" aria-pressed="true">Sederhana</button>
+        <button type="button" data-ui="lengkap" aria-pressed="false">Lengkap</button>
+      </div>
+      <span class="hint">Sederhana: langkah demi langkah. Lengkap: semua fitur.</span>
+    </div>
+    <div class="setrow">
+      <span class="lbl">Ukuran huruf</span>
+      <div class="tsz wide" role="group" aria-label="Ukuran huruf">
+        <button type="button" data-ts="1" aria-label="Huruf normal">A</button><button type="button" data-ts="1.12" aria-label="Huruf besar">A+</button><button type="button" data-ts="1.25" aria-label="Huruf sangat besar">A++</button>
+      </div>
+    </div>
+    <div class="ob-actions" style="margin-top:16px"><button class="btn ghost" type="button" data-tour>Panduan singkat</button><button class="btn primary" type="button" id="setClose">Selesai</button></div>
+  </div>
+</div>
+
+<!-- Kartu harga -->
+<div class="overlay" id="kartuDlg" hidden role="dialog" aria-modal="true" aria-labelledby="kartuTitle">
+  <div class="sheet">
+    <h2 id="kartuTitle">Kartu harga</h2>
+    <img id="kartuImg" alt="Kartu harga produk" style="width:100%;border-radius:12px;border:1px solid var(--line);display:block">
+    <p class="hint" id="kartuHint" style="margin:8px 0 0">Tekan lama gambar untuk menyimpan atau membagikan.</p>
+    <div class="ob-actions" style="margin-top:12px"><button class="btn" type="button" id="kartuClose">Tutup</button><button class="btn cta" type="button" id="kartuShare">Bagikan</button></div>
   </div>
 </div>
 
@@ -1002,15 +1202,18 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   }
   function load(){
     try { state = JSON.parse(lsGet(KEY) || lsGet(OLDKEY)); } catch(e) { state = null; }
-    if (!state || !Array.isArray(state.products) || !state.products.length) {
-      const p = contoh(); state = { products:[p], activeId:p.id };
-    }
+    if (!state || !Array.isArray(state.products)) state = { products: [], activeId: null };
     state.products.forEach(migrate);
     if (!state.firstUse) state.firstUse = new Date().toISOString();
-    if (!state.products.find(p => p.id === state.activeId)) state.activeId = state.products[0].id;
+    if (!state.products.find(p => p.id === state.activeId)) state.activeId = state.products[0] ? state.products[0].id : null;
   }
   let saveT;
-  const saveNow = () => { clearTimeout(saveT); lsSet(KEY, JSON.stringify(state)); };
+  let savedT;
+  const saveNow = () => {
+    clearTimeout(saveT); lsSet(KEY, JSON.stringify(state));
+    const s = document.getElementById('saved');
+    if (s) { s.classList.add('show'); clearTimeout(savedT); savedT = setTimeout(() => s.classList.remove('show'), 1600); }
+  };
   const save = () => { clearTimeout(saveT); saveT = setTimeout(saveNow, 250); };
   window.addEventListener('pagehide', saveNow);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveNow(); });
@@ -1060,7 +1263,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     $$('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === p.mode)));
   }
   function fillInputs(){
-    const p = cur();
+    const p = cur(); if (!p) return;
     $$('#view-hitung [data-k]').forEach(el => {
       const v = getPath(p, el.dataset.k);
       el.value = el.classList.contains('num') ? fmtInput(v) : (v ?? '');
@@ -1154,6 +1357,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
   let last = null;
   function compute(){
+    if (!cur()) return;
     const p = cur(), e = toEngine(p), r = H.hitungHPP(e);
     const sat = p.satuan || 'unit';
     $$('.satuanTxt').forEach(s => s.textContent = sat);
@@ -1174,10 +1378,10 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
 
     // pemeriksaan
     const cek = H.periksa(e);
-    $('#checks').innerHTML = cek.length ? `<div class="note ${cek.some(c => c.level === 'bad') ? 'bad' : 'warn'}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div class="grow"><b>Periksa isian berikut</b><ul>${cek.map(c => `<li>${esc(c.pesan)}</li>`).join('')}</ul></div></div>` : '';
+    $('#checks').innerHTML = cek.length && (p.touched !== false || p.isContoh) ? `<div class="note ${cek.some(c => c.level === 'bad') ? 'bad' : 'warn'}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div class="grow"><b>Periksa isian berikut</b><ul>${cek.map(c => `<li>${esc(c.pesan)}</li>`).join('')}</ul></div></div>` : '';
 
     // HPP
-    $('#outHPP').innerHTML = fmtRp(r.hpp) + ` <small>/ ${esc(sat)}</small>`;
+    $('#outHPP').innerHTML = `<span class="anum">${fmtRp(r.hpp)}</span> <small>/ ${esc(sat)}</small>`; bumpIf($('#outHPP'), r.hpp);
     const comps = [['Bahan', r.perUnit.bahan, 'var(--c1)'], ['Tenaga kerja', r.perUnit.tenagaKerja, 'var(--c2)'], ['Kemasan', r.perUnit.kemasan, 'var(--c3)'], ['Biaya bulanan', r.perUnit.overhead, 'var(--c4)']];
     $('#outStack').innerHTML = r.hpp > 0 ? comps.map(c => `<i style="width:${c[1]/r.hpp*100}%;background:${c[2]}"></i>`).join('') : '';
     $('#outLegend').innerHTML = comps.map(c => `<div><span class="k"><i style="background:${c[2]}"></i>${c[0]}</span><b>${fmtRp(c[1])} <span style="color:var(--muted);font-weight:500">${r.hpp>0?fmtPct(c[1]/r.hpp):''}</span></b></div>`).join('');
@@ -1242,11 +1446,20 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       const parts = [`Modal Anda ${fmtRp(r.hpp)} per ${sat}, jadi untungnya ${fmtRp(hargaToko - r.hpp)} setiap ${sat}.`];
       if (level === 'warn') parts.push('Untungnya tipis; pertimbangkan menaikkan harga atau menekan biaya.');
       if (level === 'bad') parts.push('Harga ini masih rugi.');
-      if (b) parts.push(`Supaya balik modal, jual paling sedikit ${fmtNum(b.unitBulat)} ${sat} sebulan.`);
+      if (b && b.unitBulat > 0) parts.push(`Supaya balik modal, jual paling sedikit ${fmtNum(b.unitBulat)} ${sat} sebulan.`);
       if (cek.some(c => c.level === 'bad')) parts.push('Ada isian yang perlu diperiksa.');
       sub = parts.join(' ');
     }
-    kes.className = 'result kesimpulan ' + level;
+    kes.className = 'result kesimpulan res ' + level;
+    const s1 = (p.mode === 'unit' || Number(p.hasilBatch) > 0) && p.bahan.some(x => Number(x.isi) > 0 && x.harga !== '' && x.pakai !== '');
+    const s2 = Number(p.upahJam) > 0 || Number(p.kemasan) > 0;
+    const s3 = Number(p.batchBulan) > 0;
+    const done = [s1, s2, s3];
+    $$('#emptyRes .prog i').forEach((el, j) => el.classList.toggle('on', done[j]));
+    $('#emptyProg').textContent = done.filter(Boolean).length + ' dari 3 langkah selesai';
+    $('#emptyNext').textContent = !s1 ? 'Mulai dari langkah 1: tulis bahan yang dibeli, berapa harganya, dan berapa yang dipakai.' : !s2 ? 'Lanjut ke langkah 2: isi upah dan biaya kemasan.' : 'Lanjut ke langkah 3: isi berapa kali produksi dalam sebulan.';
+    $('.col-out').classList.toggle('has-res', r.hpp > 0);
+    document.body.classList.toggle('no-res', !(r.hpp > 0));
     $('#kesMain').textContent = main; $('#kesSub').textContent = sub;
 
     // simulasi
@@ -1259,8 +1472,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       <div class="box"><div class="lbl2">Harga agar margin tetap</div><div class="val">${fmtRp(s.hargaPertahankan === null ? null : H.bulatkan(s.hargaPertahankan, step))}</div></div>`;
 
     // sticky
-    $('#stHPP').textContent = fmtRp(r.hpp);
-    $('#stHarga').textContent = fmtRp(hargaToko);
+    animNum($('#stHPP'), r.hpp); animNum($('#stHarga'), hargaToko);
     const mt = hargaToko ? H.marginAktual(hargaToko, r.hpp, 0, 0) : null;
     const st = $('#stMargin'); st.textContent = 'Margin ' + fmtPct(mt);
     st.className = 'pill ' + (mt === null || mt < 0 ? 'bad' : mt < 0.15 ? 'warn' : 'good');
@@ -1329,13 +1541,21 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   function renderLib(){
     const map = new Map();
     allBahanRows().forEach(({ p, b }) => { const k = norm(b.nama); if (!map.has(k)) map.set(k, { b, produk: new Set() }); map.get(k).produk.add(p.nama || 'Tanpa nama'); });
-    const items = Array.from(map.values()).sort((a, c) => a.b.nama.localeCompare(c.b.nama, 'id'));
-    $('#libEmpty').hidden = items.length > 0;
-    $('#libBody').innerHTML = items.map((it, i) => `<tr>
-      <td class="nm">${esc(it.b.nama)}<small>${esc(Array.from(it.produk).join(', '))}</small></td>
-      <td><label class="sr" for="lh${i}">Harga ${esc(it.b.nama)}</label><input id="lh${i}" class="num" data-lib="${esc(norm(it.b.nama))}" data-f="harga" type="text" inputmode="decimal" value="${esc(fmtInput(it.b.harga))}"></td>
-      <td><label class="sr" for="li${i}">Isi ${esc(it.b.nama)}</label><input id="li${i}" class="num" data-lib="${esc(norm(it.b.nama))}" data-f="isi" type="text" inputmode="decimal" value="${esc(fmtInput(it.b.isi))}"></td>
-      <td><label class="sr" for="ls${i}">Satuan ${esc(it.b.nama)}</label><select id="ls${i}" data-lib="${esc(norm(it.b.nama))}" data-f="satuanIsi">${unitOptions(it.b.satuanIsi)}</select></td></tr>`).join('');
+    const q = norm($('#libSearch').value);
+    const items = Array.from(map.values()).sort((a, c) => a.b.nama.localeCompare(c.b.nama, 'id')).filter(it => !q || norm(it.b.nama).includes(q));
+    $('#libEmpty').hidden = map.size > 0;
+    $('#libBody').innerHTML = items.length ? items.map((it, i) => {
+      const k = esc(norm(it.b.nama)), n = it.produk.size;
+      return `<div class="libcard">
+        <div class="lt"><b>${esc(it.b.nama)}</b><small>dipakai di ${n} produk</small></div>
+        <div class="lf">
+          <div class="field"><label for="lh${i}">Harga</label><div class="inp has-pre"><span class="pre">Rp</span><input id="lh${i}" class="num" data-lib="${k}" data-f="harga" type="text" inputmode="decimal" value="${esc(fmtInput(it.b.harga))}"></div></div>
+          <div class="field"><label for="li${i}">Beli</label><input id="li${i}" class="num" data-lib="${k}" data-f="isi" type="text" inputmode="decimal" value="${esc(fmtInput(it.b.isi))}"></div>
+          <div class="field"><label for="ls${i}">Satuan</label><select id="ls${i}" data-lib="${k}" data-f="satuanIsi">${unitOptions(it.b.satuanIsi)}</select></div>
+        </div>
+        <div class="hint" style="margin-top:6px">${esc(Array.from(it.produk).join(', '))}</div>
+      </div>`;
+    }).join('') : (map.size ? '<p class="hint">Tidak ada bahan dengan nama itu.</p>' : '');
   }
 
   // ---------- cadangan ----------
@@ -1343,7 +1563,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     const lb = state.lastBackup ? Date.parse(state.lastBackup) : null;
     const since = Date.now() - (lb || Date.parse(state.firstUse));
     const hasData = state.products.some(p => p.bahan.some(b => Number(b.harga) > 0));
-    $('#noteBackup').hidden = !(hasData && since > 30 * 864e5);
+    $('#noteBackupHome').hidden = !(hasData && since > 30 * 864e5);
   }
   async function doBackup(){
     const json = JSON.stringify(state);
@@ -1418,11 +1638,19 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   function startTour(){ showSlide(0); openOverlay('onboard'); }
   function endTour(){ $('#onboard').hidden = true; lsSet(OBKEY, '1'); }
   $('#obNext').addEventListener('click', () => { if (slide < 2) showSlide(slide + 1); });
-  $$('[data-obui]').forEach(b => b.addEventListener('click', () => { setUi(b.dataset.obui); endTour(); location.hash = '#hitung'; openStep(1); }));
+  $$('[data-obui]').forEach(b => b.addEventListener('click', () => { setUi(b.dataset.obui); endTour(); if (state.products.length) { location.hash = '#hitung'; openStep(1); } else { location.hash = '#beranda'; openOverlay('tplDlg'); } }));
   $('#obSkip').addEventListener('click', endTour);
-  $('#btnTour').addEventListener('click', startTour);
+  $$('[data-tour]').forEach(b => b.addEventListener('click', () => { closeOverlays(); startTour(); }));
 
-  $('#tplGrid').innerHTML = TEMPLATES.map(t => `<button type="button" data-tpl="${t.id}"><b>${esc(t.judul)}</b><span>${esc(t.ket)}</span></button>`).join('');
+  const TPL_ICON = {
+    kosong: '<path d="M12 5v14M5 12h14"/>',
+    kue: '<path d="M4 20h16M5 20v-6a2 2 0 012-2h10a2 2 0 012 2v6"/><path d="M5 16c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 4.5 0M12 12V8M12 5.5v.01"/>',
+    minuman: '<path d="M6 8h12l-1.5 12h-9z"/><path d="M5 8h14M10 8l1-5h3"/>',
+    camilan: '<path d="M7 3h10l-1 3 1 15H7L8 6z"/><path d="M9 11h6M9 15h6"/>',
+    konveksi: '<path d="M8 4l4 2 4-2 4 4-3 3v9H7v-9L4 8z"/>',
+    kerajinan: '<path d="M4 10h16l-2 10H6z"/><path d="M8 10a4 4 0 018 0M9 14l.5 3M15 14l-.5 3"/>'
+  };
+  $('#tplGrid').innerHTML = TEMPLATES.map(t => `<button type="button" data-tpl="${t.id}"><span class="ti"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TPL_ICON[t.id] || ''}</svg></span><span><b>${esc(t.judul)}</b><span>${esc(t.ket)}</span></span></button>`).join('');
   $('#tplGrid').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-tpl]'); if (!btn) return;
     const t = TEMPLATES.find(x => x.id === btn.dataset.tpl), p = blank();
@@ -1433,8 +1661,9 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
       if (lib) return { nama, harga: lib.harga, isi: lib.isi, satuanIsi: lib.satuanIsi, pakai: '', satuanPakai: H.faktor(pakai, lib.satuanIsi) !== null ? pakai : lib.satuanIsi };
       return { nama, harga:'', isi:'', satuanIsi: beli, pakai:'', satuanPakai: pakai };
     });
+    p.touched = false;
     state.products.push(p); state.activeId = p.id; openRows = new Set();
-    closeOverlays(); renderSelect(); fillInputs(); compute(); save();
+    closeOverlays(); if (location.hash !== '#hitung') { location.hash = '#hitung'; } renderSelect(); fillInputs(); compute(); save();
     $('#secBahan').open = true; $('#f_nama').focus();
     toast(t.id === 'kosong' ? 'Produk baru dibuat' : `Template ${t.judul} dipakai. Isi nama dan harganya.`);
   });
@@ -1457,14 +1686,17 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   $('#cfNo').addEventListener('click', closeOverlays);
 
   // ---------- routing ----------
-  const VIEWS = ['hitung', 'bahan', 'laporan', 'tentang', 'privasi', 'lembar'];
+  const VIEWS = ['beranda', 'hitung', 'bahan', 'lainnya', 'laporan', 'tentang', 'privasi', 'lembar'];
   function route(){
     if (location.hash.startsWith('#impor=')) { handleImport(location.hash.slice(7)); return; }
-    let v = (location.hash || '#hitung').slice(1);
-    if (!VIEWS.includes(v)) v = 'hitung';
+    let v = (location.hash || '#beranda').slice(1);
+    if (!VIEWS.includes(v)) v = 'beranda';
+    if ((v === 'hitung' || v === 'laporan') && !state.products.length) { history.replaceState(null, '', '#beranda'); v = 'beranda'; setTimeout(() => openOverlay('tplDlg'), 50); }
     $$('[data-page]').forEach(m => m.hidden = m.dataset.page !== v);
-    $$('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.dataset.view === v || ((v === 'privasi' || v === 'lembar') && a.dataset.view === 'tentang') ? 'page' : 'false'));
+    const navOf = { laporan: 'lainnya', tentang: 'lainnya', privasi: 'lainnya', lembar: 'lainnya' };
+    $$('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.dataset.view === (navOf[v] || v) ? 'page' : 'false'));
     document.body.classList.toggle('view-other', v !== 'hitung');
+    if (v === 'beranda') renderBeranda();
     if (v === 'bahan') renderLib();
     if (v === 'laporan') renderReport();
     if (v === 'hitung') { fillInputs(); compute(); }
@@ -1477,6 +1709,7 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   document.addEventListener('input', (ev) => {
     const el = ev.target, p = cur();
     const val = el.classList.contains('num') ? onNumInput(el) : el.value;
+    if (p && el.closest('#view-hitung') && (el.dataset.k || el.dataset.b !== undefined)) p.touched = true;
     if (el.dataset.k) {
       setPath(p, el.dataset.k, el.tagName === 'SELECT' ? Number(val) : val);
       if (el.dataset.k === 'nama') renderSelect();
@@ -1552,20 +1785,19 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
     confirmBox('Hapus produk?', `"${p.nama || 'Produk tanpa nama'}" akan dihapus dari HP ini.`, 'Hapus', () => {
       const idx = state.products.findIndex(x => x.id === p.id), copy = JSON.parse(JSON.stringify(p));
       state.products.splice(idx, 1);
-      if (!state.products.length) state.products.push(blank());
-      state.activeId = state.products[Math.max(0, idx - 1)].id;
-      openRows = new Set(); renderSelect(); fillInputs(); compute(); save();
+      state.activeId = state.products.length ? state.products[Math.max(0, idx - 1)].id : null;
+      openRows = new Set(); saveNow();
+      if (state.products.length) { renderSelect(); fillInputs(); compute(); } else location.hash = '#beranda';
       toast('Produk dihapus', 'Batalkan', () => {
-        const only = state.products.length === 1 ? state.products[0] : null;
-        if (only && !only.nama && !only.bahan.some(x => x.nama || Number(x.harga))) state.products = [];
         state.products.splice(Math.min(idx, state.products.length), 0, copy); state.activeId = copy.id;
-        openRows = new Set(); renderSelect(); fillInputs(); compute(); save(); toast('Produk dikembalikan');
+        openRows = new Set(); saveNow(); toast('Produk dikembalikan');
+        if (location.hash === '#hitung') { renderSelect(); fillInputs(); compute(); } else if (location.hash === '#beranda' || !location.hash) renderBeranda();
       });
     });
   });
   $('#btnCopy').addEventListener('click', async () => { try { await navigator.clipboard.writeText(summaryText()); toast('Ringkasan disalin'); } catch(e) { toast('Gagal menyalin; coba tombol WhatsApp'); } });
   $('#btnExport').addEventListener('click', doBackup);
-  $('#btnBackupNow').addEventListener('click', doBackup);
+  $$('[data-backup]').forEach(b => b.addEventListener('click', doBackup));
   $('#fileImport').addEventListener('change', async (e) => {
     const f = e.target.files[0]; if (!f) return;
     try { restore(await f.text()); } catch(err) { toast('File tidak dikenali sebagai cadangan HargaPas'); }
@@ -1658,8 +1890,146 @@ footer .sure-strip{width:96px;height:6px;border-radius:3px}
   }
   $('#btnPrintLembar').addEventListener('click', () => window.print());
 
+  // ---------- animasi angka ----------
+  const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function animNum(el, to){
+    if (!el) return;
+    const from = el._v;
+    el._v = to;
+    if (to === null || !Number.isFinite(to) || from === undefined || from === null || !Number.isFinite(from) || from === to || reduceMotion) { el.textContent = fmtRp(to); return; }
+    const t0 = performance.now(), d = 350;
+    cancelAnimationFrame(el._raf);
+    const step = (t) => { const k = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - k, 3); el.textContent = fmtRp(from + (to - from) * e); if (k < 1) el._raf = requestAnimationFrame(step); };
+    el._raf = requestAnimationFrame(step);
+  }
+  function bumpIf(el, v){ if (el._v !== undefined && el._v !== v && !reduceMotion) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); } el._v = v; }
+
+  // ---------- beranda ----------
+  function summaryOf(p){
+    const r = H.hitungHPP(toEngine(p));
+    const h = { ...p.harga, metode: state.ui === 'sederhana' ? 'margin' : p.harga.metode };
+    const toko = H.hargaSemuaKanal(r.hpp, h, h.kanal).find(c => c.tipe === 'langsung');
+    const harga = toko && toko.harga !== null ? toko.harga : null;
+    const m = harga && r.hpp > 0 ? H.marginAktual(harga, r.hpp, 0, 0) : null;
+    return { r, harga, m, level: m === null ? '' : m < 0 ? 'bad' : m < 0.15 ? 'warn' : 'good' };
+  }
+  function renderBeranda(){
+    const g = $('#prodGrid'), list = state.products;
+    $('#emptyHome').hidden = list.length > 0;
+    $('#btnLihatContoh').hidden = list.some(x => x.isContoh);
+    $('#prodCount').textContent = list.length ? list.length + ' produk' : '';
+    g.innerHTML = list.map(p => {
+      const s = summaryOf(p), sat = p.satuan || 'unit';
+      const ok = s.r.hpp > 0;
+      const tag = p.isContoh ? 'Contoh' : !ok ? 'Belum lengkap' : s.level === 'good' ? 'Untung sehat' : s.level === 'warn' ? 'Untung tipis' : 'Rugi';
+      return `<a class="pcard ${ok ? s.level : ''}" href="#hitung" data-open="${p.id}">
+        <div class="pt"><div><div class="pn">${esc(p.nama || 'Produk tanpa nama')}</div><div class="ps">${p.mode === 'unit' ? 'Satu per satu' : 'Sekali produksi'} · dijual per ${esc(sat)}</div></div><span class="tag">${tag}</span></div>
+        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.harga - s.r.hpp) : '—'}</b></div></div>` : `<div class="ps">Ketuk untuk melanjutkan pengisian.</div>`}
+      </a>`;
+    }).join('');
+    checkBackup();
+  }
+  $('#prodGrid').addEventListener('click', (e) => {
+    const c = e.target.closest('[data-open]'); if (!c) return;
+    state.activeId = c.dataset.open; openRows = new Set(); saveNow();
+  });
+  $('#btnBerandaBaru').addEventListener('click', () => openOverlay('tplDlg'));
+  $('#btnLihatContoh').addEventListener('click', () => {
+    let p = state.products.find(x => x.isContoh);
+    if (!p) { p = contoh(); state.products.push(p); }
+    state.activeId = p.id; openRows = new Set(); saveNow(); location.hash = '#hitung';
+  });
+  $('#libSearch').addEventListener('input', renderLib);
+  $('#btnDataMenu').addEventListener('click', () => { const d = $('#dataSec'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+
+  // ---------- pengaturan ----------
+  const openSettings = () => openOverlay('settingsDlg');
+  $('#btnSettings').addEventListener('click', openSettings);
+  $$('[data-open-settings]').forEach(b => b.addEventListener('click', openSettings));
+  $('#setClose').addEventListener('click', closeOverlays);
+
+  // ---------- kartu harga (gambar) ----------
+  let kartuBlob = null;
+  const loadImg = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+  function rr(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  async function buildKartu(){
+    compute();
+    const { p, r, hargaToko, b, sat } = last;
+    const W = 1080, Hh = 1350, c = document.createElement('canvas'); c.width = W; c.height = Hh;
+    const x = c.getContext('2d');
+    try { await Promise.race([document.fonts.load('800 40px "Plus Jakarta Sans"'), new Promise(r => setTimeout(r, 700))]); } catch(e) {}
+    const F = '"Plus Jakarta Sans", system-ui, sans-serif';
+    const [icon, ut, sure] = await Promise.all([loadImg('__ICON__'), loadImg('__LOGO_UT__'), loadImg('__SURE__')]);
+    x.fillStyle = '#F3F5F9'; x.fillRect(0, 0, W, Hh);
+    // kepala bermotif sure'
+    x.fillStyle = '#1E4094'; x.fillRect(0, 0, W, 330);
+    if (sure) { x.save(); x.globalAlpha = 0.9; const pat = x.createPattern(sure, 'repeat'); x.fillStyle = pat; x.setTransform(1.5, 0, 0, 1.5, 0, 0); x.fillRect(0, 0, W / 1.5, 330 / 1.5); x.restore(); }
+    const grd = x.createLinearGradient(0, 0, W, 0); grd.addColorStop(0, 'rgba(21,46,107,.96)'); grd.addColorStop(1, 'rgba(30,64,148,.55)');
+    x.fillStyle = grd; x.fillRect(0, 0, W, 330);
+    x.fillStyle = '#F9D800'; x.fillRect(0, 330, W, 10);
+    if (icon) x.drawImage(icon, 64, 64, 120, 120);
+    x.fillStyle = '#fff'; x.font = `800 64px ${F}`; x.fillText('HargaPas', 210, 128);
+    x.fillStyle = '#F9D800'; x.font = `700 32px ${F}`; x.fillText('by Universitas Terbuka Majene', 212, 174);
+    if (ut) { x.fillStyle = '#fff'; rr(x, W - 64 - 170, 60, 170, 138, 18); x.fill(); const s = Math.min(150 / ut.width, 118 / ut.height); x.drawImage(ut, W - 64 - 170 + (170 - ut.width * s) / 2, 60 + (138 - ut.height * s) / 2, ut.width * s, ut.height * s); }
+    x.fillStyle = '#D7E2F8'; x.font = `600 30px ${F}`; x.fillText('Kartu harga produk', 64, 270);
+    // nama produk
+    x.fillStyle = '#141B2D'; x.font = `800 60px ${F}`;
+    let nama = p.nama || 'Produk'; while (x.measureText(nama).width > W - 128 && nama.length > 4) nama = nama.slice(0, -2) + '…';
+    x.fillText(nama, 64, 450);
+    // harga besar
+    x.fillStyle = '#fff'; rr(x, 64, 500, W - 128, 330, 28); x.fill();
+    x.strokeStyle = '#DCE2EC'; x.lineWidth = 3; x.stroke();
+    x.fillStyle = '#545D70'; x.font = `700 34px ${F}`; x.fillText('Harga jual', 108, 575);
+    x.fillStyle = '#152E6B'; x.font = `800 150px ${F}`; x.fillText(fmtRp(hargaToko), 100, 735);
+    x.fillStyle = '#545D70'; x.font = `600 34px ${F}`; x.fillText('per ' + sat, 108, 795);
+    // modal & untung
+    const box = (bx, label, val, color) => { x.fillStyle = '#fff'; rr(x, bx, 870, (W - 128 - 24) / 2, 190, 24); x.fill(); x.strokeStyle = '#DCE2EC'; x.stroke(); x.fillStyle = '#545D70'; x.font = `700 30px ${F}`; x.fillText(label, bx + 36, 935); x.fillStyle = color; x.font = `800 64px ${F}`; x.fillText(val, bx + 32, 1018); };
+    box(64, 'Modal per ' + sat, fmtRp(r.hpp), '#152E6B');
+    box(64 + (W - 128 + 24) / 2, 'Untung per ' + sat, fmtRp(hargaToko - r.hpp), '#1D6B3E');
+    x.fillStyle = '#2F374A'; x.font = `600 32px ${F}`;
+    x.fillText(b && b.unitBulat > 0 ? `Balik modal: jual minimal ${fmtNum(b.unitBulat)} ${sat} sebulan` : ' ', 64, 1125);
+    // kaki
+    x.fillStyle = '#1E4094'; x.fillRect(0, Hh - 130, W, 130);
+    if (sure) { x.save(); x.globalAlpha = 0.5; x.fillStyle = x.createPattern(sure, 'repeat'); x.fillRect(0, Hh - 130, W, 130); x.restore(); }
+    x.fillStyle = 'rgba(21,46,107,.85)'; x.fillRect(0, Hh - 130, W, 130);
+    x.fillStyle = '#fff'; x.font = `700 30px ${F}`; x.fillText('Dihitung dengan HargaPas · gratis untuk UKM', 64, Hh - 72);
+    x.fillStyle = '#D7E2F8'; x.font = `500 26px ${F}`; x.fillText(new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) + ' · rakasiwifajar.github.io/hargapas', 64, Hh - 34);
+    return new Promise((ok) => c.toBlob((bl) => ok({ blob: bl, url: c.toDataURL('image/png') }), 'image/png'));
+  }
+  $('#btnKartu').addEventListener('click', async () => {
+    if (!last || !(last.r.hpp > 0) || !last.hargaToko) return toast('Lengkapi perhitungan dulu');
+    const { blob, url } = await buildKartu(); kartuBlob = blob;
+    $('#kartuImg').src = url;
+    const canShare = !embedded && navigator.canShare && navigator.canShare({ files: [new File([blob], 'kartu.png', { type: 'image/png' })] });
+    $('#kartuShare').hidden = embedded;
+    $('#kartuShare').textContent = canShare ? 'Bagikan' : 'Unduh gambar';
+    openOverlay('kartuDlg');
+  });
+  $('#kartuClose').addEventListener('click', closeOverlays);
+  $('#kartuShare').addEventListener('click', async () => {
+    if (!kartuBlob) return;
+    const name = 'kartu-harga-' + (cur().nama || 'produk').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
+    const file = new File([kartuBlob], name, { type: 'image/png' });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Kartu harga ' + (cur().nama || ''), text: 'Dihitung dengan HargaPas by Universitas Terbuka Majene' }); return; }
+    } catch(e) { if (e && e.name === 'AbortError') return; }
+    const a2 = document.createElement('a'); a2.href = URL.createObjectURL(kartuBlob); a2.download = name; document.body.appendChild(a2); a2.click(); a2.remove();
+    toast('Gambar kartu harga diunduh');
+  });
+
+  // ---------- layar pembuka ----------
+  function hideSplash(){
+    const s = $('#splash'); if (!s) return;
+    const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    const first = !sessionStorage.getItem('hargapas.splash');
+    try { sessionStorage.setItem('hargapas.splash', '1'); } catch(e) {}
+    if (!(standalone || first) || reduceMotion) { s.remove(); return; }
+    setTimeout(() => { s.classList.add('hide'); setTimeout(() => s.remove(), 500); }, 900);
+  }
+
   // ---------- start ----------
   if (embedded) { $$('[data-standalone]').forEach(el => el.hidden = true); $$('[data-embedded-only]').forEach(el => el.hidden = false); }
+  hideSplash();
   setTs(lsGet('hargapas.ts') || '1');
   load(); setUi(state.ui || 'sederhana'); renderSelect(); route();
   if (lsGet(OBKEY) !== '1' && !location.hash.startsWith('#impor=')) startTour();

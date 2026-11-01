@@ -23,7 +23,7 @@ function build(pwa) {
     .replace(/__VERSION__/g, VERSION);
   if (pwa) {
     html = html.replace('<!--__HEAD_EXTRA__-->',
-      '<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" type="image/png" href="icons/icon-192.png">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">')
+      '<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">\n<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-title" content="HargaPas">\n<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">')
       .replace('<!--__BODY_EXTRA__-->',
       "<script>\nif ('serviceWorker' in navigator && location.protocol === 'https:') {\n  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));\n}\n</script>");
   } else {

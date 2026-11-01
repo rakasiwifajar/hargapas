@@ -53,6 +53,9 @@ const b = H.bep(r.fc, 10000, r.vc);
 eq(b.unitBulat, 38, 'BEP unit');
 eq(H.bep(r.fc, 6000, r.vc), null, 'BEP saat harga < biaya variabel');
 
+eq(H.bep(0, 10000, 6000).unitBulat, 0, 'BEP tanpa biaya tetap = 0, bukan -0');
+eq(Object.is(H.bep(0, 10000, 6000).unitBulat, -0), false, 'bukan minus nol');
+
 // Simulasi
 const s = H.simulasiBahan(bolu, 10, 10000);
 near(s.hppBaru, 7047.36, 0.01, 'simulasi HPP');
@@ -79,7 +82,7 @@ eq(H.hargaKanal(1000, 60, 0, 50), Infinity, 'komisi + margin >= 100%');
 
 // Pemeriksaan input
 const cek = H.periksa({ mode: 'batch', hasilBatch: 0, batchBulan: 0, bahan: [{ nama: 'Terigu', harga: 14000, isi: '', pakai: 500 }, { nama: 'Gula', harga: 18, isi: 1, pakai: 500 }] });
-eq(cek.some((x) => x.pesan.includes('hasil per batch')), true, 'cek hasil batch');
+eq(cek.some((x) => x.pesan.includes('sekali produksi jadi berapa')), true, 'cek hasil batch');
 eq(cek.some((x) => x.pesan.includes('Terigu') && x.level === 'bad'), true, 'cek isi kemasan');
 eq(cek.some((x) => x.pesan.includes('Gula') && x.level === 'warn'), true, 'cek satuan');
 
