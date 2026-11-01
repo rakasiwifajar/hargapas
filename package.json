@@ -1,0 +1,11 @@
+{
+  "name": "hargapas",
+  "version": "1.0.0",
+  "description": "HargaPas by Universitas Terbuka Majene — kalkulator HPP dan harga jual gratis untuk UKM",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node tests/engine.test.js"
+  },
+  "author": "Universitas Terbuka Majene"
+}

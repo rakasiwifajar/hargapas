@@ -1,6 +1,8 @@
-// Mesin hitung HPP & harga jual — fungsi murni, tanpa DOM.
+// HargaPas — mesin hitung HPP & harga jual (fungsi murni, tanpa DOM).
+// Dikembangkan oleh Universitas Terbuka Majene.
 (function (root) {
   const num = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
+  const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
 
   function biayaBahanBatch(bahan) {
     return (bahan || []).reduce((s, b) => {
@@ -9,41 +11,56 @@
     }, 0);
   }
 
+  // Overhead bulanan dipisah: variabel (ikut naik-turun dengan produksi) dan tetap.
   function overheadBulanan(oh) {
     oh = oh || {};
     const umur = num(oh.umurAlat);
-    const susut = umur > 0 ? num(oh.hargaAlat) / umur : 0;
+    const penyusutan = umur > 0 ? num(oh.hargaAlat) / umur : 0;
     const lain = (oh.lain || []).reduce((s, x) => s + num(x.nilai), 0);
-    return { susut, total: num(oh.gas) + num(oh.listrik) + num(oh.sewa) + susut + lain };
+    const variabel = num(oh.gas) + num(oh.listrik);
+    const tetap = num(oh.sewa) + penyusutan + lain;
+    return { penyusutan, variabel, tetap, total: variabel + tetap };
   }
 
+  // p: { hasilBatch, batchBulan, susutPct, upahJam, jamBatch, kemasan, bahan[], overhead{} }
   function hitungHPP(p) {
+    const s = clamp(num(p.susutPct) / 100, 0, 0.95);
     const n = num(p.hasilBatch);
+    const nLayak = n * (1 - s);
     const bahanBatch = biayaBahanBatch(p.bahan);
     const tkBatch = num(p.upahJam) * num(p.jamBatch);
     const oh = overheadBulanan(p.overhead);
-    const produksiBulan = n * num(p.batchBulan);
+    const produksiBulan = nLayak * num(p.batchBulan);
     const perUnit = {
-      bahan: n > 0 ? bahanBatch / n : 0,
-      tenagaKerja: n > 0 ? tkBatch / n : 0,
+      bahan: nLayak > 0 ? bahanBatch / nLayak : 0,
+      tenagaKerja: nLayak > 0 ? tkBatch / nLayak : 0,
       kemasan: num(p.kemasan),
       overhead: produksiBulan > 0 ? oh.total / produksiBulan : 0,
     };
+    const ohVarUnit = produksiBulan > 0 ? oh.variabel / produksiBulan : 0;
     const hpp = perUnit.bahan + perUnit.tenagaKerja + perUnit.kemasan + perUnit.overhead;
-    const vc = perUnit.bahan + perUnit.tenagaKerja + perUnit.kemasan;
-    return { bahanBatch, tkBatch, overheadBulan: oh.total, susut: oh.susut, produksiBulan, perUnit, hpp, vc, fc: oh.total };
+    const vc = perUnit.bahan + perUnit.tenagaKerja + perUnit.kemasan + ohVarUnit;
+    return {
+      bahanBatch, tkBatch, nLayak, susut: s, produksiBulan,
+      overheadBulan: oh.total, overheadTetap: oh.tetap, overheadVariabel: oh.variabel, penyusutan: oh.penyusutan,
+      perUnit, hpp, vc, fc: oh.tetap,
+    };
   }
 
-  const bulatkan = (x, step) => { const v = step > 0 ? Math.ceil(x / step - 1e-9) * step : x; return v === 0 ? 0 : v; };
+  const bulatkan = (x, step) => {
+    if (!Number.isFinite(x)) return x;
+    const v = step > 0 ? Math.ceil(x / step - 1e-9) * step : x;
+    return v === 0 ? 0 : v;
+  };
 
-  // metode: 'margin' (g = % dari harga jual) | 'markup' (m = % dari HPP)
+  // metode: 'margin' (persen dari harga jual) | 'markup' (persen dari HPP)
   function hargaDasar(hpp, metode, persen) {
     const r = num(persen) / 100;
     if (metode === 'markup') return hpp * (1 + r);
     return r < 1 ? hpp / (1 - r) : Infinity;
   }
 
-  // Harga tayang untuk kanal berkomisi agar margin bersih tetap g.
+  // Harga tayang kanal berkomisi agar margin bersih tetap g (persen dari harga tayang).
   function hargaKanal(hpp, komisiPct, biayaTetap, marginPct) {
     const k = num(komisiPct) / 100, g = num(marginPct) / 100;
     const d = 1 - k - g;
@@ -52,7 +69,7 @@
 
   function marginAktual(harga, hpp, komisiPct, biayaTetap) {
     const P = num(harga);
-    if (P <= 0) return null;
+    if (P <= 0 || !Number.isFinite(P)) return null;
     const bersih = P * (1 - num(komisiPct) / 100) - num(biayaTetap);
     return (bersih - hpp) / P;
   }
@@ -60,11 +77,29 @@
   const markupDariMargin = (g) => (g < 1 ? g / (1 - g) : Infinity);
   const marginDariMarkup = (m) => m / (1 + m);
 
+  // Harga per kanal. kanal: [{ nama, tipe: 'langsung'|'diskon'|'komisi', persen, biaya }]
+  // 'langsung' = harga toko; 'diskon' = harga toko dikurangi persen; 'komisi' = harga tayang menutup komisi.
+  function hargaSemuaKanal(hpp, opsi, kanal) {
+    const metode = opsi.metode, persen = num(opsi.persen), step = num(opsi.bulat);
+    const gTarget = metode === 'margin' ? persen : marginDariMarkup(persen / 100) * 100;
+    const toko = bulatkan(hargaDasar(hpp, metode, persen), step);
+    return (kanal || []).map((c) => {
+      let harga, k = 0, f = num(c.biaya);
+      if (c.tipe === 'diskon') harga = toko * (1 - num(c.persen) / 100);
+      else if (c.tipe === 'komisi') { k = num(c.persen); harga = bulatkan(hargaKanal(hpp, k, f, gTarget), step); }
+      else { harga = toko; f = 0; }
+      const ok = Number.isFinite(harga) && harga > 0;
+      const diterima = ok ? harga * (1 - k / 100) - f : null;
+      return { ...c, harga: ok ? harga : null, diterima, laba: ok ? diterima - hpp : null, margin: ok ? marginAktual(harga, hpp, k, f) : null };
+    });
+  }
+
   function bep(fc, harga, vc) {
     const kontribusi = num(harga) - num(vc);
-    if (kontribusi <= 0) return null;
+    if (!(kontribusi > 0)) return null;
     const unit = num(fc) / kontribusi;
-    return { unit, unitBulat: Math.ceil(unit - 1e-9), rupiah: Math.ceil(unit - 1e-9) * num(harga), kontribusi };
+    const unitBulat = Math.ceil(unit - 1e-9);
+    return { unit, unitBulat, rupiah: unitBulat * num(harga), kontribusi };
   }
 
   function simulasiBahan(p, naikPct, hargaJual) {
@@ -77,6 +112,22 @@
     return { hppLama: dasar.hpp, hppBaru, marginLama: mLama, marginBaru: mBaru, hargaPertahankan };
   }
 
-  const api = { biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan };
+  // Pemeriksaan input yang ramah: mengembalikan daftar { level: 'warn'|'bad', pesan }.
+  function periksa(p) {
+    const out = [];
+    const unit = p.mode === 'unit';
+    if (!unit && !(num(p.hasilBatch) > 0)) out.push({ level: 'bad', pesan: 'Isi "hasil per batch" agar biaya bisa dibagi per unit.' });
+    (p.bahan || []).forEach((b, i) => {
+      const nama = b.nama || `Bahan ${i + 1}`;
+      const adaAngka = num(b.harga) > 0 || num(b.pakai) > 0;
+      if (adaAngka && !(num(b.isi) > 0)) out.push({ level: 'bad', pesan: `${nama}: "isi kemasan" belum diisi.` });
+      if (num(b.isi) > 0 && num(b.pakai) > num(b.isi) * 20) out.push({ level: 'warn', pesan: `${nama}: jumlah dipakai lebih dari 20× isi kemasan. Periksa satuannya (g atau kg?).` });
+    });
+    if (!(num(p.batchBulan) > 0)) out.push({ level: 'warn', pesan: 'Isi jumlah produksi per bulan agar biaya bulanan ikut terhitung.' });
+    if (num(p.susutPct) >= 50) out.push({ level: 'warn', pesan: 'Persentase gagal/susut 50% atau lebih. Pastikan angkanya benar.' });
+    return out;
+  }
+
+  const api = { biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);

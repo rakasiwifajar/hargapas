@@ -1,0 +1,21 @@
+name: Uji HargaPas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  uji:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Uji rumus
+        run: node tests/engine.test.js
+      - name: Pastikan index.html sudah dibangun ulang dari src/
+        run: |
+          node tools/build.js
+          git diff --exit-code index.html sw.js || (echo "index.html belum dibangun ulang. Jalankan: node tools/build.js" && exit 1)
