@@ -936,9 +936,14 @@
       const s = summaryOf(p), sat = p.satuan || 'unit';
       const ok = s.r.hpp > 0;
       const tag = p.isContoh ? 'Contoh' : !ok ? 'Belum lengkap' : s.level === 'good' ? 'Untung sehat' : s.level === 'warn' ? 'Untung tipis' : 'Rugi';
-      return `<a class="pcard ${ok ? s.level : ''}" href="#hitung" data-open="${p.id}">
-        <div class="pt"><div><div class="pn">${esc(p.nama || 'Produk tanpa nama')}</div><div class="ps">${p.mode === 'unit' ? 'Satu per satu' : 'Sekali produksi'} · dijual per ${esc(sat)}</div></div><span class="tag">${tag}</span></div>
-        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.laba) : '—'}</b></div></div>` : `<div class="ps">Ketuk untuk melanjutkan pengisian.</div>`}
+      const lv = p.isContoh ? 'demo' : !ok ? 'todo' : s.level;
+      const steps = [p.bahan.some(b => Number(b.harga) > 0 && Number(b.pakai) > 0), Number(p.upahJam) > 0 || Number(p.jamBatch) > 0 || Number(p.menitUnit) > 0, p.mode === 'unit' || Number(p.hasilBatch) > 0, Number(p.batchBulan) > 0];
+      const done = steps.filter(Boolean).length;
+      const nama = p.nama || 'Produk tanpa nama', ini = (p.nama || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+      return `<a class="pcard ${lv}" href="#hitung" data-open="${p.id}">
+        <div class="pt"><span class="pav" aria-hidden="true">${esc(ini || '?')}</span><div class="pti"><div class="pn">${esc(nama)}</div><div class="ps">${p.mode === 'unit' ? 'Satu per satu' : 'Sekali produksi'} · per ${esc(sat.toLowerCase())}</div></div><span class="tag">${tag}</span></div>
+        ${ok ? `<div class="pv"><div><span>Modal</span><b>${fmtRp(s.r.hpp)}</b></div><div><span>Harga jual</span><b>${fmtRp(s.harga)}</b></div><div><span>Untung</span><b>${s.harga ? fmtRp(s.laba) : '—'}</b></div></div>`
+          : `<div class="pprog"><div class="pbar2"><i style="width:${Math.max(6, done / 4 * 100)}%"></i></div><div class="pprog-l"><span>${done} dari 4 langkah terisi</span><span class="pgo">Lanjutkan<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></div></div>`}
       </a>`;
     }).join('');
     checkBackup(); renderUsaha();

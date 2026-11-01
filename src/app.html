@@ -76,8 +76,8 @@
       <p>Mulai dengan menekan <b>Hitung harga</b> di kartu atas, atau lihat dulu contohnya.</p>
     </div>
     <div class="home-links">
-      <button class="btn" type="button" id="btnLihatContoh">Lihat contoh perhitungan</button>
-      <button class="btn ghost" type="button" data-tour>Panduan singkat</button>
+      <button class="hl" type="button" id="btnLihatContoh"><span class="hl-ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Lihat contoh</b><small>Perhitungan bolu pisang</small></span></button>
+      <button class="hl" type="button" data-tour><span class="hl-ic gold" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.5M12 17h.01"/></svg></span><span><b>Panduan singkat</b><small>Cara pakai dalam 1 menit</small></span></button>
     </div>
   </main>
 
@@ -690,13 +690,16 @@
     </section>
   </main>
 
-  <footer>
-    <div class="ut-chip"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
-    <div class="sure-strip" aria-hidden="true"></div>
-    <b>HargaPas dikembangkan oleh Universitas Terbuka Majene</b>
-    <span>Dikembangkan oleh Fajar Rakasiwi · <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@ecampus.ut.ac.id</a></span>
-    <span>Hasil hitungan adalah alat bantu, bukan nasihat keuangan atau pajak.</span>
-    <span>Versi __VERSION__ · Gratis untuk UKM · <a href="#privasi">Privasi</a> · <a href="#tentang">Tentang & metode</a></span>
+  <footer class="ft">
+    <div class="ft-card">
+      <div class="ft-strip" aria-hidden="true"></div>
+      <div class="ft-top">
+        <span class="ft-ut"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></span>
+        <div><small>Dikembangkan oleh</small><b>Universitas Terbuka Majene</b><span>Fajar Rakasiwi · <a href="mailto:rakasiwifajar@ecampus.ut.ac.id">rakasiwifajar@ecampus.ut.ac.id</a></span></div>
+      </div>
+      <nav class="ft-links" aria-label="Tautan informasi"><a href="#tentang">Tentang & metode</a><a href="#privasi">Privasi</a><a href="#belajar">Pelajaran</a></nav>
+    </div>
+    <p class="ft-note">HargaPas __VERSION__ · Gratis untuk UMKM · Data tersimpan di HP Anda<br>Hasil hitungan adalah alat bantu, bukan nasihat keuangan atau pajak.</p>
   </footer>
 </div>
 

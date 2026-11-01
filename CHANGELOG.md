@@ -1,5 +1,8 @@
 # Catatan perubahan HargaPas
 
+## 2.3.1 — 1 November 2026
+- Bagian bawah Beranda diperhalus: kartu produk dengan inisial berwarna, status berwarna, dan bilah kemajuan untuk produk yang belum lengkap; pintasan "Lihat contoh" dan "Panduan singkat" berbentuk kartu; kaki halaman berupa kartu biru malam dengan pita emas sure', logo UT, dan tautan berbentuk kapsul.
+
 ## 2.3.0 — 1 November 2026
 ### Tampilan
 - Gaya biru malam berpendar dengan pita emas bermotif sure' Mandar yang meliuk di layar pembuka dan kartu sambutan.
