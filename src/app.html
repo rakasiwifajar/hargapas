@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F5E4E">
 <meta name="description" content="HargaPas: kalkulator HPP dan harga jual gratis untuk UKM. Dikembangkan oleh Universitas Terbuka Majene.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <!--__HEAD_EXTRA__-->
 <title>HargaPas — Kalkulator HPP & Harga Jual UKM by Universitas Terbuka Majene</title>
 <style>
@@ -18,12 +21,18 @@
 [hidden]{display:none!important}
 body.mode-unit .only-batch{display:none!important}
 body:not(.mode-unit) .only-unit{display:none!important}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
 button,input,select,textarea{font:inherit;color:inherit}
 a{color:var(--accent)}
 .wrap{max-width:760px;margin:0 auto;padding:12px 16px 120px}
 body.view-other .wrap{padding-bottom:40px}
 
+/* identity strip */
+.utbar{background:#fff;border-bottom:1px solid var(--line)}
+.utbar .in{max-width:760px;margin:0 auto;padding:7px 16px;display:flex;align-items:center;gap:10px;font-size:13px}
+.utbar img{height:30px;width:auto;display:block}
+.utbar b{font-weight:700;color:var(--ink)}
+.utbar .r{margin-left:auto;color:var(--muted);font-size:12.5px;text-align:right}
 /* header & nav */
 header.top{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:6px 0 10px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
@@ -44,14 +53,16 @@ nav.tabs a[aria-current="page"]{background:#fff;color:var(--ink);box-shadow:0 1p
 .btn.small{min-height:36px;padding:0 10px;font-size:13.5px}
 .btn.icon{width:44px;padding:0}
 .btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible,textarea:focus-visible,.tip:focus-visible{outline:3px solid #7FB8A8;outline-offset:2px}
-.prodbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-.prodbar select{flex:1 1 200px;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 12px}
+.prodbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;margin-bottom:12px}
+.prodbar select{min-width:0;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:0 12px}
 .note{margin:0 0 12px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
 .note.warn{background:var(--warn-soft);color:var(--warn)}
 .note.info{background:var(--accent-soft);color:var(--accent-ink)}
 .note.bad{background:var(--bad-soft);color:var(--bad)}
 .note svg{flex:none;margin-top:2px}
-.note .grow{flex:1}
+.note .grow{flex:1 1 200px}
+.note{flex-wrap:wrap}
+.note>.btn{margin-left:auto}
 .note ul{margin:4px 0 0;padding-left:18px}
 .checks{margin-bottom:12px}
 
@@ -64,7 +75,7 @@ details.card>summary::-webkit-details-marker{display:none}
 .sumtxt span{font-size:13px;color:var(--muted)}
 .sumval{font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;white-space:nowrap}
 .chev{transition:transform .2s;color:var(--muted);flex:none}
-details[open] .chev{transform:rotate(180deg)}
+details[open]>summary .chev{transform:rotate(180deg)}
 .body{padding:0 16px 16px;border-top:1px solid var(--line)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
 .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -93,9 +104,21 @@ input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
 
 /* bahan */
 .bahan{margin-top:14px;display:flex;flex-direction:column;gap:10px}
-.brow{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--field)}
-.brow .rowhead{display:flex;gap:8px;align-items:center}
-.brow .rowhead input{flex:1;min-width:0;min-height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-weight:600;background:#fff}
+.brow{border:1px solid var(--line);border-radius:12px;background:var(--field)}
+.brow>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px;min-height:56px}
+.brow>summary::-webkit-details-marker{display:none}
+.brow .bt{flex:1;min-width:0}
+.brow .bname{display:block;font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .bsum{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .bsum.bad{color:var(--bad)}
+.brow .bcost{font-variant-numeric:tabular-nums;font-size:14.5px;white-space:nowrap}
+.brow[open]>summary{border-bottom:1px dashed var(--line)}
+.brow .bbody{padding:12px}
+.g-bahan{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,.8fr);gap:8px;margin-top:10px}
+.g-bahan .full{grid-column:1/-1}
+.brow .rowhead{display:flex;gap:8px;align-items:flex-end}
+.brow .rowhead .field{flex:1;min-width:0}
+.brow .rowhead input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;font-weight:600;background:#fff}
 .brow .grid{margin-top:10px}
 .brow .cost{margin-top:8px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
 .brow .cost b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -103,7 +126,7 @@ input.invalid{border-color:var(--bad)!important;background:#FFF8F7!important}
 
 /* results */
 .result{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
-.result h2{font-size:16px;margin:0 0 2px;display:flex;align-items:center;gap:6px}
+.result h2{font-size:17px;margin:0 0 2px;display:flex;align-items:center;gap:6px}
 .result .sub{font-size:13px;color:var(--muted);margin:0 0 12px}
 .big{font-size:34px;font-weight:750;letter-spacing:-.8px;font-variant-numeric:tabular-nums;line-height:1.1}
 .big small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
@@ -135,20 +158,45 @@ table.ch tr:last-child td{border-bottom:0}
 .pill.bad{background:var(--bad-soft);color:var(--bad)}
 .kanaled{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
 .kanaled h3{font-size:14px;margin:0 0 8px}
-.krow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr) 40px;gap:6px;align-items:center;margin-bottom:8px}
-.krow input,.krow select{min-height:40px;border:1px solid var(--line);border-radius:8px;background:var(--field);padding:0 8px;width:100%;font-size:14px}
-.krow .fixed{font-size:13.5px;font-weight:600;padding:0 4px}
-.krow .muted{font-size:12.5px;color:var(--muted)}
+.kcard{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--field)}
+.kcard .khead{display:flex;gap:8px;align-items:center}
+.kcard .khead input{flex:1;min-width:0;min-height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-weight:600}
+.kcard .kf{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) minmax(0,1fr);gap:8px;margin-top:8px}
+.kcard .kf .field>label{font-size:12px}
+.kcard .kf select,.kcard .kf input{min-height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:0 10px;width:100%;font-size:14.5px}
+.kcard .kf .inp.has-suf input{padding-right:30px}
+.kcard .kf .inp.has-pre input{padding-left:32px}
+.kcard .kf .inp .pre{left:10px}.kcard .kf .inp .suf{right:10px}
+.kcard .knote{font-size:12.5px;color:var(--muted);margin-top:6px}
 .kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kv .box.wide{grid-column:1/-1}
 .kv .val{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
 input[type=range]{width:100%;accent-color:var(--accent);min-height:36px}
 .rangehead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0}
 .rangehead b{font-size:20px;font-variant-numeric:tabular-nums}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
+details.datasec{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+details.datasec>summary{cursor:pointer;font-size:14px;font-weight:650;color:var(--muted);list-style:none;display:flex;align-items:center;gap:6px;min-height:36px}
+details.datasec>summary::-webkit-details-marker{display:none}
+details.datasec[open]>summary{color:var(--ink)}
+details.datasec .actions{margin-top:8px}
+/* two columns on large screens */
+@media (min-width:1024px){
+  .wrap,.utbar .in{max-width:1160px}
+  .wrap{padding-bottom:40px}
+  .hcols{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:20px;align-items:start}
+  .col-out{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;overscroll-behavior:contain;padding:0 4px 4px 0}
+  .sticky{display:none!important}
+  .col-out .legend{grid-template-columns:1fr}
+  .page{max-width:860px;margin-left:auto;margin-right:auto}
+  #view-laporan{max-width:860px;margin:0 auto}
+  nav.tabs{max-width:520px}
+  .toast{bottom:32px}
+}
 
 /* sticky */
 .sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:5}
-.sticky .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.sticky .in{max-width:728px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between}
 .sticky .l{font-size:12px;color:var(--muted);font-weight:600}
 .sticky .v{font-size:20px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
 .sticky .grp{display:flex;gap:20px}
@@ -221,19 +269,20 @@ footer b{color:var(--ink)}
 
 @media (max-width:560px){
   .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .kv{grid-template-columns:1fr 1fr}
+  .kv{gap:8px}
+  .kv .box{padding:10px}
+  .kv .val{font-size:15.5px}
+  .kv .lbl2{font-size:11.5px}
+  .sumtxt b{font-size:15.5px}
+  .sumval{font-size:14px}
+  .utbar .r{display:none}
   .big{font-size:30px}
   .legend{grid-template-columns:1fr}
   table.ch .hide-s{display:none}
-  .krow{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 40px;}
-  .krow .k-nama{grid-column:1/3}
-  .krow .k-del{grid-column:3;grid-row:1}
   .report{padding:16px}
   .report table{font-size:12px}
   .report th,.report td{padding:5px 6px}
   .report .kop .ut img{height:44px}
-  .ut-chip.hdr{height:36px;padding:2px 5px}
-  .ut-chip.hdr img{height:28px}
 }
 @media print{
   body{background:#fff}
@@ -245,13 +294,13 @@ footer b{color:var(--ink)}
 </style>
 </head>
 <body>
+<div class="utbar"><div class="in"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"><span><b>Universitas Terbuka Majene</b></span><span class="r">Layanan gratis untuk UKM</span></div></div>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#hitung" aria-label="HargaPas, beranda">
       <img src="__ICON__" alt="">
       <div><b>HargaPas</b><span>by Universitas Terbuka Majene</span></div>
     </a>
-    <div class="ut-chip hdr"><img src="__LOGO_UT__" alt="Logo Universitas Terbuka"></div>
   </header>
 
   <nav class="tabs" aria-label="Menu utama">
@@ -269,6 +318,13 @@ footer b{color:var(--ink)}
       <button class="btn small" type="button" id="btnBackupNow">Cadangkan</button>
     </div>
 
+    <div class="note info" id="noteContoh" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+      <span class="grow">Anda sedang melihat <b>data contoh</b>. Angka-angka ini hanya ilustrasi cara pakai HargaPas.</span>
+      <button class="btn small primary" type="button" id="btnMulaiSaya">Mulai produk saya</button>
+    </div>
+
+    <div class="hcols"><div class="col-in">
     <div class="prodbar">
       <label class="sr" for="prodSel">Pilih produk</label>
       <select id="prodSel"></select>
@@ -282,7 +338,7 @@ footer b{color:var(--ink)}
 
     <!-- 1. Produk & bahan -->
     <details class="card" open id="secBahan">
-      <summary><span class="step">1</span><span class="sumtxt"><b>Produk & bahan baku</b><span class="only-batch">Untuk satu kali produksi (batch)</span><span class="only-unit">Untuk satu unit produk</span></span><span class="sumval" id="sumBahan">Rp0</span>
+      <summary><span class="step">1</span><span class="sumtxt"><b>Produk & bahan</b><span class="only-batch">Untuk satu kali produksi</span><span class="only-unit">Untuk satu unit produk</span></span><span class="sumval" id="sumBahan">Rp0</span>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="body">
         <div class="modebox">
@@ -296,7 +352,7 @@ footer b{color:var(--ink)}
         <div class="grid">
           <div class="field full"><label for="f_nama">Nama produk</label><input id="f_nama" data-k="nama" type="text" placeholder="mis. Bolu pisang" autocomplete="off"></div>
           <div class="field only-batch"><label for="f_hasil">Hasil per batch</label>
-            <div class="inp has-suf"><input id="f_hasil" class="num" data-k="hasilBatch" type="text" inputmode="decimal" placeholder="24"><span class="suf">unit</span></div></div>
+            <div class="inp has-suf"><input id="f_hasil" class="num" data-k="hasilBatch" type="text" inputmode="decimal" placeholder="24"><span class="suf" id="sufHasil">unit</span></div></div>
           <div class="field"><label for="f_satuan">Nama satuan jual</label><input id="f_satuan" data-k="satuan" type="text" placeholder="potong / pcs / bungkus" autocomplete="off"></div>
           <div class="field"><label for="f_susut">Gagal / susut <button type="button" class="tip" data-tip="susut" aria-label="Apa itu gagal atau susut?">?</button></label>
             <div class="inp has-suf"><input id="f_susut" class="num" data-k="susutPct" type="text" inputmode="decimal" placeholder="0"><span class="suf">%</span></div>
@@ -311,7 +367,7 @@ footer b{color:var(--ink)}
 
     <!-- 2. Tenaga kerja & kemasan -->
     <details class="card" id="secTK">
-      <summary><span class="step">2</span><span class="sumtxt"><b>Tenaga kerja & kemasan</b><span>Termasuk upah Anda sendiri</span></span><span class="sumval" id="sumTK">Rp0/unit</span>
+      <summary><span class="step">2</span><span class="sumtxt"><b>Tenaga & kemasan</b><span>Termasuk upah Anda</span></span><span class="sumval" id="sumTK">Rp0/unit</span>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="body">
         <div class="grid">
@@ -335,7 +391,7 @@ footer b{color:var(--ink)}
 
     <!-- 3. Overhead -->
     <details class="card" id="secOH">
-      <summary><span class="step">3</span><span class="sumtxt"><b>Biaya bulanan (overhead)</b><span>Gas, listrik, sewa, penyusutan alat</span></span><span class="sumval" id="sumOH">Rp0/bln</span>
+      <summary><span class="step">3</span><span class="sumtxt"><b>Biaya bulanan</b><span>Gas, listrik, sewa, alat</span></span><span class="sumval" id="sumOH">Rp0/bln</span>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="body">
         <p class="hint" style="margin:12px 0 0">Gas dan listrik dihitung sebagai biaya <b>variabel</b> (ikut naik-turun dengan produksi). Sewa, penyusutan, dan lain-lain sebagai biaya <b>tetap</b>. <button type="button" class="tip" data-tip="tetapvar" aria-label="Apa beda biaya tetap dan variabel?">?</button></p>
@@ -354,6 +410,7 @@ footer b{color:var(--ink)}
       </div>
     </details>
 
+    </div><aside class="col-out" aria-label="Hasil perhitungan">
     <!-- HASIL -->
     <section class="result" aria-labelledby="hHPP">
       <h2 id="hHPP">HPP per unit <button type="button" class="tip" data-tip="hpp" aria-label="Apa itu HPP?">?</button></h2>
@@ -416,18 +473,25 @@ footer b{color:var(--ink)}
 
     <section class="result" aria-labelledby="hShare">
       <h2 id="hShare">Bagikan & simpan</h2>
-      <p class="sub">Data tersimpan otomatis di HP ini saja. Buat cadangan sesekali.</p>
+      <p class="sub">Kirim hasil perhitungan atau simpan sebagai laporan.</p>
       <div class="actions">
         <a class="btn primary" id="btnWA" href="https://wa.me/" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 01-13.5 7.8L3 21l1.2-4.4A9 9 0 1121 12z"/></svg>Kirim ke WhatsApp</a>
-        <a class="btn" href="#laporan">Lihat laporan PDF</a>
+        <a class="btn" href="#laporan">Laporan PDF</a>
         <button class="btn" id="btnCopy" type="button">Salin ringkasan</button>
-        <button class="btn" id="btnExport" type="button">Cadangkan data</button>
-        <label class="btn" for="fileImport" style="cursor:pointer" data-standalone>Pulihkan dari file</label>
-        <input type="file" id="fileImport" accept="application/json,.json" class="sr">
-        <button class="btn" id="btnPaste" type="button">Pulihkan dari teks</button>
       </div>
+      <details class="datasec" id="dataSec">
+        <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>Cadangan & pemulihan data</summary>
+        <p class="hint" style="margin:6px 0 0">Data tersimpan di HP ini saja. Cadangkan sesekali agar tidak hilang saat ganti HP atau membersihkan browser.</p>
+        <div class="actions">
+          <button class="btn" id="btnExport" type="button">Cadangkan data</button>
+          <label class="btn" for="fileImport" style="cursor:pointer" data-standalone>Pulihkan dari file</label>
+          <input type="file" id="fileImport" accept="application/json,.json" class="sr">
+          <button class="btn" id="btnPaste" type="button">Pulihkan dari teks</button>
+        </div>
+      </details>
     </section>
+    </aside></div>
   </main>
 
   <!-- ================= HARGA BAHAN ================= -->
@@ -487,6 +551,12 @@ footer b{color:var(--ink)}
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
       <ul>
+        <li>Tampilan dua kolom di laptop: isian di kiri, hasil selalu terlihat di kanan.</li>
+        <li>Daftar bahan lebih ringkas: satu baris per bahan, ketuk untuk mengubah.</li>
+        <li>Pengaturan kanal penjualan dirapikan, penanda data contoh, strip identitas Universitas Terbuka Majene, huruf Plus Jakarta Sans.</li>
+      </ul>
+      <p style="margin-bottom:4px"><b>Versi 1.0.0</b> (1 November 2026)</p>
+      <ul>
         <li>Logo dan identitas Universitas Terbuka Majene, ikon aplikasi baru.</li>
         <li>Pemisah ribuan pada semua isian angka.</li>
         <li>Panduan singkat untuk pengguna baru dan penjelasan istilah (tombol ?).</li>
@@ -532,7 +602,7 @@ footer b{color:var(--ink)}
 <div class="sticky" aria-live="polite">
   <div class="in">
     <div class="grp">
-      <div><div class="l">HPP / unit</div><div class="v" id="stHPP">Rp0</div></div>
+      <div><div class="l" id="stLbl">HPP / unit</div><div class="v" id="stHPP">Rp0</div></div>
       <div><div class="l">Harga toko</div><div class="v" id="stHarga">Rp0</div></div>
     </div>
     <span class="pill good" id="stMargin">—</span>
@@ -649,7 +719,7 @@ footer b{color:var(--ink)}
     mundur: { harga:'', komisi:'' }
   });
   const contoh = () => ({
-    ...blank(), nama:'Bolu pisang (contoh)', satuan:'potong', hasilBatch:24, upahJam:15000, jamBatch:3, kemasan:1000, batchBulan:20,
+    ...blank(), isContoh: true, nama:'Bolu pisang (contoh)', satuan:'potong', hasilBatch:24, upahJam:15000, jamBatch:3, kemasan:1000, batchBulan:20,
     bahan: [
       { nama:'Tepung terigu', harga:14000, isi:1000, satuanIsi:'g', pakai:500 },
       { nama:'Gula pasir', harga:18000, isi:1000, satuanIsi:'g', pakai:400 },
@@ -673,6 +743,7 @@ footer b{color:var(--ink)}
   function migrate(p){
     const b = blank();
     p.mode = p.mode || 'batch';
+    if (p.isContoh === undefined) p.isContoh = /\(contoh\)/i.test(p.nama || '');
     ['susutPct','menitUnit'].forEach(k => { if (p[k] === undefined) p[k] = ''; });
     p.overhead = { ...b.overhead, ...(p.overhead || {}) };
     p.mundur = { ...b.mundur, ...(p.mundur || {}) };
@@ -761,23 +832,31 @@ footer b{color:var(--ink)}
     const names = new Map(); allBahanRows().forEach(({ b }) => names.set(norm(b.nama), b.nama.trim()));
     $('#dlBahan').innerHTML = Array.from(names.values()).map(n => `<option value="${esc(n)}"></option>`).join('');
   }
-  function renderBahan(){
+  let openRows = new Set();
+  function renderBahan(focusNew){
     const p = cur(), list = $('#bahanList'); list.innerHTML = '';
     p.bahan.forEach((b, i) => {
-      const d = document.createElement('div'); d.className = 'brow';
+      const incomplete = !norm(b.nama) || !(Number(b.isi) > 0) || b.harga === '' || b.pakai === '';
+      const d = document.createElement('details'); d.className = 'brow'; d.dataset.row = i;
+      if (openRows.has(i) || (incomplete && !p.isContoh)) d.open = true;
       d.innerHTML = `
-        <div class="rowhead"><label class="sr" for="bn${i}">Nama bahan ${i+1}</label>
-          <input id="bn${i}" data-b="${i}" data-f="nama" type="text" list="dlBahan" placeholder="Nama bahan, mis. Tepung terigu" autocomplete="off">
-          <button class="btn icon small" type="button" data-del="${i}" aria-label="Hapus bahan ${i+1}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-        <div class="grid three">
-          <div class="field"><label for="bh${i}">Harga beli</label><div class="inp has-pre"><span class="pre">Rp</span><input id="bh${i}" class="num" data-b="${i}" data-f="harga" type="text" inputmode="decimal" placeholder="14.000"></div></div>
-          <div class="field"><label for="bi${i}">Isi kemasan</label><div class="inp"><input id="bi${i}" class="num" data-b="${i}" data-f="isi" type="text" inputmode="decimal" placeholder="1.000"></div></div>
-          <div class="field"><label for="bs${i}">Satuan</label><input id="bs${i}" data-b="${i}" data-f="satuanIsi" type="text" placeholder="g / ml / butir" autocomplete="off"></div>
-          <div class="field full"><label for="bp${i}"><span class="only-batch">Dipakai per batch</span><span class="only-unit">Dipakai per unit</span></label><div class="inp has-suf"><input id="bp${i}" class="num" data-b="${i}" data-f="pakai" type="text" inputmode="decimal" placeholder="500"><span class="suf" data-sufb="${i}"></span></div></div>
-        </div>
-        <div class="cost"><span><span class="only-batch">Biaya bahan ini per batch</span><span class="only-unit">Biaya bahan ini per unit</span></span><b data-costb="${i}">Rp0</b></div>
-        <div class="shared" data-sharedb="${i}" hidden></div>`;
+        <summary><span class="bt"><span class="bname" data-bname="${i}"></span><span class="bsum" data-bsum="${i}"></span></span><b class="bcost" data-costb="${i}">Rp0</b>
+          <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="bbody">
+          <div class="rowhead">
+            <div class="field"><label for="bn${i}">Nama bahan</label><input id="bn${i}" data-b="${i}" data-f="nama" type="text" list="dlBahan" placeholder="mis. Tepung terigu" autocomplete="off"></div>
+            <button class="btn icon" type="button" data-del="${i}" aria-label="Hapus bahan ${i+1}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
+          </div>
+          <div class="g-bahan">
+            <div class="field"><label for="bh${i}">Harga beli</label><div class="inp has-pre"><span class="pre">Rp</span><input id="bh${i}" class="num" data-b="${i}" data-f="harga" type="text" inputmode="decimal" placeholder="14.000"></div></div>
+            <div class="field"><label for="bi${i}">Isi kemasan</label><div class="inp"><input id="bi${i}" class="num" data-b="${i}" data-f="isi" type="text" inputmode="decimal" placeholder="1.000"></div></div>
+            <div class="field"><label for="bs${i}">Satuan</label><input id="bs${i}" data-b="${i}" data-f="satuanIsi" type="text" placeholder="g" autocomplete="off"></div>
+            <div class="field full"><label for="bp${i}"><span class="only-batch">Dipakai per batch</span><span class="only-unit">Dipakai per unit</span></label><div class="inp has-suf"><input id="bp${i}" class="num" data-b="${i}" data-f="pakai" type="text" inputmode="decimal" placeholder="500"><span class="suf" data-sufb="${i}"></span></div></div>
+          </div>
+          <div class="shared" data-sharedb="${i}" hidden></div>
+        </div>`;
+      d.addEventListener('toggle', () => { if (d.open) openRows.add(i); else openRows.delete(i); });
       list.appendChild(d);
       $$('[data-b]', d).forEach(el => { const v = b[el.dataset.f]; el.value = el.classList.contains('num') ? fmtInput(v) : (v ?? ''); });
     });
@@ -787,8 +866,15 @@ footer b{color:var(--ink)}
     const p = cur();
     p.bahan.forEach((b, i) => {
       const s = $(`[data-sufb="${i}"]`); if (s) s.textContent = b.satuanIsi || '';
+      const bn = $(`[data-bname="${i}"]`); if (bn) bn.textContent = b.nama || 'Bahan baru';
+      const bs = $(`[data-bsum="${i}"]`);
+      if (bs) {
+        const ok = Number(b.isi) > 0 && b.harga !== '' && b.pakai !== '';
+        bs.textContent = ok ? `${fmtRp(Number(b.harga))} / ${fmtInput(b.isi)} ${b.satuanIsi || ''} · pakai ${fmtInput(b.pakai)} ${b.satuanIsi || ''}` : 'Belum lengkap, ketuk untuk mengisi';
+        bs.classList.toggle('bad', !ok && (Number(b.harga) > 0 || Number(b.pakai) > 0));
+      }
       const c = $(`[data-costb="${i}"]`);
-      if (c) { const isi = Number(b.isi); c.textContent = isi > 0 ? fmtRp(Number(b.harga) / isi * Number(b.pakai || 0)) : 'Isi kemasan belum diisi'; }
+      if (c) { const isi = Number(b.isi); c.textContent = isi > 0 ? fmtRp(Number(b.harga) / isi * Number(b.pakai || 0)) : '—'; }
       const sh = $(`[data-sharedb="${i}"]`);
       if (sh) { const n = sharedCount(b); sh.hidden = n === 0; sh.textContent = n ? `Harga bahan ini dipakai bersama ${n} produk lain dan ikut diperbarui.` : ''; }
       const isiEl = $('#bi' + i);
@@ -798,16 +884,21 @@ footer b{color:var(--ink)}
   function renderKanalEditor(){
     const p = cur(), box = $('#kanalList'); box.innerHTML = '';
     p.harga.kanal.forEach((k, i) => {
-      const d = document.createElement('div'); d.className = 'krow';
+      const d = document.createElement('div'); d.className = 'kcard';
       if (k.tipe === 'langsung') {
-        d.innerHTML = `<div class="k-nama"><label class="sr" for="kn${i}">Nama kanal</label><input id="kn${i}" data-kn="${i}" data-kf="nama" type="text"></div><span class="fixed">Harga dasar</span><span class="muted">—</span><span class="muted">—</span><span></span>`;
+        d.innerHTML = `<div class="khead"><label class="sr" for="kn${i}">Nama kanal</label><input id="kn${i}" data-kn="${i}" data-kf="nama" type="text"></div>
+          <div class="knote">Harga dasar, tanpa potongan. Kanal lain dihitung dari sini.</div>`;
       } else {
+        const komisi = k.tipe === 'komisi';
         d.innerHTML = `
-          <div class="k-nama"><label class="sr" for="kn${i}">Nama kanal</label><input id="kn${i}" data-kn="${i}" data-kf="nama" type="text" placeholder="Nama kanal"></div>
-          <div><label class="sr" for="kt${i}">Jenis</label><select id="kt${i}" data-kn="${i}" data-kf="tipe"><option value="diskon">Diskon dari harga toko</option><option value="komisi">Dipotong komisi</option></select></div>
-          <div><label class="sr" for="kp${i}">Persen</label><input id="kp${i}" class="num" data-kn="${i}" data-kf="persen" type="text" inputmode="decimal" placeholder="%" aria-label="Persen"></div>
-          <div><label class="sr" for="kb${i}">Biaya per unit</label><input id="kb${i}" class="num" data-kn="${i}" data-kf="biaya" type="text" inputmode="decimal" placeholder="Rp/unit" aria-label="Biaya lain per unit" ${k.tipe === 'diskon' ? 'disabled' : ''}></div>
-          <button class="btn icon small k-del" type="button" data-kdel="${i}" aria-label="Hapus kanal ${esc(k.nama)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+          <div class="khead"><label class="sr" for="kn${i}">Nama kanal</label><input id="kn${i}" data-kn="${i}" data-kf="nama" type="text" placeholder="Nama kanal, mis. GoFood">
+            <button class="btn icon" type="button" data-kdel="${i}" aria-label="Hapus kanal ${esc(k.nama || '')}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button></div>
+          <div class="kf">
+            <div class="field"><label for="kt${i}">Jenis</label><select id="kt${i}" data-kn="${i}" data-kf="tipe"><option value="diskon">Diskon</option><option value="komisi">Komisi</option></select></div>
+            <div class="field"><label for="kp${i}">${komisi ? 'Komisi' : 'Diskon'}</label><div class="inp has-suf"><input id="kp${i}" class="num" data-kn="${i}" data-kf="persen" type="text" inputmode="decimal" placeholder="0"><span class="suf">%</span></div></div>
+            ${komisi ? `<div class="field"><label for="kb${i}">Biaya/unit</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kb${i}" class="num" data-kn="${i}" data-kf="biaya" type="text" inputmode="decimal" placeholder="0"></div></div>` : `<div></div>`}
+          </div>
+          <div class="knote">${komisi ? 'Harga tayang dinaikkan agar margin tetap setelah dipotong komisi.' : 'Harga untuk kanal ini = harga toko dikurangi diskon.'}</div>`;
       }
       box.appendChild(d);
       $$('[data-kn]', d).forEach(el => { const v = k[el.dataset.kf]; el.value = el.classList.contains('num') ? fmtInput(v) : (v ?? ''); });
@@ -819,11 +910,14 @@ footer b{color:var(--ink)}
     const p = cur(), e = toEngine(p), r = H.hitungHPP(e);
     const sat = p.satuan || 'unit';
     $$('.satuanTxt').forEach(s => s.textContent = sat);
-    $('#sumBahan').textContent = fmtRp(r.bahanBatch) + (p.mode === 'unit' ? '/unit' : '');
-    $('#sumTK').textContent = fmtRp(r.perUnit.tenagaKerja + r.perUnit.kemasan) + '/unit';
+    $('#sumBahan').textContent = fmtRp(r.bahanBatch) + (p.mode === 'unit' ? '/' + sat : '');
+    $('#sumTK').textContent = fmtRp(r.perUnit.tenagaKerja + r.perUnit.kemasan) + '/' + sat;
     $('#sumOH').textContent = fmtRp(r.overheadBulan) + '/bln';
     $('#hintSusut').textContent = 'Penyusutan: ' + fmtRp(r.penyusutan) + '/bulan';
     $('#sufProd').textContent = p.mode === 'unit' ? sat : 'batch';
+    $('#sufHasil').textContent = sat;
+    $('#stLbl').textContent = 'HPP / ' + sat;
+    $('#noteContoh').hidden = !p.isContoh;
     $('#hintProd').textContent = '= ' + fmtNum(r.produksiBulan) + ' ' + sat + ' layak jual per bulan';
     $('#hintProd').hidden = false;
     $('#noteUpah').hidden = Number(p.upahJam) > 0;
@@ -865,7 +959,7 @@ footer b{color:var(--ink)}
       <div class="box"><div class="lbl2">Laba per ${esc(sat)}</div><div class="val">${fmtRp(mh*(1-mk/100) - r.hpp)}</div></div>
       <div class="box"><div class="lbl2">Margin sebenarnya</div><div class="val" style="color:${mcol}">${fmtPct(ma)}</div></div>
       <div class="box"><div class="lbl2">Setara markup</div><div class="val">${r.hpp > 0 ? fmtPct((mh*(1-mk/100) - r.hpp)/r.hpp) : '—'}</div></div>`
-      : `<div class="box" style="grid-column:1/-1"><div class="lbl2">Isi harga jual untuk melihat hasilnya</div></div>`;
+      : `<div class="box wide"><div class="lbl2">Isi harga jual untuk melihat hasilnya</div></div>`;
 
     // BEP
     $('#bepHargaTxt').textContent = fmtRp(hargaToko);
@@ -883,7 +977,7 @@ footer b{color:var(--ink)}
           : `Titik impas = ${fmtPct(pct)} dari produksi bulanan Anda (${fmtNum(r.produksiBulan)} ${sat}). Setiap ${sat} di atas itu menyumbang laba ${fmtRp(b.kontribusi)}.`;
       } else nb.hidden = true;
     } else {
-      $('#outBEP').innerHTML = `<div class="box" style="grid-column:1/-1"><div class="lbl2">Harga belum menutup biaya variabel per unit</div><div class="val" style="font-size:15px">Harga harus di atas ${fmtRp(r.vc)}.</div></div>`;
+      $('#outBEP').innerHTML = `<div class="box wide"><div class="lbl2">Harga belum menutup biaya variabel per unit</div><div class="val" style="font-size:15px">Harga harus di atas ${fmtRp(r.vc)}.</div></div>`;
       nb.hidden = true;
     }
 
@@ -1065,7 +1159,7 @@ footer b{color:var(--ink)}
       const lib = findLib(nama);
       return lib ? { nama, harga: lib.harga, isi: lib.isi, satuanIsi: lib.satuanIsi, pakai: '' } : { nama, harga:'', isi:'', satuanIsi: sat, pakai:'' };
     });
-    state.products.push(p); state.activeId = p.id;
+    state.products.push(p); state.activeId = p.id; openRows = new Set();
     closeOverlays(); renderSelect(); fillInputs(); compute(); save();
     $('#secBahan').open = true; $('#f_nama').focus();
     toast(t.id === 'kosong' ? 'Produk baru dibuat' : `Template ${t.judul} dipakai. Isi nama dan harganya.`);
@@ -1134,10 +1228,10 @@ footer b{color:var(--ink)}
     const btn = ev.target.closest('[data-del]'); if (!btn) return;
     const p = cur(); p.bahan.splice(Number(btn.dataset.del), 1);
     if (!p.bahan.length) p.bahan.push(emptyBahan());
-    renderBahan(); compute(); save();
+    openRows = new Set(); renderBahan(); compute(); save();
   });
   $('#btnAddBahan').addEventListener('click', () => {
-    cur().bahan.push(emptyBahan()); renderBahan(); compute(); save();
+    cur().bahan.push(emptyBahan()); openRows.add(cur().bahan.length - 1); renderBahan(); compute(); save();
     const el = $('#bn' + (cur().bahan.length - 1)); if (el) el.focus();
   });
   $('#kanalList').addEventListener('click', (ev) => {
@@ -1159,8 +1253,9 @@ footer b{color:var(--ink)}
     $$('[data-metode]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     compute(); save();
   }));
-  $('#prodSel').addEventListener('change', (e) => { state.activeId = e.target.value; fillInputs(); compute(); save(); });
+  $('#prodSel').addEventListener('change', (e) => { state.activeId = e.target.value; openRows = new Set(); fillInputs(); compute(); save(); });
   $('#btnNew').addEventListener('click', () => openOverlay('tplDlg'));
+  $('#btnMulaiSaya').addEventListener('click', () => openOverlay('tplDlg'));
   let delArm = 0;
   $('#btnDel').addEventListener('click', () => {
     const p = cur();
