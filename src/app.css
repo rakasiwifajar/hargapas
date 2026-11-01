@@ -703,3 +703,31 @@ nav.tabs a{font-weight:600}
 [data-jenis="masuk"] .kat{min-height:68px;flex-direction:row;justify-content:flex-start;text-align:left;padding:10px 12px}
 #view-keuangan,#view-lapkeu .lk-ctrl{max-width:760px;margin-left:auto;margin-right:auto}
 #view-lapkeu .report.lk{max-width:900px;margin:0 auto}
+/* 2.1 */
+.ks-main{position:relative}
+.ks-speak{position:absolute;top:-6px;right:-6px;min-height:40px;color:var(--ut-blue)}
+.tbadge{display:inline-block;font-style:normal;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--warn-soft);color:var(--warn);vertical-align:2px;margin-left:4px;white-space:nowrap}
+.tbadge.ok{background:var(--good-soft);color:var(--good)}
+.kopen{background:var(--card);border:1px solid #EBCB7A;border-radius:16px;padding:14px;margin-bottom:12px}
+.ohead{display:flex;align-items:baseline;gap:6px;font-size:13.5px;font-weight:700;color:var(--muted);margin:10px 0 4px}
+.ohead b{margin-left:auto;font-size:15px;color:var(--ink)}
+.orow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #EEF1F6}
+.orow b{display:block;font-size:14.5px}
+.orow small{display:block;font-size:12.5px;color:var(--muted)}
+.orow .btn{min-height:40px;font-size:13.5px;padding:0 10px}
+@media (max-width:420px){ .orow{flex-wrap:wrap} .orow .grow{flex-basis:60%} .orow .btn{margin-left:auto} }
+.kinfo{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.kcard-i{display:flex;gap:12px;align-items:center;background:var(--ut-blue-soft);border-radius:14px;padding:12px 14px}
+.kcard-i.warn{background:var(--warn-soft)}
+.kcard-i b{font-size:14.5px}
+.kcard-i p{margin:3px 0 0;font-size:13px;line-height:1.5;color:#3A4356}
+@media (max-width:480px){ .kcard-i{flex-direction:column;align-items:stretch} }
+.chk.tempo{background:#FFFBEA;border-color:#F0DE8A}
+ol.steps{margin:4px 0 0;padding-left:20px}
+ol.steps li{margin-bottom:8px;font-size:15px;line-height:1.5}
+.report table.fin.cmp td.pv,.report table.fin.cmp th{color:#555}
+.report table.fin.cmp thead th{background:none;border:0;border-bottom:1px solid #9AA3B5;font-size:11px;font-weight:600;padding:3px 6px}
+.report table.fin.cmp td:first-child{width:56%}
+.ohead>span{flex:1}
+.kfoot{margin-top:4px}
+.tlist+.empty-home+.kstok,.kstok{margin-top:14px}

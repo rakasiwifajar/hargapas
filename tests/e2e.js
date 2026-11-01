@@ -105,6 +105,17 @@ const ok = (cond, msg) => { assert(cond, msg); lulus++; console.log('  ✓ ' + m
   await page.click('#profilClose');
   ok(await page.isHidden('#kSetup'), 'pengingat data usaha hilang setelah diisi');
   ok(/Rp/.test(await text('#kSum')), 'ringkasan kas tampil');
+  // pembeli belum bayar -> piutang -> dilunasi
+  await page.click('[data-trx="masuk"]'); await page.fill('#trxNom', '250000'); await page.fill('#trxKet', 'Toko Bu Ani'); await page.check('#trxTempo'); await page.click('#trxSimpan');
+  ok(!(await page.isHidden('#kOpen')) && (await text('#kOpen')).includes('Toko Bu Ani'), 'pembeli belum bayar muncul di daftar Belum dibayar');
+  await page.goto(URL + '#lapkeu'); await page.waitForSelector('#lapKeu .kop');
+  ok((await text('#lapKeu')).includes('Piutang usaha') && (await text('#lapKeu')).includes('Seimbang'), 'piutang masuk neraca dan tetap seimbang');
+  await page.goto(URL + '#keuangan'); await page.click('[data-lunas]');
+  ok(await page.isHidden('#kOpen'), 'piutang hilang setelah ditandai sudah dibayar');
+  ok(!(await page.isHidden('#kInfo')), 'perkiraan pajak / untung nyata tampil');
+  // panduan PDF muncul sebelum cetak
+  await page.goto(URL + '#lapkeu'); await page.waitForSelector('#lapKeu .kop');
+  await page.click('#btnPrintKeu'); ok(!(await page.isHidden('#pdfDlg')), 'panduan simpan PDF muncul'); await page.click('#pdfCancel');
   await page.goto(URL + '#lapkeu'); await page.waitForSelector('#lapKeu .kop');
   const lk = await text('#lapKeu');
   ok(lk.includes('Abon Uji') && lk.includes('Laporan Laba Rugi') && lk.includes('Laporan Arus Kas') && lk.includes('Laporan Posisi Keuangan'), 'laporan keuangan memuat tiga laporan utama');

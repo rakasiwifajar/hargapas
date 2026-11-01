@@ -249,6 +249,11 @@
     ],
   };
   const BEBAN = ['upah', 'sewa', 'energi', 'kirim', 'promo', 'lainop'];
+  // jenis yang boleh "belum dibayar" (piutang usaha / utang usaha)
+  const BOLEH_TEMPO = ['jual', 'lain', 'bahan', 'upah', 'sewa', 'energi', 'kirim', 'promo', 'lainop'];
+  const isTempo = (x) => !!x.tempo && BOLEH_TEMPO.includes(x.kat);
+  // bulan uangnya benar-benar berpindah (null = belum dibayar)
+  const bulanKas = (x) => isTempo(x) ? (x.lunasTgl ? bulanDari(x.lunasTgl < x.tgl ? x.tgl : x.lunasTgl) : null) : bulanDari(x.tgl);
   const bulanDari = (tgl) => String(tgl || '').slice(0, 7);
   function geserBulan(b, n) {
     const [y, m] = b.split('-').map(Number); const t = y * 12 + (m - 1) + n;
@@ -278,9 +283,13 @@
     let setoran = 0, prive = 0, labaDitahan = 0;
     const out = [];
     for (const b of bulan) {
-      const t = trx.filter(x => bulanDari(x.tgl) === b);
-      const jml = (jenis, kat) => r2(t.filter(x => x.jenis === jenis && x.kat === kat).reduce((s, x) => s + num(x.nominal), 0));
-      const k = {}; KATEGORI.masuk.forEach(c => k[c.id] = jml('masuk', c.id)); KATEGORI.keluar.forEach(c => k[c.id] = jml('keluar', c.id));
+      const t = trx.filter(x => bulanDari(x.tgl) === b), tc = trx.filter(x => bulanKas(x) === b);
+      const jml = (arr, jenis, kat) => r2(arr.filter(x => x.jenis === jenis && x.kat === kat).reduce((s, x) => s + num(x.nominal), 0));
+      const k = {}, kc = {};
+      KATEGORI.masuk.forEach(c => { k[c.id] = jml(t, 'masuk', c.id); kc[c.id] = jml(tc, 'masuk', c.id); });
+      KATEGORI.keluar.forEach(c => { k[c.id] = jml(t, 'keluar', c.id); kc[c.id] = jml(tc, 'keluar', c.id); });
+      const belum = (jenis) => r2(trx.filter(x => x.jenis === jenis && isTempo(x) && bulanDari(x.tgl) <= b && (!x.lunasTgl || bulanKas(x) > b)).reduce((s, x) => s + num(x.nominal), 0));
+      const piutang = belum('masuk'), utangUsaha = belum('keluar');
       t.filter(x => x.jenis === 'keluar' && x.kat === 'alat').forEach(x => aset.push({ nama: x.ket || 'Peralatan', biaya: num(x.nominal), umur: num(x.umur) || 4, sisa: num(x.nominal), mulai: b }));
       // penyusutan garis lurus, berhenti saat nilai buku habis
       let susut = 0;
@@ -296,21 +305,21 @@
       const labaUsaha = r2(labaKotor + k.lain - bebanUsaha);
       const labaSebelumPajak = r2(labaUsaha - k.bunga);
       const laba = r2(labaSebelumPajak - k.pajak);
-      const opMasuk = pendapatan, opKeluar = r2(k.bahan + BEBAN.reduce((s, id) => s + k[id], 0) + k.bunga + k.pajak);
-      const arusOperasi = r2(opMasuk - opKeluar), arusInvestasi = r2(-k.alat), arusPendanaan = r2(k.modal + k.pinjam - k.cicil - k.prive);
+      const opMasuk = r2(kc.jual + kc.lain), opKeluar = r2(kc.bahan + BEBAN.reduce((s, id) => s + kc[id], 0) + kc.bunga + kc.pajak);
+      const arusOperasi = r2(opMasuk - opKeluar), arusInvestasi = r2(-kc.alat), arusPendanaan = r2(kc.modal + kc.pinjam - kc.cicil - kc.prive);
       const kasAwal = kas; kas = r2(kas + arusOperasi + arusInvestasi + arusPendanaan);
       persediaan = persAkhir; utang = r2(utang + k.pinjam - k.cicil);
       const labaLalu = labaDitahan;
       setoran = r2(setoran + k.modal); prive = r2(prive + k.prive); labaDitahan = r2(labaDitahan + laba);
       const peralatan = r2(aset.reduce((s, a) => s + a.sisa, 0));
       const peralatanBiaya = r2(aset.reduce((s, a) => s + a.biaya, 0));
-      const totalAset = r2(kas + persediaan + peralatan);
+      const totalAset = r2(kas + piutang + persediaan + peralatan), totalLiabilitas = r2(utang + utangUsaha);
       const ekuitas = r2(modalAwal + setoran - prive + labaDitahan);
       out.push({
-        bulan: b, k, jumlahTrx: t.length, stokDiisi: stok !== null,
+        bulan: b, k, kc, jumlahTrx: t.length, stokDiisi: stok !== null,
         labaRugi: { penjualan: k.jual, pendapatanLain: k.lain, pendapatan, persAwal, pembelian: k.bahan, persAkhir, hpp, labaKotor, beban: Object.fromEntries(BEBAN.map(id => [id, k[id]])), penyusutan: susut, bebanUsaha, labaUsaha, bunga: k.bunga, labaSebelumPajak, pajak: k.pajak, laba },
-        arusKas: { masukOperasi: opMasuk, keluarOperasi: opKeluar, operasi: arusOperasi, investasi: arusInvestasi, pendanaan: arusPendanaan, kasAwal, kasAkhir: kas, naik: r2(kas - kasAwal) },
-        neraca: { kas, persediaan, peralatanBiaya, akumulasi: r2(peralatanBiaya - peralatan), peralatan, totalAset, utang, modalAwal: r2(modalAwal), setoran, prive, labaLalu, labaBulan: laba, ekuitas, totalPasiva: r2(utang + ekuitas), seimbang: Math.abs(totalAset - (utang + ekuitas)) < 0.05 },
+        arusKas: { masukOperasi: opMasuk, bayarBahan: kc.bahan, bayarBeban: r2(BEBAN.reduce((s, id) => s + kc[id], 0)), keluarOperasi: opKeluar, operasi: arusOperasi, investasi: arusInvestasi, pendanaan: arusPendanaan, kasAwal, kasAkhir: kas, naik: r2(kas - kasAwal) },
+        neraca: { kas, piutang, persediaan, peralatanBiaya, akumulasi: r2(peralatanBiaya - peralatan), peralatan, totalAset, utang, utangUsaha, totalLiabilitas, modalAwal: r2(modalAwal), setoran, prive, labaLalu, labaBulan: laba, ekuitas, totalPasiva: r2(totalLiabilitas + ekuitas), seimbang: Math.abs(totalAset - (totalLiabilitas + ekuitas)) < 0.05 },
         aset: aset.map(a => ({ ...a })),
       });
     }
@@ -322,7 +331,7 @@
     const all = hitungBuku(buku, bulan).slice(-Math.max(1, n || 3));
     const sum = (f) => r2(all.reduce((s, x) => s + f(x), 0));
     const pendapatan = sum(x => x.labaRugi.pendapatan), laba = sum(x => x.labaRugi.laba);
-    const kasOp = sum(x => x.arusKas.operasi), cicil = sum(x => x.k.cicil), bunga = sum(x => x.k.bunga), susut = sum(x => x.labaRugi.penyusutan);
+    const kasOp = sum(x => x.arusKas.operasi), cicil = sum(x => x.kc.cicil), bunga = sum(x => x.k.bunga), susut = sum(x => x.labaRugi.penyusutan);
     const kewajiban = cicil + bunga;
     return {
       bulan: all, n: all.length, pendapatan, laba, kasOperasi: kasOp, cicilan: cicil, bunga,
@@ -334,6 +343,6 @@
     };
   }
 
-  const api = { KATEGORI, geserBulan, daftarBulan, bulanMulai, hitungBuku, laporanBulan, ringkasanBulan, bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
+  const api = { KATEGORI, BOLEH_TEMPO, geserBulan, daftarBulan, bulanMulai, hitungBuku, laporanBulan, ringkasanBulan, bagianBersama, skalaOverhead, kontribusiUnit, unitUntukTarget, proyeksi, hargaPsikologis, hargaPaket, SATUAN, normSatuan, faktor, biayaBahan, biayaBahanBatch, overheadBulanan, hitungHPP, bulatkan, hargaDasar, hargaKanal, hargaSemuaKanal, marginAktual, markupDariMargin, marginDariMarkup, bep, simulasiBahan, periksa };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.HPP = api;
 })(this);

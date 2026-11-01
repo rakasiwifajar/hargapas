@@ -380,6 +380,11 @@
     <div class="kh-head">
       <div><h1>Keuangan</h1><p class="hint">Catat setiap uang masuk dan keluar. Laporan bulanan tersusun otomatis.</p></div>
     </div>
+    <div class="note warn" id="noteBackupKeu" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      <span class="grow"></span>
+      <button class="btn small" type="button" data-backup>Cadangkan</button>
+    </div>
     <section class="ksetup" id="kSetup" hidden>
       <div class="ks-ic" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13M10 21v-6h4v6"/></svg></div>
       <div class="grow">
@@ -399,13 +404,8 @@
       <button class="kbtn out" type="button" data-trx="keluar"><span class="kb-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7-7 7 7"/></svg></span><span><b>Uang keluar</b><small>Belanja, upah, cicilan</small></span></button>
     </div>
     <div class="note info" id="kJualNote" hidden></div>
-    <section class="kstok card-lite">
-      <div class="grow">
-        <b>Sisa bahan & barang di akhir bulan <span class="term">(persediaan akhir)</span></b>
-        <p class="hint">Perkiraan nilai bahan, kemasan, dan produk jadi yang belum terpakai/terjual. Boleh dikosongkan; bila kosong dianggap sama dengan bulan lalu.</p>
-      </div>
-      <div class="field kstok-in"><label class="sr" for="kStok">Nilai sisa stok akhir bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kStok" class="num" type="text" inputmode="decimal" placeholder="boleh kosong"></div></div>
-    </section>
+    <section class="kopen" id="kOpen" hidden></section>
+    <section class="kinfo" id="kInfo" hidden></section>
     <div class="sec-head"><h2>Catatan bulan ini</h2><span class="hint" id="kCount"></span></div>
     <div class="tlist" id="kList"></div>
     <div class="empty-home" id="kEmpty" hidden>
@@ -413,6 +413,13 @@
       <b>Belum ada catatan di bulan ini</b>
       <p>Tekan <b>Uang masuk</b> atau <b>Uang keluar</b> setiap ada transaksi. Cukup pilih jenisnya dan isi jumlahnya.</p>
     </div>
+    <section class="kstok card-lite">
+      <div class="grow">
+        <b>Sisa bahan & barang di akhir bulan <span class="term">(persediaan akhir)</span></b>
+        <p class="hint">Perkiraan nilai bahan, kemasan, dan produk jadi yang belum terpakai/terjual. Boleh dikosongkan; bila kosong dianggap sama dengan bulan lalu.</p>
+      </div>
+      <div class="field kstok-in"><label class="sr" for="kStok">Nilai sisa stok akhir bulan</label><div class="inp has-pre"><span class="pre">Rp</span><input id="kStok" class="num" type="text" inputmode="decimal" placeholder="boleh kosong"></div></div>
+    </section>
     <div class="actions kfoot">
       <a class="btn primary" href="#lapkeu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 17v-3M13 17v-5M16 17v-2"/></svg>Laporan keuangan (PDF)</a>
       <button class="btn" type="button" data-open-profil>Data usaha & saldo awal</button>
@@ -433,6 +440,7 @@
       <div class="field"><label for="lkCatatan">Keterangan tambahan <span class="term">(opsional)</span></label><textarea id="lkCatatan" rows="2" placeholder="mis. Penjualan naik menjelang Lebaran. Pinjaman akan dipakai untuk membeli oven kedua."></textarea></div>
       <div class="actions">
         <button class="btn primary" type="button" id="btnPrintKeu" data-standalone>Cetak / simpan PDF</button>
+        <button class="btn" type="button" id="btnCsv" data-standalone>Unduh transaksi (Excel)</button>
         <a class="btn" href="#keuangan">Kembali ke Keuangan</a>
       </div>
       <p class="hint" data-embedded-only hidden style="margin:8px 0 0">Untuk menyimpan sebagai PDF, buka HargaPas di alamat resminya lalu tekan "Cetak / simpan PDF".</p>
@@ -468,6 +476,14 @@
           <p>Harga dari modal adalah batas bawah agar tidak rugi. Bandingkan dengan harga pesaing: kalau jauh lebih murah, cari cara menekan biaya; kalau lebih mahal, tonjolkan keunggulan produk (rasa, kemasan, khas daerah) atau jual di tempat yang menghargai kualitas.</p></details>
         <details class="lesson"><summary><span class="ln">6</span>Catat penjualan, lihat untung sebenarnya</summary>
           <p>Perhitungan adalah rencana. Dengan mencatat jumlah terjual setiap hari di Beranda, Anda bisa melihat apakah untung bulan ini sesuai rencana dan produk mana yang paling menguntungkan.</p></details>
+        <details class="lesson"><summary><span class="ln">7</span>Pisahkan uang usaha dan uang rumah tangga</summary>
+          <p>Kesalahan paling umum: uang belanja dapur diambil dari laci usaha tanpa dicatat. Akibatnya untung terlihat ada, tetapi uangnya selalu kurang. Cara mudahnya: tetapkan "gaji" untuk diri sendiri setiap minggu dan catat sebagai <b>Ambil untuk pribadi</b>. Kalau perlu, pakai dompet atau rekening terpisah untuk usaha.</p></details>
+        <details class="lesson"><summary><span class="ln">8</span>Kebiasaan mencatat setiap hari</summary>
+          <p>Catat sebelum tutup toko, cukup 2 menit: berapa uang masuk dan untuk apa saja uang keluar. Simpan nota belanja di satu amplop per bulan. Laporan untuk bank baru dipercaya bila catatannya rutin, minimal 3–6 bulan berturut-turut.</p></details>
+        <details class="lesson"><summary><span class="ln">9</span>Pembeli belum bayar dan bon ke pemasok</summary>
+          <p>Saat pembeli mengambil barang dulu, catat penjualannya hari itu dan centang <b>Pembeli belum bayar</b>. Saat uangnya diterima, tekan <b>Sudah dibayar</b> di daftar Belum dibayar. Begitu juga bila Anda mengambil bahan dulu di pemasok. Dengan begitu untung tetap benar dan Anda tahu siapa saja yang masih berutang.</p></details>
+        <details class="lesson"><summary><span class="ln">10</span>Menyiapkan pengajuan pinjaman ke bank</summary>
+          <p>Siapkan laporan keuangan 3–6 bulan terakhir dari HargaPas, KTP dan KK, NIB (daftar gratis di oss.go.id), foto tempat usaha, dan bila ada rekening koran. Pinjam secukupnya: angsuran sebaiknya jauh di bawah untung bersih bulanan. Angka "kemampuan bayar angsuran" di laporan sebaiknya di atas 1,5×.</p></details>
       </div>
     </section>
   </main>
@@ -580,6 +596,12 @@
       <h2>Versi & catatan perubahan</h2>
       <p style="margin-bottom:4px"><b>Versi __VERSION__</b> (1 November 2026)</p>
       <ul>
+        <li>Pembeli belum bayar dan bon ke pemasok (piutang & utang usaha), daftar Belum dibayar dengan tombol pelunasan.</li>
+        <li>Cadangan bisa dibagikan langsung ke WhatsApp/Drive, pengingat cadangan mingguan, panduan simpan PDF, unduh transaksi ke Excel.</li>
+        <li>Perkiraan pajak bulanan, perbandingan untung nyata dan rencana, peringatan penjualan tercatat dua kali, kolom bulan lalu di laporan laba rugi, tombol Bacakan di Keuangan, 4 pelajaran baru.</li>
+      </ul>
+      <p style="margin-bottom:4px"><b>Versi 2.0.0</b> (1 November 2026)</p>
+      <ul>
         <li>Menu Keuangan: catat uang masuk dan keluar per jenis, sisa stok akhir bulan, data usaha dan saldo awal.</li>
         <li>Laporan keuangan bulanan siap cetak/PDF untuk pengajuan pinjaman: laba rugi, arus kas, posisi keuangan (neraca), ringkasan dan grafik 3–12 bulan, catatan atas laporan, kolom tanda tangan. Mengacu SAK EMKM yang disederhanakan.</li>
         <li>Tampilan diperhalus: kepala aplikasi lebih ringkas, tipografi dan warna lebih konsisten, layar pembuka baru.</li>
@@ -642,11 +664,11 @@
       <h1>Kebijakan privasi</h1>
       <p class="hint">Berlaku sejak 1 November 2026 · HargaPas by Universitas Terbuka Majene</p>
       <h2>Data yang Anda isi</h2>
-      <p>Semua data produk, bahan, biaya, dan harga yang Anda masukkan disimpan <b>hanya di perangkat Anda</b> (penyimpanan browser). HargaPas tidak mengirim data tersebut ke server Universitas Terbuka maupun pihak lain.</p>
+      <p>Semua data produk, bahan, biaya, harga, catatan keuangan, serta data usaha (nama usaha, pemilik, alamat, NIB, nomor HP) yang Anda masukkan disimpan <b>hanya di perangkat Anda</b> (penyimpanan browser). HargaPas tidak mengirim data tersebut ke server Universitas Terbuka maupun pihak lain.</p>
       <h2>Akun dan data pribadi</h2>
       <p>HargaPas tidak meminta pendaftaran, nama, nomor telepon, email, atau lokasi.</p>
       <h2>Berbagi dan cadangan</h2>
-      <p>Data hanya keluar dari perangkat jika Anda sendiri yang membagikannya, misalnya mengirim ringkasan ke WhatsApp, mencetak laporan, atau menyimpan file cadangan.</p>
+      <p>Data hanya keluar dari perangkat jika Anda sendiri yang membagikannya, misalnya mengirim ringkasan ke WhatsApp, mencetak laporan, mengunduh transaksi ke Excel, atau menyimpan file cadangan. File cadangan dan laporan keuangan berisi data usaha Anda; simpan di tempat yang aman dan berikan hanya kepada pihak yang Anda percaya, seperti petugas bank.</p>
       <h2>Menghapus data</h2>
       <p>Hapus produk satu per satu dengan tombol hapus, atau hapus data situs ini dari pengaturan browser. Data yang sudah dihapus tidak bisa dipulihkan kecuali Anda punya file cadangan.</p>
       <h2>Kontak</h2>
@@ -748,6 +770,8 @@
     <div class="lbl" style="margin-top:12px">Untuk apa?</div>
     <div class="katgrid" id="trxKat" role="radiogroup" aria-label="Jenis"></div>
     <p class="hint" id="trxKatHint" style="margin:6px 0 0"></p>
+    <label class="chk tempo" id="trxTempoF" hidden style="margin:10px 0 0"><input type="checkbox" id="trxTempo"><span id="trxTempoL">Belum dibayar</span></label>
+    <div class="field" id="trxLunasF" hidden style="margin-top:8px"><label for="trxLunas">Sudah dilunasi tanggal <span class="term">(kosongkan bila belum)</span></label><input id="trxLunas" type="date"></div>
     <div class="field only-alat" id="trxUmurF" hidden><label for="trxUmur">Perkiraan bisa dipakai berapa tahun? <span class="term">(umur manfaat)</span></label><input id="trxUmur" class="num" type="text" inputmode="decimal" placeholder="4"></div>
     <div class="grid2" style="margin-top:10px">
       <div class="field"><label for="trxTgl">Tanggal</label><input id="trxTgl" type="date"></div>
@@ -787,6 +811,16 @@
     <button class="btn small" type="button" id="awUtangAdd">+ Tambah pinjaman</button>
     <p class="hint" id="awModal" style="margin:12px 0 0"></p>
     <div class="ob-actions" style="margin-top:14px"><button class="btn primary" type="button" id="profilClose">Selesai</button></div>
+  </div>
+</div>
+
+<!-- Panduan simpan PDF -->
+<div class="overlay" id="pdfDlg" hidden role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+  <div class="sheet">
+    <h2 id="pdfTitle">Cara menyimpan sebagai PDF</h2>
+    <ol class="steps" id="pdfSteps"></ol>
+    <label class="chk" style="margin:12px 0 0"><input type="checkbox" id="pdfNoShow"><span>Jangan tampilkan panduan ini lagi</span></label>
+    <div class="ob-actions" style="margin-top:14px"><button class="btn" type="button" id="pdfCancel">Batal</button><button class="btn primary" type="button" id="pdfGo">Lanjut</button></div>
   </div>
 </div>
 

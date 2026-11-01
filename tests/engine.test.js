@@ -195,4 +195,25 @@ const hab = H.laporanBulan({ awal: { bulan: '2026-01', peralatan: [{ nilai: 1200
 eq(hab.neraca.peralatan, 0, 'nilai buku tidak negatif');
 eq(hab.labaRugi.penyusutan, 0, 'tidak ada penyusutan setelah habis');
 
+// utang-piutang dagang
+const dag = { awal: { bulan: '2026-11', kas: 1000000 }, trx: [
+  { tgl: '2026-11-02', jenis: 'masuk', kat: 'jual', nominal: 500000, tempo: true, lunasTgl: '2026-12-05' },
+  { tgl: '2026-11-03', jenis: 'masuk', kat: 'jual', nominal: 300000 },
+  { tgl: '2026-11-04', jenis: 'keluar', kat: 'bahan', nominal: 200000, tempo: true },
+  { tgl: '2026-11-05', jenis: 'keluar', kat: 'prive', nominal: 50000, tempo: true },
+] };
+const nov = H.laporanBulan(dag, '2026-11');
+eq(nov.labaRugi.penjualan, 800000, 'penjualan diakui saat terjadi walau belum dibayar');
+eq(nov.neraca.piutang, 500000, 'piutang usaha');
+eq(nov.neraca.utangUsaha, 200000, 'utang usaha (bon ke pemasok)');
+eq(nov.arusKas.masukOperasi, 300000, 'kas masuk hanya yang sudah dibayar');
+eq(nov.arusKas.kasAkhir, 1250000, 'kas akhir November (prive tidak bisa tempo)');
+eq(nov.neraca.seimbang, true, 'neraca seimbang dengan piutang & utang usaha');
+const des = H.laporanBulan(dag, '2026-12');
+eq(des.neraca.piutang, 0, 'piutang lunas Desember');
+eq(des.arusKas.masukOperasi, 500000, 'pelunasan piutang masuk kas Desember');
+eq(des.labaRugi.penjualan, 0, 'pelunasan bukan penjualan baru');
+eq(des.neraca.utangUsaha, 200000, 'utang usaha belum lunas tetap tercatat');
+eq(des.neraca.seimbang, true, 'neraca seimbang Desember');
+
 console.log(`Semua ${lulus} uji lulus.`);

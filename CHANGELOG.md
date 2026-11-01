@@ -1,5 +1,14 @@
 # Catatan perubahan HargaPas
 
+## 2.1.0 — 1 November 2026
+### Baru
+- Pembeli belum bayar (piutang usaha) dan bon ke pemasok (utang usaha): diakui saat terjadi, kas bergerak saat dilunasi; daftar "Belum dibayar" dengan tombol pelunasan dan penanda umur tagihan > 30 hari.
+- Cadangan dibagikan langsung sebagai file (WhatsApp/Drive) di HP yang mendukung; pengingat cadangan mingguan bila ada catatan keuangan; permintaan penyimpanan permanen.
+- Panduan "Cara menyimpan sebagai PDF" sebelum cetak (Android & iPhone); unduh semua transaksi ke Excel (CSV).
+- Perkiraan PPh final 0,5% bulanan + tombol catat; perbandingan untung nyata vs rencana hitungan harga; peringatan penjualan tercatat dua kali; Bacakan ringkasan Keuangan; pengingat "terakhir mencatat".
+- Laporan laba rugi dengan kolom pembanding bulan lalu; neraca memuat piutang dan utang usaha.
+- Pelajaran baru: pisahkan uang usaha, kebiasaan mencatat, piutang & bon, menyiapkan pengajuan pinjaman. Kebijakan privasi mencakup data keuangan.
+
 ## 2.0.0 — 1 November 2026
 ### Baru
 - Menu **Keuangan**: catat uang masuk/keluar per jenis (penjualan, modal, pinjaman, belanja bahan, upah, sewa, listrik/gas, ongkir, promosi, bunga, pajak, beli peralatan, cicilan pokok, ambil pribadi), pemilih bulan, sisa stok akhir bulan, rekap catatan penjualan ke Keuangan.
